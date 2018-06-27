@@ -16,6 +16,8 @@ Prerequisites
 =============
 The GUI simulator requires pygame.
 
+This package is for Python 2 only. It does not support Python 3.
+
 Installation
 ============
 
@@ -43,4 +45,8 @@ The fastest way to start using the simulator is to use our hosted version of the
 
 To use the simulator directly, yourself, <FINISH INSTRUCTIONS>
 
+Acknowledgements
+================
+
+This package uses the pygbutton package by Al Sweigart (https://github.com/asweigart/pygbutton) as well as the random_color function made by adews (https://gist.github.com/adewes/5884820.). Thanks to both authors!
 
