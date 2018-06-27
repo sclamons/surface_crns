@@ -1,8 +1,8 @@
-import SCC.readers as scc_readers
-from SCC.constants import *
-from SCC.options.option_types import *
-from SCC.models.simulation_grid import SimulationGrid
-from SCC import random_color as rcolor
+import surface_crns.readers as readers
+from surface_crns.constants import *
+from surface_crns.options.option_types import *
+from surface_crns.models.grids import SquareGrid
+from surface_crns import random_color as rcolor
 import numpy as np
 import random
 
@@ -164,7 +164,7 @@ class SurfaceCRNOptionParser:
                 for line in init_state:
                     for node_state in line:
                         self.update_colormap(str(node_state))
-            self.grid = SimulationGrid(init_state.shape[0], init_state.shape[1])
+            self.grid = SquareGrid(init_state.shape[0], init_state.shape[1])
             self.grid.set_global_state(init_state)
             return init_state
         else:

@@ -4,17 +4,17 @@ import pygame
 Classes for creating and updating pygame surfaces based on simulation data.
 '''
 
-class GridDisplay(object):
+class SquareGridDisplay(object):
     debug = False
     '''
-    Displays a SimulationGrid object as a colored grid.
+    Displays a SquareGrid object as a colored grid.
     '''
 
     def __init__(self, grid, colormap, min_x = 0, min_y = 0, pixels_per_node=5,
                  display_text = False, display_lines = False):
         '''
          Parameters:
-            grid: The SimulationGrid object displayed
+            grid: The SquareGrid object displayed
             colormap: Dictionary defining what colors are assigned to each state
             min_x, min_y: Minimum x and y sizes, in pixels, of the surface
                             created. If the natural size of the grid isn't big
@@ -147,13 +147,13 @@ class GridDisplay(object):
         text_surface = font.render(node.state, True, text_color)
         return text_surface
 
-#end class GridDisplay
+#end class SquareGridDisplay
 
 
 
 
 
-class ParallelEmulatedGridDisplay(object):
+class ParallelEmulatedSquareGridDisplay(object):
     debug = False
     '''
     Displays an underlying grid and the grid it emulates (i.e., the underlying
@@ -174,7 +174,7 @@ class ParallelEmulatedGridDisplay(object):
                  display_lines = False):
         '''
          Parameters:
-            grid: The SimulationGrid object displayed
+            grid: The SquareGrid object displayed
             colormap: Dictionary defining what colors are assigned to each state
             emulation_colormap: Same as colormap, but for the emulated grid.
             horizontal_buffer, vertical_buffer:
@@ -365,4 +365,4 @@ class ParallelEmulatedGridDisplay(object):
         text_surface = font.render(node.state, True, text_color)
         return text_surface
 
-#end class ParallelEmulatedGridDisplay
+#end class ParallelEmulatedSquareGridDisplay

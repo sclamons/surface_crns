@@ -1,8 +1,8 @@
 from __future__ import print_function
-import SCC.models.simulation_grid as scc_grid
-import SCC.readers.manifest_readers as scc_manifest_readers
-import SCC.readers.grid_state_readers as scc_init_readers
-import SCC.simulators.queue_simulator as scc_simulators
+import surface_crns.models.grids as grids
+import surface_crns.readers.manifest_readers as manifest_readers
+import surface_crns.readers.grid_state_readers as init_readers
+import surface_crns.simulators.queue_simulator as simulators
 from timing import TimeProfiler
 import cProfile
 import optparse
@@ -20,15 +20,15 @@ class GridSimTimeProfiler():
 
         if manifest_filename and options:
             raise Exception("GridSimTimeProfiler can be initialized with " +
-                            "either a manifest file or a dictionary of " + 
+                            "either a manifest file or a dictionary of " +
                             "options, but not both.")
         if manifest_filename:
-            self.options = scc_manifest_readers.read_manifest(manifest_filename)
+            self.options = manifest_readers.read_manifest(manifest_filename)
         elif options:
             self.options = options
         else:
-            raise Exception("GridSimTimeProfiler must be initialized with " + 
-                            "either a manifest file name or a dictionary " + 
+            raise Exception("GridSimTimeProfiler must be initialized with " +
+                            "either a manifest file name or a dictionary " +
                             "of options read from a manifest file.")
 
         # Read out miscellaneous options from manifest
@@ -44,7 +44,7 @@ class GridSimTimeProfiler():
             DEBUG = debug
         if 'rng_seed' in self.options:
             self.RAND_SEED = int(self.options['rng_seed'])
-        else: 
+        else:
             self.RAND_SEED = 0
         if 'max_duration' in self.options:
             self.SIMULATION_DURATION = float(self.options['max_duration'])
@@ -58,14 +58,14 @@ class GridSimTimeProfiler():
             for rule in self.transition_rules:
                 # Check that reactions are unimolecular or bimolecular
                 if len(rule.inputs) != len(rule.outputs):
-                    raise Exception("Invalid transition rule " + str(rule) + 
-                                    "\nTransition rules for a surface CRN must"+ 
-                                    "have the same number of inputs and " + 
+                    raise Exception("Invalid transition rule " + str(rule) +
+                                    "\nTransition rules for a surface CRN must"+
+                                    "have the same number of inputs and " +
                                     "outputs.")
                 if len(rule.inputs) > 2:
-                    raise Exception("Invalid transition rule " + str(rule) + 
-                                    "\nOnly transition rules between one or " + 
-                                    "two species are allowed in this " + 
+                    raise Exception("Invalid transition rule " + str(rule) +
+                                    "\nOnly transition rules between one or " +
+                                    "two species are allowed in this " +
                                     "implementation.")
             if self.DEBUG:
                 print("Transition rules:\n" + str(self.transition_rules))
@@ -81,55 +81,55 @@ class GridSimTimeProfiler():
         else:
             raise Exception("Initial state required in manifest")
 
-        self.grid = scc_grid.SimulationGrid(self.initial_state.shape[0], 
+        self.grid = grids.SquareGrid(self.initial_state.shape[0],
                                             self.initial_state.shape[1])
         self.grid.set_global_state(self.initial_state)
-        
+
         # Set up simulation timer
-        self.simulation = scc_simulators.QueueSimulator(surface = self.grid, 
+        self.simulation = simulators.QueueSimulator(surface = self.grid,
                                 transition_rules = self.transition_rules,
-                                seed = self.RAND_SEED, 
+                                seed = self.RAND_SEED,
                                 simulation_duration = self.SIMULATION_DURATION)
 
     def timing_test(self, num_runs, stop_criteria, output_file):
         '''
-        Run the simulation num_runs times, stopping according to user-defined 
+        Run the simulation num_runs times, stopping according to user-defined
         stop criteria, and printing simulation times to completion
 
         Parameters:
             -num_runs: the number of times to run the simulation
-            -stop_criteria: a function taking a simulation and returning True if 
-                                the simulation is over according to some 
+            -stop_criteria: a function taking a simulation and returning True if
+                                the simulation is over according to some
                                 criteria and False if the simulation is not.
-            -output_file: the name of a file to print the output to. Output is a 
-                            TSV file (readable by gnuplot) with times for each 
+            -output_file: the name of a file to print the output to. Output is a
+                            TSV file (readable by gnuplot) with times for each
                             run.
         '''
         timer = TimeProfiler(self.simulation)
         timer.run_simulations(num_runs, stop_criteria, output_file)
 
-    def correctness_test(self, num_runs, start_states, start_state_labels, 
-                        stop_criteria, output_function, output_labels, 
+    def correctness_test(self, num_runs, start_states, start_state_labels,
+                        stop_criteria, output_function, output_labels,
                         output_file):
         '''
-        Run the simulation multiple times on different inputs, printing the 
+        Run the simulation multiple times on different inputs, printing the
         times to completion and the states of any number of output positions at
         the end of each simulation.
 
         Parameters:
-            -num_runs: the number of times to run the simulation from each 
+            -num_runs: the number of times to run the simulation from each
                         initial condition.
-            -start_states: a list or generator of initial states, in the form 
+            -start_states: a list or generator of initial states, in the form
                             of a numpy array (or list of lists). The simulation
                             will be run for each starting state num_runs times.
-            -start_state_labels: list or generator of names for the states in 
+            -start_state_labels: list or generator of names for the states in
                                     start_states.
-            -stop_criteria: a function taking a simulation and returning True if 
-                                the simulation is over according to some 
+            -stop_criteria: a function taking a simulation and returning True if
+                                the simulation is over according to some
                                 criteria and False otherwise.
-            -output_function: A function taking a simulation and returning a 
+            -output_function: A function taking a simulation and returning a
                                 list of outputs to be reported.
-            -output_labels: list or generator of names for teh outputs of 
+            -output_labels: list or generator of names for teh outputs of
                                 output_function
             -output_file: the name of a file to print the output to. Output is a
                             TSV file (readable by gnuplot) with times for each
@@ -144,13 +144,13 @@ class GridSimTimeProfiler():
             for init_state, state_label in states_and_labels:
                 print("x: " + str(x))
                 x += 1
-                grid = scc_grid.SimulationGrid(init_state.shape[0], 
+                grid = grids.SquareGrid(init_state.shape[0],
                                                init_state.shape[1])
                 grid.set_global_state(init_state)
-                self.simulation = scc_simulators.QueueSimulator(
-                                surface = grid, 
+                self.simulation = simulators.QueueSimulator(
+                                surface = grid,
                                 transition_rules = self.transition_rules,
-                                seed = self.RAND_SEED, 
+                                seed = self.RAND_SEED,
                                 simulation_duration = self.SIMULATION_DURATION)
                 timer = TimeProfiler(self.simulation)
                 run_num = 0

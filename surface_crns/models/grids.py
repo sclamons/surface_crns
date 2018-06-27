@@ -2,7 +2,7 @@ import numpy as np
 from ..base.node import *
 from warnings import *
 
-class SimulationGrid(object):
+class SquareGrid(object):
     '''
     Representation of a CRN on a 2D finite rectangular mesh grid.
     '''
@@ -18,7 +18,7 @@ class SimulationGrid(object):
 
     def populate_grid(self):
         '''
-        Set/reset all nodes to new nodes with no state and populate neighbor 
+        Set/reset all nodes to new nodes with no state and populate neighbor
         nodes. Should only be used by initialization and set routines.
         '''
         for x in range(self.x_size):
@@ -45,17 +45,17 @@ class SimulationGrid(object):
 
     def set_global_state(self, state_grid):
         '''
-        Set the states of nodes using a 2D array or numpy array of state 
+        Set the states of nodes using a 2D array or numpy array of state
         strings. Also resets timestamps.
         '''
         if isinstance(state_grid, list):
             state_grid = np.array(state_grid)
         if state_grid.shape != self.grid.shape:
-            warn(Warning("State grid set to state with different size than " + 
+            warn(Warning("State grid set to state with different size than " +
                          "previously set. Changing size."))
             self.grid = np.empty(state_grid.shape, np.dtype(object))
             self.x_size = state_grid.shape[0]
-            self.y_size = state_grid.shape[1]    
+            self.y_size = state_grid.shape[1]
             self.populate_grid()
         for x in range(self.x_size):
             for y in range(self.y_size):
@@ -76,7 +76,7 @@ class SimulationGrid(object):
         return self.grid[x,y]
 
     def __iter__(self):
-        return SimulationGridIterator(self)
+        return SquareGridIterator(self)
 
     def __str__(self):
         ret_str = str(self.x_size) + " x " + str(self.y_size) + \
@@ -90,7 +90,7 @@ class SimulationGrid(object):
             ret_str += ']'
         return ret_str
 
-class SimulationGridIterator:
+class SquareGridIterator:
     def __init__(self, simgrid):
         self.simgrid = simgrid
         self.x = 0
