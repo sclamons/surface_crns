@@ -1,3 +1,9 @@
+# Custom Git/pip-management scripts
+just_reinstall_package.sh
+local_reinstall_package.sh
+push_package.sh
+reinstall_package.sh
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
