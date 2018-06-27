@@ -94,7 +94,6 @@ setup(
     # the system where the setup script is being run, but simply downloaded to
     # the ./.eggs directory if they're not locally available already.
     setup_requires=[
-        'pytest-runner'
     ],
 
     # List dependencies for the test process to run. These, too, are not
@@ -102,7 +101,6 @@ setup(
     # downloaded to the ./.eggs directory if they're not locally available
     # already.
     tests_require=[
-        'pytest'
     ],
 
     # If there are data files included in your packages that need to be
