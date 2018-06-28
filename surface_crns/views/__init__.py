@@ -1,3 +1,1 @@
-import grid_display
-import legend_display
-import time_display
+__all__ = ["grid_display", "legend_display", "time_display"]

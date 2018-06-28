@@ -1,4 +1,4 @@
-from ..base import *
+from surface_crns.base import *
 import pygame
 '''
 Classes for creating and updating pygame surfaces based on simulation data.

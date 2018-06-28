@@ -1,5 +1,5 @@
-from ..base import *
-from text_display import TextDisplay
+from surface_crns.base import *
+from surface_crns.views.text_display import TextDisplay
 import pygame
 
 class TimeDisplay(TextDisplay):

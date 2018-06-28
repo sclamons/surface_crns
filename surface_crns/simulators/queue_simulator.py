@@ -1,14 +1,14 @@
 import numpy as np
 import random
 import math
-from Queue import *
-from event import Event
+from queue import *
+from surface_crns.simulators.event import Event
 
 class QueueSimulator:
     '''
     Surface CRN simulator based on Gillespie-like next-reaction determination
     at each node. Upcoming reactions are stored in a priority queue, sorted
-    by reaction time. Each time an event occurs, the next reaction time for 
+    by reaction time. Each time an event occurs, the next reaction time for
     each participating node is recalculated and added to the queue. Timestamps
     are used to ensure that a node does not react if it was changed between the
     time its reaction was issued and the time the reaction would occur.
@@ -28,7 +28,7 @@ class QueueSimulator:
         self.surface = surface
         self.init_state = surface.get_global_state()
 
-        # Build a mapping of states to the possible transitions they could 
+        # Build a mapping of states to the possible transitions they could
         # undergo.
         self.rules_by_state = dict()
         for rule in self.rule_set:
@@ -56,12 +56,12 @@ class QueueSimulator:
         Populate the reaction queue with initial reactions.
         '''
         for node in self.surface:
-            self.add_next_reactions_with_node(node=node, 
+            self.add_next_reactions_with_node(node=node,
                                               first_reactant_only=True,
                                               exclusion_list = [])
     def done(self):
         '''
-        True iff there are no more reactions or the simulation has reached 
+        True iff there are no more reactions or the simulation has reached
         final time.
         '''
         return self.event_queue.empty() or self.time >= self.simulation_duration
@@ -70,18 +70,18 @@ class QueueSimulator:
         local_debugging = False
         '''
         Process and return the next reaction in the queue:
-        (1) Make sure the reaction is still valid (if not, try the next one 
+        (1) Make sure the reaction is still valid (if not, try the next one
             instead).
         (2) Update the surface based on the reaction.
         (3) Determine the next reactions for each node involved in the reaction
-            and add them to the event queue. 
+            and add them to the event queue.
         '''
         next_reaction = None
         while next_reaction == None:
             if self.event_queue.empty():
                 self.time = self.simulation_duration
                 return None
-        
+
             next_reaction = self.event_queue.get()
             if next_reaction.time > self.simulation_duration:
                 self.time = self.simulation_duration
@@ -90,15 +90,15 @@ class QueueSimulator:
             participants  = next_reaction.participants
             outputs       = next_reaction.rule.outputs
             if local_debugging:
-                print("Processing event " + str(next_reaction.rule) + 
+                print("Processing event " + str(next_reaction.rule) +
                       " at time " + str(self.time) + ", position " +
                       str(participants[0].position) + " ")
 
-            # If the first input was modified since the event was issued, 
+            # If the first input was modified since the event was issued,
             # don't run it
             if participants[0].timestamp > next_reaction.time_issued:
                 if local_debugging:
-                    print("ignored -- first reactant changed since event " + 
+                    print("ignored -- first reactant changed since event " +
                           "issued.")
                 next_reaction = None
                 continue
@@ -106,11 +106,11 @@ class QueueSimulator:
             if len(participants) > 1:
                 if local_debugging:
                     print("and " + str(participants[1].position) + " ")
-                # If the second input was modified since the event was 
+                # If the second input was modified since the event was
                 # issued, don't run it
                 if participants[1].timestamp > next_reaction.time_issued:
                     if local_debugging:
-                        print("ignored -- second reactant changed since " + 
+                        print("ignored -- second reactant changed since " +
                               "event issued.")
                     next_reaction = None
                     continue
@@ -120,11 +120,11 @@ class QueueSimulator:
             # Change first reactant
             participants[0].state = outputs[0]
             participants[0].timestamp = self.time
-           
+
             if local_debugging:
                 print("processed.")
 
-            # Determine the next reactions performed by each participant 
+            # Determine the next reactions performed by each participant
             # changed in this reaction.
             if local_debugging:
                 print("Checking for new reactions with node:" + \
@@ -137,26 +137,26 @@ class QueueSimulator:
                     print("Checking for new reactions with node:" + \
                           str(participants[1]))
                 self.add_next_reactions_with_node(
-                                            participants[1], 
-                                            first_reactant_only = False, 
+                                            participants[1],
+                                            first_reactant_only = False,
                                             exclusion_list = [participants[0]])
         if local_debugging:
-            print("process_next_reaction() returning event " + 
+            print("process_next_reaction() returning event " +
                   str(next_reaction))
         return next_reaction
     #end def process_next_reaction
 
-    def add_next_reactions_with_node(self, node, first_reactant_only = False, 
+    def add_next_reactions_with_node(self, node, first_reactant_only = False,
                                         exclusion_list = None):
         '''
         Determines whether or not the specified node can react according to any
-        known rule and, if it can, returns a new event for the next occurrence 
-        of that reaction. 
+        known rule and, if it can, returns a new event for the next occurrence
+        of that reaction.
 
-        If first_reactant_only = True, only checks to see if the species is the 
-        FIRST input species. For example, a node with state 'A' will react 
-        according to the rule "A + B -> C + D", but NOT according to the rule 
-        "B + A -> D + C". This mode is intended to make initialization of the 
+        If first_reactant_only = True, only checks to see if the species is the
+        FIRST input species. For example, a node with state 'A' will react
+        according to the rule "A + B -> C + D", but NOT according to the rule
+        "B + A -> D + C". This mode is intended to make initialization of the
         surface easier.
 
         Nodes in exclusion_list are not considered eligible for reaction.
@@ -179,7 +179,7 @@ class QueueSimulator:
                         print("Rule rejected: input 1 doesn't match.")
                     continue
 
-            # If it's a unimolecular reaction, we can now add the reaction to 
+            # If it's a unimolecular reaction, we can now add the reaction to
             # the event queue.
             if len(rule.inputs) == 1:
                 time_to_reaction = np.log(1.0 / random.random()) / rule.rate
@@ -196,8 +196,8 @@ class QueueSimulator:
                     print(str(new_event))
 
             elif len(rule.inputs) == 2:
-                # If a bimolecular reaction, then we need to keep track of 
-                # which reactant this node is, so that we can check the other 
+                # If a bimolecular reaction, then we need to keep track of
+                # which reactant this node is, so that we can check the other
                 # one against each neighbor.
                 if first_reactant_only:
                     node_index = 0
@@ -213,15 +213,15 @@ class QueueSimulator:
                     if neighbor_node.state != rule.inputs[1-node_index]:
                         # Not eligible for reaction
                         if local_debugging:
-                            print("Rule rejected: input 2 doesn't match.") 
+                            print("Rule rejected: input 2 doesn't match.")
                         continue
                     if neighbor_node in exclusion_list:
                         if local_debugging:
                             print("Neighbor is on exclusion list. Moving on.")
                         continue
 
-                    # If the two inputs are identical and the this node could 
-                    # be either reactant, then the reaction needs to be counted 
+                    # If the two inputs are identical and the this node could
+                    # be either reactant, then the reaction needs to be counted
                     # twice.
                     if not first_reactant_only and \
                        rule.inputs[0] == rule.inputs[1]:
@@ -249,6 +249,6 @@ class QueueSimulator:
                             print("Event added: " + str(new_event))
             else:
                 raise Exception("Error in transition rule " + str(rule) + \
-                                "\nOnly rules with one or two inputs allowed!")            
+                                "\nOnly rules with one or two inputs allowed!")
     #end def add_next_reactions_with_node
 # end class QueueSimulator

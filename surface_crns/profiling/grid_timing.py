@@ -3,7 +3,7 @@ import surface_crns.models.grids as grids
 import surface_crns.readers.manifest_readers as manifest_readers
 import surface_crns.readers.grid_state_readers as init_readers
 import surface_crns.simulators.queue_simulator as simulators
-from timing import TimeProfiler
+from surface_crns.profiling.timing import TimeProfiler
 import cProfile
 import optparse
 import sys

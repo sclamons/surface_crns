@@ -1,1 +1,1 @@
-import queue_simulator
+__all__ = ["queue_simulator"]

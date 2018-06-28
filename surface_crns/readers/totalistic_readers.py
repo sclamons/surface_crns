@@ -1,6 +1,6 @@
-from statements import *
+from surface_crns.readers.statements import *
 import re
-from ..base.transition_rule import *
+from surface_crns.base.transition_rule import *
 
 '''
 For external use
@@ -49,7 +49,7 @@ Internal use only
 
 def parse_option(update_options, line):
     # Identify neighbor count
-    line_parts = map(lambda s: s.strip(), line.split(','))
+    line_parts = list(map(lambda s: s.strip(), line.split(',')))
     try:
         neighbor_count = int(line_parts[0])
     except ValueError:
@@ -59,7 +59,7 @@ def parse_option(update_options, line):
 
     # Identify self-state
     line = line_parts[1]
-    line_parts = map(lambda s: s.strip(), line.split('->'))
+    line_parts = list(map(lambda s: s.strip(), line.split('->')))
     if len(line_parts) != 2:
         raise Exception('Invalid update option "' + line + '": Input and ' +
                         'output states must be separated by a single "->".')

@@ -1,5 +1,2 @@
-import colormap_readers
-import grid_state_readers
-import manifest_readers
-import statements
-import transition_readers
+__all__ = ["colormap_readers", "grid_state_readers", "manifest_readers",
+           "statements", "transition_readers"]

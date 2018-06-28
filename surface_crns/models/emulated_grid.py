@@ -1,6 +1,6 @@
 import numpy as np
-from ..base.node import *
-from grids import SquareGrid
+from surface_crns.base.node import *
+from surface_crns.models.grids import SquareGrid
 from warnings import *
 
 class EmulatedSimulationGrid(object):

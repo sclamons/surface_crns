@@ -1,9 +1,9 @@
 import os
-from statements import *
-import transition_readers
-import colormap_readers
-import grid_state_readers
-import totalistic_readers
+from surface_crns.readers.statements import *
+import surface_crns.readers.transition_readers as transition_readers
+import surface_crns.readers.colormap_readers as colormap_readers
+import surface_crns.readers.grid_state_readers as grid_state_readers
+import surface_crns.readers.totalistic_readers as totalistic_readers
 '''
 For external use
 '''
@@ -97,7 +97,7 @@ Internal use only
 '''
 
 def parse_option(line, options):
-    line_parts = map(lambda s: s.strip(), line.split("="))
+    line_parts = list(map(lambda s: s.strip(), line.split("=")))
     if len(line_parts) != 2:
         raise Exception('Improperly formatted option "' + line + '"')
     options[line_parts[0]] = line_parts[1]

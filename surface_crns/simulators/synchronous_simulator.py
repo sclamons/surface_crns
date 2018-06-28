@@ -1,7 +1,7 @@
 import copy
 import random
-from ..base.transition_rule import TransitionRule
-from event import Event
+from surface_crns.base.transition_rule import TransitionRule
+from surface_crns.simulators.event import Event
 
 class SynchronousSimulator:
     '''
@@ -46,7 +46,7 @@ class SynchronousSimulator:
         '''
         changed_nodes = []
         for node in self.surface:
-            neighbor_states = map(lambda n:n.state, node.neighbors)
+            neighbor_states = list(map(lambda n:n.state, node.neighbors))
             new_state = self.update_rule(neighbor_states, node.state)
             if node.state != new_state:
                 changed_nodes.append(node)

@@ -1,6 +1,6 @@
-from statements import *
-from ..constants import *
-from ..ordered_dict import OrderedDict
+from surface_crns.readers.statements import *
+from surface_crns.constants import *
+from surface_crns.ordered_dict import OrderedDict
 
 def read_colormap(filename):
     '''
@@ -57,14 +57,14 @@ def parse_colormap_stream(colormap_stream):
                             ' must be separated by a ":".')
 
         states = line_parts[0].split(',')
-        states = map(lambda s: s.strip(), states)
+        states = list(map(lambda s: s.strip(), states))
         if class_label:
             if class_label in colormap[COLOR_CLASSES]:
                 raise Exception('Two state classes cannot have the same name.')
             colormap[COLOR_CLASSES][class_label] = states
         color = line_parts[1].strip().strip('()')
         color_bits = color.split(',')
-        color_bits = map(lambda s: int(s), color_bits)
+        color_bits = list(map(lambda s: int(s), color_bits))
         for state in states:
             if state == COLOR_CLASSES:
                 raise Exception("Sorry, state string " +

@@ -1,12 +1,13 @@
-from ..base import *
-from ..constants import *
-from ..ordered_dict import OrderedDict
+from surface_crns.base import *
+from surface_crns.constants import *
+from surface_crns.ordered_dict import OrderedDict
 import pygame
 
 class LegendDisplay:
     '''
     Displays a legend of all of the states and colors used in the simulation.
     '''
+    pygame.font.init()
     LEGEND_FONT       = pygame.font.SysFont('monospace', 16)
     HORIZONTAL_BUFFER = 5
     VERTICAL_BUFFER   = 5
@@ -45,7 +46,10 @@ class LegendDisplay:
                 continue
             if isinstance(color, list):
                 color = map(lambda num: "{0:0>2x}".format(int(num)), color)
-                color = "0x" + reduce(lambda s1, s2: s1 + s2, color)
+                color_str = "0x"
+                for substr in color:
+                    color_str += substr
+                color = color_str
             if color in self.statemap.keys():
                 self.statemap[color] += ", " + state
             else:

@@ -1,6 +1,5 @@
 import surface_crns.readers as readers
 from surface_crns.constants import *
-from surface_crns.options.option_types import *
 from surface_crns.models.grids import SquareGrid
 from surface_crns import random_color as rcolor
 import numpy as np
@@ -66,8 +65,10 @@ class SurfaceCRNOptionParser:
         return DEBUG
 
     def process_rng_seed(self, options):
-        RNG_SEED = RNGSeedOpt.from_manifest(options)
-        return RNG_SEED
+        if 'rng_seed' in options:
+            return int(options['rng_seed'])
+        else:
+            return None
 
     def process_max_duration(self, options):
         if 'max_duration' in options:

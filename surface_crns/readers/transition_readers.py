@@ -1,6 +1,6 @@
-from statements import *
+from surface_crns.readers.statements import *
 import re
-from ..base.transition_rule import *
+from surface_crns.base.transition_rule import *
 
 '''
 For external use
@@ -8,20 +8,20 @@ For external use
 
 def read_transition_rules(filename):
     '''
-    Read transition rules from a transition rule file. Transition rules are 
+    Read transition rules from a transition rule file. Transition rules are
     written with one rule on each line, in the following format:
 
     name1 + name2 -> name3 + name4 (<rate>)
-    or 
+    or
     name1 + name2 -> name3 + name4 {<rate>}
 
     where name1, etc are any alphanumeric labels for chemical states, and <rate>
     is a number. The rate may appear anywhere in the line, as long as it is
     contained within parentheses or curly brackets.
 
-    Lines beginning with '#' or '%' are treated as comments. 
+    Lines beginning with '#' or '%' are treated as comments.
 
-    The file may optionally be terminated by a line of the string 
+    The file may optionally be terminated by a line of the string
     "!END_TRANSITION_RULES"
     '''
     with open(filename, 'rU') as rule_file:
@@ -29,7 +29,7 @@ def read_transition_rules(filename):
 
 def parse_transition_rule_stream(rules_stream):
     '''
-    Parse a stream of strings containing  transition rules, as from a transition 
+    Parse a stream of strings containing  transition rules, as from a transition
     rule file.
     See documentation for read_transition_rules for a description of the
     transition rule format.
@@ -38,8 +38,8 @@ def parse_transition_rule_stream(rules_stream):
     for line in rules_stream:
         if line.startswith(section_ends['transition_rules']):
             break
-        if not (line.startswith("#") or 
-                line.startswith("%") or 
+        if not (line.startswith("#") or
+                line.startswith("%") or
                 line.strip() == ""):
             transition_rules.append(parse_rule(line))
     return transition_rules
@@ -58,7 +58,7 @@ def parse_rule(line):
         close_paren_loc = line.find(")")
     if open_paren_loc < 0  or close_paren_loc < 0 or \
        close_paren_loc < open_paren_loc:
-       raise Exception('Invalid transition rule "' + line + 
+       raise Exception('Invalid transition rule "' + line +
                        '": No properly formatted rate constant.')
     rate_string = line[open_paren_loc+1:close_paren_loc]
     try:
@@ -70,7 +70,7 @@ def parse_rule(line):
             rate_denominator = float(rate_string[slash_loc + 1:])
             rate = rate_numerator / rate_denominator
     except ValueError:
-        raise Exception ('Invalid transition rule "' + line + 
+        raise Exception ('Invalid transition rule "' + line +
                          '": Improperly formatted rate constant ' + rate_string)
     line = line[:open_paren_loc] + line[close_paren_loc+1:]
 
@@ -92,7 +92,7 @@ def parse_rule(line):
             raise Exception('Invalid transition rule "' + line + \
                         '":Species ' + input_string + \
                         ' must be alphanumeric, but is not.')
-        
+
     # Parse output species
     output_species = []
     output_strings = line_parts[1].split('+')

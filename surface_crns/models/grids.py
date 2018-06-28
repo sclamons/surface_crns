@@ -1,5 +1,5 @@
 import numpy as np
-from ..base.node import *
+from surface_crns.base.node import *
 from warnings import *
 
 class SquareGrid(object):
@@ -100,7 +100,7 @@ class SquareGridIterator:
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         if self.done:
             raise StopIteration
         next_node = self.simgrid.getnode(self.x, self.y)
@@ -111,3 +111,6 @@ class SquareGridIterator:
             if self.y >= self.simgrid.y_size:
                 self.done = True
         return next_node
+
+    def next(self):
+        return self.__next__()
