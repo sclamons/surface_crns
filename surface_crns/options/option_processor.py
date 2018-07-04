@@ -1,6 +1,6 @@
 import surface_crns.readers as readers
 from surface_crns.constants import *
-from surface_crns.models.grids import SquareGrid
+from surface_crns.models.grids import SquareGrid, HexGrid
 from surface_crns import random_color as rcolor
 import numpy as np
 import random
@@ -22,8 +22,9 @@ class SurfaceCRNOptionParser:
             self.update_rule = self.process_update_rule(options)
         elif self.simulation_type == 'asynchronous':
             self.transition_rules = self.process_transition_rules(options)
-        self.init_state = self.process_init_state(options)
+        self.surface_geometry = self.process_surface_geometry(options)
         self.pixels_per_node = self.process_pixels_per_node(options)
+        self.wrap_grid = self.process_wrap_grid(options)
         self.grid_type = self.process_grid_type(options)
         if self.grid_type == 'parallel_emulated' or \
            self.grid_type == 'overlayed_emulated':
@@ -35,10 +36,12 @@ class SurfaceCRNOptionParser:
            self.representative_cell_x = self.process_representative_cell_x(options)
            self.representative_cell_y = self.process_representative_cell_y(options)
         self.capture_directory = self.process_capture_directory(options)
+        self.init_state = self.process_init_state(options)
+
 
     def process_movie_title(self, options):
         if 'movie_title' in options:
-            movie_title = options['movie_title']
+            movie_title = options['movie_title'].lower()
         else:
             movie_title = None
         self.saving_movie = (movie_title != None)
@@ -165,7 +168,15 @@ class SurfaceCRNOptionParser:
                 for line in init_state:
                     for node_state in line:
                         self.update_colormap(str(node_state))
-            self.grid = SquareGrid(init_state.shape[0], init_state.shape[1])
+            if self.surface_geometry == "square":
+                self.grid = SquareGrid(init_state.shape[0], init_state.shape[1],
+                                       wrap = self.wrap_grid)
+            elif self.surface_geometry == "hex":
+                self.grid = HexGrid(init_state.shape[0], init_state.shape[1],
+                                    wrap = self.wrap_grid)
+            else:
+                raise Exception("Surface geometry must be set before " + \
+                                "processing initial state.")
             self.grid.set_global_state(init_state)
             return init_state
         else:
@@ -177,6 +188,18 @@ class SurfaceCRNOptionParser:
         else:
             pixels_per_node = 5
         return pixels_per_node
+
+    def process_wrap_grid(self, options):
+        if 'wrap' not in options:
+            wrap = False
+        elif options['wrap'].lower() in ['true', 'yes']:
+            wrap = True
+        elif options['wrap'].lower() in ['false', 'no']:
+            wrap = False
+        else:
+            raise Exception("Unrecognized option for wrap '" + \
+                            str(options['wrap']) + "'.")
+        return wrap
 
     def process_grid_type(self, options):
         if not 'grid_type' in options:
@@ -239,6 +262,19 @@ class SurfaceCRNOptionParser:
         else:
             capture_directory = './'
         return capture_directory
+
+    def process_surface_geometry(self, options):
+        if 'geometry' in options:
+            opt_str = options['geometry'].lower()
+            if opt_str in ['hex', 'hexagonal', 'hexagons', 'honeycomb']:
+                geom = "hex"
+            elif opt_str in ['square', 'box', 'grid']:
+                geom = "square"
+            else:
+                raise Exception("Unrecognized surface geometry '%s'" % opt_str)
+        else:
+            geom = "square"
+        return geom
 
     def update_colormap(self, state):
         if not state in self.COLORMAP.keys():

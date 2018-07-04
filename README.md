@@ -16,7 +16,9 @@ Prerequisites
 =============
 The GUI simulator requires pygame.
 
-This package is for Python 2 only. It does not support Python 3.
+This simulator should work in Python 2 and 3, though it is primarily tested in 3.
+
+There is a known problem with Pygame mouse click registration on OSX with certain installations of Python. In Python 3, if you use virtualenv or a Conda installation of Python, Pygame will only register mouse movement when the mouse button is held down. You can fix this by turning off virtualenv or (if you use Conda) by using pythonw instead of python to run your simulations. If, for whatever reason, you cannot do either of these things, make sure to move your mouse *during* each click, ending the click on whatever button you want to press.
 
 Installation
 ============
@@ -48,5 +50,5 @@ To use the simulator directly, yourself, <FINISH INSTRUCTIONS>
 Acknowledgements
 ================
 
-This package uses the pygbutton package by Al Sweigart (https://github.com/asweigart/pygbutton) as well as the random_color function made by adews (https://gist.github.com/adewes/5884820.). Thanks to both authors!
+This package uses the pygbutton package by Al Sweigart (https://github.com/asweigart/pygbutton), as well as the random_color function made by adews (https://gist.github.com/adewes/5884820.). Thanks to both authors!
 

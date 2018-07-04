@@ -142,11 +142,8 @@ class PygButton(object):
             self.mouseOverButton = False
             hasExited = True # call mouseExit() later, since we want mouseMove() to be handled before mouseExit()
 
-        print("button_rect: " + str(self._rect))
-        print("pygame.mouse.get_pos(): " + str(pygame.mouse.get_pos()))
-        # if self._rect.collidepoint(eventObj.pos):
-        if self._rect.collidepoint(pygame.mouse.get_pos()):
-            print("Collided")
+        if self._rect.collidepoint(eventObj.pos):
+        #if self._rect.collidepoint(pygame.mouse.get_pos()):
             # if mouse event happened over the button:
             if eventObj.type == MOUSEMOTION:
                 self.mouseMove(eventObj)
@@ -157,7 +154,6 @@ class PygButton(object):
                 self.mouseDown(eventObj)
                 retVal.append('down')
         else:
-            print("Didn't collide")
             if eventObj.type in (MOUSEBUTTONUP, MOUSEBUTTONDOWN):
                 # if an up/down happens off the button, then the next up won't cause mouseClick()
                 self.lastMouseDownOverButton = False

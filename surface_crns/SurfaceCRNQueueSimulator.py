@@ -11,9 +11,9 @@ like algorithm for computing next reactions with a priority queue.
 from __future__ import print_function
 import surface_crns.readers as readers
 from surface_crns.options.option_processor import SurfaceCRNOptionParser
-from surface_crns.models.grids import SquareGrid
+from surface_crns.models.grids import SquareGrid, HexGrid
 from surface_crns.views.time_display import TimeDisplay
-from surface_crns.views.grid_display import SquareGridDisplay
+from surface_crns.views.grid_display import SquareGridDisplay, HexGridDisplay
 from surface_crns.views.legend_display import LegendDisplay
 from surface_crns.simulators.queue_simulator import QueueSimulator
 from surface_crns.simulators.synchronous_simulator import SynchronousSimulator
@@ -61,9 +61,22 @@ def main():
     if not manifest_filename:
         raise Exception("Manifest file required (use the flag -m <filename>, " +
                         "where <filename> is the name of your manifest file)")
-    simulate_from_manifest(manifest_filename)
+    simulate_surface_crn(manifest_filename)
 
-def simulate_from_manifest(manifest_filename):
+def simulate_surface_crn(manifest_filename, display_class = None,
+                         init_state = None):
+    '''
+    Runs a simulation, and displays it in a GUI window.
+
+    Normal operation is to read all options from a manifest file, given by
+    manifest_filename. If you want to use a custom surface geometry (anything
+    other than a square or hex grid), you'll need to supply your own initial
+    state (whatever your display object will use, but must be an iterable and
+    contain surface_crns.base.Node objects) and a class that can display your
+    state (should subclass surface_crns.views.grid_display.SurfaceDisplay),
+    which you should pass as "init_state" and "DisplayClass", respectively.
+    '''
+
     ################################
     # READ MANIFEST AND INITIALIZE #
     ################################
@@ -78,7 +91,10 @@ def simulate_from_manifest(manifest_filename):
 
 
     # Initialize simulation
-    grid = opts.grid
+    if init_state:
+        grid = init_state
+    else:
+        grid = opts.grid
     if opts.simulation_type == "asynchronous":
         simulation = QueueSimulator(surface = grid,
                                     transition_rules = opts.transition_rules,
@@ -97,14 +113,7 @@ def simulate_from_manifest(manifest_filename):
     ################
     # PYGAME SETUP #
     ################
-    if opts.grid_type == "standard":
-        grid_display = SquareGridDisplay(grid = grid,
-                                         colormap = opts.COLORMAP,
-                                         min_x = MIN_WIDTH,
-                                         min_y = 0,
-                                         pixels_per_node = opts.pixels_per_node,
-                                         display_text = opts.display_text)
-    elif opts.grid_type == 'parallel_emulated':
+    if opts.grid_type == 'parallel_emulated':
         from surface_crns.views.grid_display \
                 import ParallelEmulatedSquareGridDisplay
         grid_display = ParallelEmulatedSquareGridDisplay(grid = grid,
@@ -120,6 +129,19 @@ def simulate_from_manifest(manifest_filename):
                             min_y = 0,
                             pixels_per_node = opts.pixels_per_node,
                             display_text = opts.display_text)
+    elif opts.grid_type == 'standard':
+        if display_class:
+            DisplayClass = display_class
+        elif opts.grid_type == "standard" and opts.surface_geometry == "square":
+            DisplayClass = SquareGridDisplay
+        elif opts.grid_type == "standard" and opts.surface_geometry == "hex":
+            DisplayClass = HexGridDisplay
+        grid_display = DisplayClass(grid = grid,
+                                    colormap = opts.COLORMAP,
+                                    min_x = MIN_WIDTH,
+                                    min_y = 0,
+                                    pixels_per_node = opts.pixels_per_node,
+                                    display_text = opts.display_text)
     else:
         raise Exception("Unrecognized grid type '" + opts.grid_type + "'")
 
@@ -203,12 +225,25 @@ def simulate_from_manifest(manifest_filename):
                 running = not running
                 if running:
                     startstop_button.caption = 'Pause'
+                    # Display the effects of the last reaction, if applicable:
+                    if next_reaction:
+                        display_next_event(next_reaction, grid_display)
+                        pygame.display.update()
+
                 else:
                     startstop_button.caption = 'Run'
                 startstop_button.draw(display_surface)
             if 'click' in step_button.handleEvent(event):
+                # Disable while running.
+                if running:
+                    continue
                 # Process a single reaction
-                next_reaction = simulation.process_next_reaction()
+                print("State before update: " + str(grid))
+                if not next_reaction:
+                    next_reaction = simulation.process_next_reaction()
+                print("Reaction: " + str(next_reaction))
+                for i in range(len(next_reaction.participants)):
+                    print("\tInput " + str(i) + ": " + str(next_reaction.participants[i].position))
                 if simulation.done():
                     break
                 next_reaction_time = next_reaction.time
@@ -218,6 +253,9 @@ def simulate_from_manifest(manifest_filename):
                     time_display.time = time
                     time_display.render(display_surface, x_pos = 0, y_pos = 0)
                 pygame.display.update()
+                next_reaction = None
+
+                print("State after update: " + str(grid))
             if event.type == QUIT:
                 if opts.saving_movie:
                     movie_file.close()
@@ -259,7 +297,8 @@ def simulate_from_manifest(manifest_filename):
             if next_reaction:
                 display_next_event(next_reaction, grid_display)
             next_reaction = simulation.process_next_reaction()
-            next_reaction_time = next_reaction.time
+            next_reaction_time = next_reaction.time if next_reaction \
+                                                    else opts.max_duration + 1
 
         # Render updates and make the next clock tick.
         pygame.display.update()

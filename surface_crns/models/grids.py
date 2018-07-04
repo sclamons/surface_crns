@@ -5,12 +5,19 @@ from warnings import *
 class SquareGrid(object):
     '''
     Representation of a CRN on a 2D finite rectangular mesh grid.
+
+    Params:
+        x_size, y_size: The number of cells in the x and y dimensions,
+                        respectively.
+        wrap: Iff true, the grid will wrap top to bottom and left to right.
+                Default false.
     '''
-    def __init__(self, x_size, y_size):
+    def __init__(self, x_size, y_size, wrap = False):
         if not isinstance(x_size, int) or not isinstance(y_size, int):
             raise TypeException("SimGrid dimensions must be integers")
         self.x_size = x_size
         self.y_size = y_size
+        self.wrap   = wrap
         self.grid   = np.empty([x_size, y_size], np.dtype(object))
         self.grid   = np.array(self.grid)
         # Instantiate nodes
@@ -33,6 +40,16 @@ class SquareGrid(object):
                     ny = y + dy
                     if nx >= 0 and nx < self.x_size and \
                         ny >= 0 and ny < self.y_size:
+                        self.grid[x,y].neighbors.append(self.grid[nx, ny])
+                    elif self.wrap:
+                        if nx < 0:
+                            nx = self.x_size-1
+                        elif nx >= self.x_size:
+                            nx = 0
+                        if ny < 0:
+                            ny = self.y_size-1
+                        elif ny >= self.y_size:
+                            ny = 0
                         self.grid[x,y].neighbors.append(self.grid[nx, ny])
 
     def clear_timestamps(self):
@@ -114,3 +131,57 @@ class SquareGridIterator:
 
     def next(self):
         return self.__next__()
+
+class HexGrid(SquareGrid):
+    '''
+    Representation of a CRN on a 2D hex mesh grid, aligned with hex cell sides
+    vertical, and with odd-numbered rows offset to the left and even-numbered
+    rows offset to the right.
+
+    Mostly identical to a SquareGrid, except with a different connectivity map.
+    Because of this, the overall grid must be "rectangular" -- that is, every
+    row must have the same number of cells.
+    '''
+    def __init__(self, x_size, y_size, wrap = False):
+        if wrap and y_size%2 == 1:
+            raise ValueError("Can't make a wrapping hex grid with an odd " + \
+                            "number of rows. It just doesn't work out.")
+        super(HexGrid, self).__init__(x_size, y_size, wrap = wrap)
+
+    def populate_grid(self):
+        '''
+        Set/reset all nodes to new nodes with no state and populate neighbor
+        nodes. Should only be used by initialization and set routines.
+        '''
+        for x in range(self.x_size):
+            for y in range(self.y_size):
+                self.grid[x,y] = Node()
+                self.grid[x,y].position = (x,y)
+        # Populate node neighbor lists
+        for x in range(self.x_size):
+            for y in range(self.y_size):
+                relative_idxs = [(0, -1), (0,1), (-1, 0), (1, 0)]
+                if y%2 == 1:
+                    relative_idxs.append((1, -1))
+                    relative_idxs.append((1, 1))
+                else:
+                    relative_idxs.append((-1, -1))
+                    relative_idxs.append((-1, 1))
+                for dx, dy in relative_idxs:
+                    nx = x + dx
+                    ny = y + dy
+                    if nx >= 0 and nx < self.x_size and \
+                        ny >= 0 and ny < self.y_size:
+                        self.grid[x,y].neighbors.append(self.grid[nx, ny])
+                    elif self.wrap:
+                        if nx < 0:
+                            nx = self.x_size-1
+                        if nx >= self.x_size:
+                            nx = 0
+                        if ny < 0:
+                            ny = self.y_size-1
+                        if ny >= self.y_size:
+                            ny = 0
+                        self.grid[x,y].neighbors.append(self.grid[nx, ny])
+
+
