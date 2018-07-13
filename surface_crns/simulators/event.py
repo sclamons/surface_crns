@@ -1,9 +1,10 @@
 class Event:
     def __init__(self, **kwargs):
-        self.time = kwargs['time']
+        self.time = kwargs['time'] # Time that the reaction occurred.
         self.rule = kwargs['rule']
         self.participants  = kwargs['participants']
-        self.time_issued   = kwargs['time_issued']
+        self.time_issued   = kwargs['time_issued'] # Time when the simulator
+                                                   # planned this event.
 
     def __str__(self):
         ret_str = "Event{"

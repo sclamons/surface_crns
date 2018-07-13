@@ -168,12 +168,8 @@ class SquareGridDisplay(object):
         self.display_surface = parent_surface.subsurface(
                         (x_pos, y_pos, self.display_width, self.display_height))
         # Initial render
-        for x in range(self.grid.x_size):
-            for y in range(self.grid.y_size):
-                self.update_node_at_position(x, y)
-
-    def update_node_at_position(self, x, y):
-        self.update_node(self.grid.getnode(x,y))
+        for node in self.grid:
+            self.update_node(node)
 
     def update_node(self, node):
         '''
@@ -320,12 +316,8 @@ class HexGridDisplay(object):
         self.display_surface = parent_surface.subsurface(
                         (x_pos, y_pos, self.display_width, self.display_height))
         # Initial render
-        for x in range(self.grid.x_size):
-            for y in range(self.grid.y_size):
-                self.update_node_at_position(x, y)
-
-    def update_node_at_position(self, x, y):
-        self.update_node(self.grid.getnode(x,y))
+        for node in self.grid:
+            self.update_node(node)
 
     def update_node(self, node):
         '''

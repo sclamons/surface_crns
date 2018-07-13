@@ -180,7 +180,7 @@ class SurfaceCRNOptionParser:
             self.grid.set_global_state(init_state)
             return init_state
         else:
-            raise Exception("Initial grid state required.")
+            return None
 
     def process_pixels_per_node(self, options):
         if 'pixels_per_node' in options:

@@ -94,6 +94,8 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     if init_state:
         grid = init_state
     else:
+        if opts.grid is None:
+            raise Exception("Initial grid state required.")
         grid = opts.grid
     if opts.simulation_type == "asynchronous":
         simulation = QueueSimulator(surface = grid,
@@ -154,19 +156,22 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     time_display  = TimeDisplay(display_width)
     button_width  = 60
     button_height = 30
-    button_y      = time_display.display_height + \
-            max(legend_display.display_height, grid_display.display_height) + 1
+    button_y      = time_display.display_height + grid_display.display_height+1
+            # max(legend_display.display_height, grid_display.display_height) + 1
     button_buffer = 5
+    #(int(display_width/2) - (button_width + button_buffer), button_y,
     startstop_button  = PygButton(rect =
-        (int(display_width/2) - (button_width + button_buffer), button_y,
+         (legend_display.display_width + button_buffer, button_y,
          button_width, button_height),
                               caption = 'Run')
     step_button  = PygButton(rect =
-        (int(display_width/2) + button_width + button_buffer, button_y,
+        (legend_display.display_width + 3*button_buffer + button_width, button_y,
          button_width, button_height),
                              caption = 'Step')
 
-    display_height = button_y + button_height + 2*button_buffer
+    display_height = max(legend_display.display_height + \
+                2*legend_display.VERTICAL_BUFFER + time_display.display_height,
+                         button_y + button_height + 2*button_buffer)
 
     if opts.debug:
         print("Initializing display of size " + str(display_width) + ", " +
@@ -183,7 +188,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     #opts_menu.update()
 
     time_display.render(display_surface, x_pos = 0,
-                                         y_pos = 0)#opts_menu.display_height)
+                                         y_pos = 0)
     legend_display.render(display_surface, x_pos = 0,
                                           y_pos = time_display.y_pos +
                                                   time_display.display_height)
@@ -238,12 +243,8 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                 if running:
                     continue
                 # Process a single reaction
-                print("State before update: " + str(grid))
                 if not next_reaction:
                     next_reaction = simulation.process_next_reaction()
-                print("Reaction: " + str(next_reaction))
-                for i in range(len(next_reaction.participants)):
-                    print("\tInput " + str(i) + ": " + str(next_reaction.participants[i].position))
                 if simulation.done():
                     break
                 next_reaction_time = next_reaction.time
