@@ -1,0 +1,49 @@
+# Run settings
+pixels_per_node    = 25
+speedup_factor     = 50
+debug              = True
+rng_seed           = 123123123
+max_duration       = 300
+fps                = 60
+node_display       = text
+geometry           = square
+wrap               = true
+
+!START_TRANSITION_RULES
+(1) Gas + Empty -> Empty + Gas
+!END_TRANSITION_RULES
+
+# Initial state
+!START_INIT_STATE
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B S B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+!END_INIT_STATE
+
+# Colormap
+!START_COLORMAP
+Gas: (100,100,100)
+Empty: (255, 255, 255)
+!END_COLORMAP
