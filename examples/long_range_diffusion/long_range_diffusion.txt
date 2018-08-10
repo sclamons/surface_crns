@@ -15,31 +15,42 @@ wrap               = true
 
 # Initial state
 !START_INIT_STATE
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B S B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B B
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Gas Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
+Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty
 !END_INIT_STATE
 
 # Colormap

@@ -16,11 +16,7 @@ class Node:
             neighbors = []
         self.state = state
         if not isinstance(neighbors, list):
-            if isinstance(neighbors, tuple):
-                self.neighbors = [neighbors]
-            else:
-                self.neighbors = [(neighbors, 1)]
-
+            raise TypeError("Neighbors must be a list.")
         else:
             def weighted_neighbor(neighbor):
                 if isinstance(neighbor, tuple) and len(neighbor == 2):
