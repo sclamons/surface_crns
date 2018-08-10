@@ -27,7 +27,7 @@ class Node:
                     return neighbor
                 else:
                     return (neighbor, 1)
-            self.neighbors = list(map(neighbors, weighted_neighbor))
+            self.neighbors = list(map(weighted_neighbor, neighbors))
         self.timestamp = timestamp
         if position == None:
             position = ()
