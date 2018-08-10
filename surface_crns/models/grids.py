@@ -151,9 +151,10 @@ class SquareGridWithCornerLeak(SquareGrid):
         wrap: Iff true, connects the left and right edges together and the top
                 and bottom edges together. Default False.
         '''
+        self.corner_rate = corner_rate
         super(SquareGridWithCornerLeak, self).__init__(x_size, y_size,
                                                        wrap=wrap)
-        self.corner_rate = corner_rate
+
 
     def populate_grid(self):
         '''
