@@ -6,6 +6,9 @@ class SquareGrid(object):
     '''
     Representation of a CRN on a 2D finite rectangular mesh grid.
 
+    Only allows reactions between directly-adjacent locations, and every
+    edge has equal weight.
+
     Params:
         x_size, y_size: The number of cells in the x and y dimensions,
                         respectively.
@@ -14,7 +17,7 @@ class SquareGrid(object):
     '''
     def __init__(self, x_size, y_size, wrap = False):
         if not isinstance(x_size, int) or not isinstance(y_size, int):
-            raise TypeException("SimGrid dimensions must be integers")
+            raise TypeError("SimGrid dimensions must be integers")
         self.x_size = x_size
         self.y_size = y_size
         self.wrap   = wrap
@@ -131,6 +134,57 @@ class SquareGridIterator:
 
     def next(self):
         return self.__next__()
+
+
+class SquareGridWithCornerLeak(SquareGrid):
+    '''
+    A square grid, but where reactions can also happen along corners at some
+    (usually small) rate relative to the usual reaction rate.
+    '''
+    def __init__(self, x_size, y_size, corner_rate, wrap = False):
+        '''
+        x_size: The number of nodes from left to right.
+        y_size: The number of nodes from top to bottom.
+        corner_rate: The speed of reactions along corner connections, as a
+                        fraction of the rate of reactions along full edge
+                        connections.
+        wrap: Iff true, connects the left and right edges together and the top
+                and bottom edges together. Default False.
+        '''
+        super(SquareGridWithCornerLeak, self).__init__(x_size, y_size,
+                                                       wrap=wrap)
+        self.corner_rate = corner_rate
+
+    def populate_grid(self):
+        '''
+        Set/reset all nodes to new nodes with no state and populate neighbor
+        nodes. Should only be used by initialization and set routines.
+        '''
+        # Do all the usual connecting...
+        super(SquareGridWithCornerLeak, self).populate_grid()
+
+        # ...then add corner connections.
+        for x in range(self.x_size):
+            for y in range(self.y_size):
+                for dx, dy in [(-1,-1), (1,-1), (1,1), (-1,1)]:
+                    nx = x + dx
+                    ny = y + dy
+                    if nx >= 0 and nx < self.x_size and \
+                        ny >= 0 and ny < self.y_size:
+                        neighbor_tuple = (self.grid[nx, ny], self.corner_rate)
+                        self.grid[x,y].neighbors.append(neighbor_tuple)
+                    elif self.wrap:
+                        if nx < 0:
+                            nx = self.x_size-1
+                        elif nx >= self.x_size:
+                            nx = 0
+                        if ny < 0:
+                            ny = self.y_size-1
+                        elif ny >= self.y_size:
+                            ny = 0
+                        neighbor_tuple = (self.grid[nx, ny], self.corner_rate)
+                        self.grid[x,y].neighbors.append(neighbor_tuple)
+
 
 class HexGrid(SquareGrid):
     '''

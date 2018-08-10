@@ -46,7 +46,7 @@ class SynchronousSimulator:
         '''
         changed_nodes = []
         for node in self.surface:
-            neighbor_states = list(map(lambda n:n.state, node.neighbors))
+            neighbor_states = list(map(lambda tup:tup[0].state, node.neighbors))
             new_state = self.update_rule(neighbor_states, node.state)
             if node.state != new_state:
                 changed_nodes.append(node)

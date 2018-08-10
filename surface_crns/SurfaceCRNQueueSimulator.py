@@ -89,7 +89,6 @@ def simulate_surface_crn(manifest_filename, display_class = None,
 
     print(" Done.")
 
-
     # Initialize simulation
     if init_state:
         grid = init_state

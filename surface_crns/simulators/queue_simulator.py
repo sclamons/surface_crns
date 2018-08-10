@@ -206,7 +206,7 @@ class QueueSimulator:
                 if local_debugging:
                     print("First node has index " + str(node_index))
 
-                for neighbor_node in node.neighbors:
+                for neighbor_node, weight in node.neighbors:
                     if local_debugging:
                         print("\tChecking neighbor node with state " + \
                                 neighbor_node.state)
@@ -229,7 +229,8 @@ class QueueSimulator:
                     else:
                         num_reactions = 1
                     for x in range(num_reactions):
-                        time_to_reaction = np.log(1.0/random.random())/rule.rate
+                        rate = rule.rate * weight
+                        time_to_reaction = np.log(1.0/random.random())/rate
                         if math.isinf(time_to_reaction):
                             continue
                         event_time       = self.time + time_to_reaction

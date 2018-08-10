@@ -1,7 +1,12 @@
 class Node:
     '''
-    Represents a spatial location. Has a chemical state represented by a 
+    Represents a spatial location. Has a chemical state represented by a
     string, a list of neighbors, and a timestamp of the last update.
+
+    self.neighbors is a list of 2-tuples, where the first element of each
+    tuple is a neighboring node and the second element of each tuple is the
+    weight of the edge connecting the two (defaults to 1, if no weight is
+    given).
     '''
     def __init__(self, state = None, neighbors = None, timestamp = 0,\
                  position = None):
@@ -11,9 +16,18 @@ class Node:
             neighbors = []
         self.state = state
         if not isinstance(neighbors, list):
-            self.neighbors = [neighbors]
+            if isinstance(neighbors, tuple):
+                self.neighbors = [neighbors]
+            else:
+                self.neighbors = [(neighbors, 1)]
+
         else:
-            self.neighbors = neighbors
+            def weighted_neighbor(neighbor):
+                if isinstance(neighbor, tuple) and len(neighbor == 2):
+                    return neighbor
+                else:
+                    return (neighbor, 1)
+            self.neighbors = list(map(neighbors, weighted_neighbor))
         self.timestamp = timestamp
         if position == None:
             position = ()

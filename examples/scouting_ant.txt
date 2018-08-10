@@ -39,3 +39,11 @@ O O O O O O O O O O O O O
 O O O O O O O O O O O O O
 O O O O O O A O O O O O O
 !END_INIT_STATE
+
+!START_COLORMAP
+{Empty} O: (240, 240, 240)
+{Ant} A: (175, 175, 255)
+{Ant with Food} H: (1, 100, 255)
+{Food} F: (140,81, 10)
+{Path} P: (200, 0, 0)
+!END_COLORMAP
