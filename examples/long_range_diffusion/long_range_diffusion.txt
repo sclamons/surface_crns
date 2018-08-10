@@ -1,11 +1,11 @@
 # Run settings
-pixels_per_node    = 25
+pixels_per_node    = 10
 speedup_factor     = 50
 debug              = True
 rng_seed           = 123123123
 max_duration       = 300
 fps                = 60
-node_display       = text
+node_display       = color
 geometry           = square
 wrap               = true
 
@@ -55,6 +55,6 @@ Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Empty Em
 
 # Colormap
 !START_COLORMAP
-Gas: (100,100,100)
-Empty: (255, 255, 255)
+Gas: (255,0,0)
+Empty: (0, 0, 255)
 !END_COLORMAP

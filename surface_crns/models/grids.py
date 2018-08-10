@@ -43,7 +43,7 @@ class SquareGrid(object):
                     ny = y + dy
                     if nx >= 0 and nx < self.x_size and \
                         ny >= 0 and ny < self.y_size:
-                        self.grid[x,y].neighbors.append(self.grid[nx, ny])
+                        self.grid[x,y].neighbors.append((self.grid[nx, ny], 1))
                     elif self.wrap:
                         if nx < 0:
                             nx = self.x_size-1
@@ -53,7 +53,7 @@ class SquareGrid(object):
                             ny = self.y_size-1
                         elif ny >= self.y_size:
                             ny = 0
-                        self.grid[x,y].neighbors.append(self.grid[nx, ny])
+                        self.grid[x,y].neighbors.append((self.grid[nx, ny], 1))
 
     def clear_timestamps(self):
         '''

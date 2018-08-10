@@ -11,20 +11,21 @@ class Node:
     def __init__(self, state = None, neighbors = None, timestamp = 0,\
                  position = None):
         if state == None:
-            state = ""
+            self.state = ""
         else:
             self.state = state
         if neighbors == None:
-            neighbors = []
-        elif not isinstance(neighbors, list):
-            raise TypeError("Neighbors must be a list.")
-        else:
+            self.neighbors = []
+        elif isinstance(neighbors, list):
             def weighted_neighbor(neighbor):
                 if isinstance(neighbor, tuple) and len(neighbor == 2):
                     return neighbor
                 else:
                     return (neighbor, 1)
             self.neighbors = list(map(weighted_neighbor, neighbors))
+        else:
+            raise TypeError("Neighbors must be a list.")
+
         self.timestamp = timestamp
         if position == None:
             position = ()
@@ -35,9 +36,9 @@ class Node:
             str(self.timestamp) + ")"
         if len(self.neighbors) > 0:
             str_rep += "; neighbor states: "
-            str_rep += self.neighbors[0].state
+            str_rep += self.neighbors[0][0].state
             for i in range(1, len(self.neighbors)):
-                str_rep += ", " + self.neighbors[i].state
+                str_rep += ", " + self.neighbors[i][0].state
         else:
             str_rep += "; No neighbors"
         if self.position != ():
