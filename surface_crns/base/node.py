@@ -12,10 +12,11 @@ class Node:
                  position = None):
         if state == None:
             state = ""
+        else:
+            self.state = state
         if neighbors == None:
             neighbors = []
-        self.state = state
-        if not isinstance(neighbors, list):
+        elif not isinstance(neighbors, list):
             raise TypeError("Neighbors must be a list.")
         else:
             def weighted_neighbor(neighbor):
