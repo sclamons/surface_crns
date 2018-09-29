@@ -206,7 +206,6 @@ class QueueSimulator:
                 if local_debugging:
                     print("First node has index " + str(node_index))
 
-                print("Node is: " + str(node))
                 for neighbor_node, weight in node.neighbors:
                     if local_debugging:
                         print("\tChecking neighbor node with state " + \

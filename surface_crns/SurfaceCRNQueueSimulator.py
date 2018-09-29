@@ -254,8 +254,6 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                     time_display.render(display_surface, x_pos = 0, y_pos = 0)
                 pygame.display.update()
                 next_reaction = None
-
-                print("State after update: " + str(grid))
             if event.type == QUIT:
                 if opts.saving_movie:
                     movie_file.close()

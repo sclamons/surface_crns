@@ -26,7 +26,7 @@ node_display       = Color
 {Y team goal} GY: (70,140,20)
 {X wins goal} WX: (255,140,40)
 {Y wins goal} WY: (140,255,40)
-{ball} B: (255,255,0)
+{ball} B: (0, 0,0)
 {X} X: (128,0,0)
 {X w/ ball} XB: (255,0,0)
 {Y} Y: (0,128,0)
