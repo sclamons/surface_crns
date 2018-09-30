@@ -17,6 +17,9 @@ from surface_crns.views.grid_display import SquareGridDisplay, HexGridDisplay
 from surface_crns.views.legend_display import LegendDisplay
 from surface_crns.simulators.queue_simulator import QueueSimulator
 from surface_crns.simulators.synchronous_simulator import SynchronousSimulator
+from surface_crns.simulators.event_history import EventHistory
+from surface_crns.simulators.event import Event
+from surface_crns.base.transition_rule import TransitionRule
 
 from surface_crns.pygbutton import *
 import numpy as np
@@ -41,7 +44,10 @@ time_font = pygame.font.SysFont('monospace', 24)
 TEXT_X_BUFFER  = 10
 TEXT_Y_BUFFER  = 5
 TEXT_HEIGHT    = time_font.get_linesize() + 2 * TEXT_Y_BUFFER
-MIN_WIDTH      = 125
+button_width   = 60
+button_height  = 30
+button_buffer  = 5
+MIN_GRID_WIDTH = 6 * button_width + 10 * button_buffer
 
 #############
 # VARIABLES #
@@ -110,6 +116,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     else:
         raise Exception('Unknown simulation type "' + opts.simulation_type+'".')
     time = simulation.time
+    event_history = EventHistory()
 
     ################
     # PYGAME SETUP #
@@ -126,7 +133,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                             cell_width = opts.cell_width,
                             representative_cell_x = opts.representative_cell_x,
                             representative_cell_y = opts.representative_cell_y,
-                            min_x = MIN_WIDTH,
+                            min_x = MIN_GRID_WIDTH,
                             min_y = 0,
                             pixels_per_node = opts.pixels_per_node,
                             display_text = opts.display_text)
@@ -139,7 +146,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
             DisplayClass = HexGridDisplay
         grid_display = DisplayClass(grid = grid,
                                     colormap = opts.COLORMAP,
-                                    min_x = MIN_WIDTH,
+                                    min_x = MIN_GRID_WIDTH,
                                     min_y = 0,
                                     pixels_per_node = opts.pixels_per_node,
                                     display_text = opts.display_text)
@@ -153,20 +160,34 @@ def simulate_surface_crn(manifest_filename, display_class = None,
 
     # Width used to calculate time label and button placements
     time_display  = TimeDisplay(display_width)
-    button_width  = 60
-    button_height = 30
+
     button_y      = time_display.display_height + grid_display.display_height+1
             # max(legend_display.display_height, grid_display.display_height) + 1
-    button_buffer = 5
     #(int(display_width/2) - (button_width + button_buffer), button_y,
-    startstop_button  = PygButton(rect =
+    play_back_button  = PygButton(rect =
          (legend_display.display_width + button_buffer, button_y,
          button_width, button_height),
-                              caption = 'Run')
-    step_button  = PygButton(rect =
-        (legend_display.display_width + 3*button_buffer + button_width, button_y,
+                             caption = '<<')
+    step_back_button  = PygButton(rect =
+         (play_back_button.rect.right + button_buffer, button_y,
          button_width, button_height),
-                             caption = 'Step')
+                             caption = '< (1)')
+    pause_button  = PygButton(rect =
+         (step_back_button.rect.right + button_buffer, button_y,
+         button_width, button_height),
+                              caption = 'Pause')
+    step_button  = PygButton(rect =
+        (pause_button.rect.right + button_buffer, button_y,
+         button_width, button_height),
+                             caption = '(1) >')
+    play_button  = PygButton(rect =
+        (step_button.rect.right + button_buffer, button_y,
+         button_width, button_height),
+                             caption = '>>')
+    clip_button = PygButton(rect =
+        (play_button.rect.right + 4*button_buffer, button_y,
+         button_width * 1.1, button_height),
+                            caption = 'Uncache')
 
     display_height = max(legend_display.display_height + \
                 2*legend_display.VERTICAL_BUFFER + time_display.display_height,
@@ -194,8 +215,12 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     grid_display.render(display_surface, x_pos = legend_display.display_width,
                                          y_pos = time_display.y_pos +
                                                  time_display.display_height)
-    startstop_button.draw(display_surface)
+    play_back_button.draw(display_surface)
+    step_back_button.draw(display_surface)
+    pause_button.draw(display_surface)
     step_button.draw(display_surface)
+    play_button.draw(display_surface)
+    clip_button.draw(display_surface)
     pygame.display.update()
 
     # Prepare movie capture
@@ -219,113 +244,164 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     # State variables for simulation
     next_reaction_time = 0
     next_reaction = None
+    prev_reaction = None
     running = False
+    first_frame = True
+    last_frame  = False
 
     # Iterate through events
-    while not simulation.done() and time <= opts.max_duration:
+    while True:
         # Check for interface events
         for event in pygame.event.get():
-            if 'click' in startstop_button.handleEvent(event):
-                running = not running
-                if running:
-                    startstop_button.caption = 'Pause'
-                    # Display the effects of the last reaction, if applicable:
-                    if next_reaction:
-                        display_next_event(next_reaction, grid_display)
-                        pygame.display.update()
-
+            if 'click' in play_back_button.handleEvent(event):
+                running = True
+                running_backward = True
+                last_frame = False
+            if 'click' in step_back_button.handleEvent(event):
+                running = False
+                last_frame = False
+                if event_history.at_beginning():
+                    time = 0
+                    time_display.time = 0
+                    time_display.render(display_surface, x_pos = 0, y_pos = 0)
+                    pygame.display.update()
                 else:
-                    startstop_button.caption = 'Run'
-                startstop_button.draw(display_surface)
-            if 'click' in step_button.handleEvent(event):
-                # Disable while running.
-                if running:
-                    continue
-                # Process a single reaction
-                if not next_reaction:
-                    next_reaction = simulation.process_next_reaction()
-                if simulation.done():
-                    break
-                next_reaction_time = next_reaction.time
-                display_next_event(next_reaction, grid_display)
-                if next_reaction_time >= 0:
-                    time = next_reaction_time
+                    prev_reaction = event_history.previous_event()
+                    event_history.increment_event(-1)
+                    prev_reaction_rule = prev_reaction.rule
+                    for i in range(len(prev_reaction.participants)):
+                        cell = prev_reaction.participants[i]
+                        state = prev_reaction_rule.inputs[i]
+                        cell.state = state
+                    display_next_event(prev_reaction, grid_display)
+                    if event_history.at_beginning():
+                        time = 0
+                    else:
+                        # Note that this is NOT the same as the time from the
+                        # "previous event" that we're currently processing --
+                        # it's actually the time of the event *before* the one
+                        # we just undid.
+                        time = event_history.previous_event().time
                     time_display.time = time
                     time_display.render(display_surface, x_pos = 0, y_pos = 0)
+                    pygame.display.update()
+            if 'click' in pause_button.handleEvent(event):
+                running = False
+            if 'click' in step_button.handleEvent(event):
+                running = False
+                first_frame = False
+                # Process a single reaction
+                reading_history = False
+                if not event_history.at_end():
+                    reading_history = True
+                    next_reaction = event_history.next_event()
+                    event_history.increment_event(1)
+                    next_reaction_rule = next_reaction.rule
+                    for i in range(len(next_reaction.participants)):
+                        cell = next_reaction.participants[i]
+                        state = next_reaction_rule.outputs[i]
+                        cell.state = state
+                if not next_reaction:
+                    next_reaction = simulation.process_next_reaction()
+                    if not reading_history:
+                        event_history.add_event(next_reaction)
+                        event_history.increment_event(1)
+                next_reaction_time = next_reaction.time
+                display_next_event(next_reaction, grid_display)
+                time = next_reaction_time
+                time_display.time = time
+                time_display.render(display_surface, x_pos = 0, y_pos = 0)
                 pygame.display.update()
                 next_reaction = None
-
-                print("State after update: " + str(grid))
+                if opts.debug:
+                    print("State after update: " + str(grid))
+            if 'click' in play_button.handleEvent(event):
+                running = True
+                running_backward = False
+                first_frame = False
+            if 'click' in clip_button.handleEvent(event):
+                event_history.clip()
+                simulation.time = time
+                simulation.reset()
+                for rxn in list(simulation.event_queue.queue):
+                    print(rxn)
             if event.type == QUIT:
                 if opts.saving_movie:
                     movie_file.close()
                 cleanup_and_exit(simulation)
-            #opts_menu.process_event(event)
         # Don't do anything if paused.
         if not running:
             pygame.display.update()
             continue
 
-        # Objects here get re-rendered during update.
-        dirty_rects = []
-
-        # At regular intervals, capture frame and add to movie.
-        '''if saving_movie and simulation.time > capture_time:
-            #pygame.image.save(display_surface, frame_filename)
-            image_string = pygame.image.tostring(display_surface, "RGB")
-            bmpFrame = vcodec.VFrame(vcodec.formats.PIX_FMT_RGB24,
-                                     display_surface.get_size(),
-                                     (image_string, None, None))
-            #yuvFrame = bmpFrame.convert(vcodec.formats.PIX_FMT_YUV420P)
-            encoded_image = movie_encoder.encode(bmpFrame)
-            movie_file.write(encoded_image)
-            print("Got here")
-            # Determine next capture time
-            capture_time += 1./capture_rate
-            frame_number += 1  '''
-
         # Update time
-        time += opts.speedup_factor * 1./opts.fps
+        if running_backward and not first_frame:
+            prev_reaction_time = time
+            time -= opts.speedup_factor * 1./opts.fps
+        elif not running_backward and not last_frame:
+            next_reaction_time = time
+            time += opts.speedup_factor * 1./opts.fps
         time_display.time = time
         time_display.render(display_surface, x_pos = 0,
-                            y_pos = 0)#opts_menu.display_height)
+                            y_pos = 0)
 
         # Process any simulation events that have happened since the last tick.
-        # Note that the last tick will be AFTER this time, so display has to
-        # come before processing the next reaction.
-        while not simulation.done() and next_reaction_time < time:
-            if next_reaction:
-                display_next_event(next_reaction, grid_display)
-            next_reaction = simulation.process_next_reaction()
-            next_reaction_time = next_reaction.time if next_reaction \
+        if running_backward and not first_frame:
+            while not event_history.at_beginning() and prev_reaction_time>time:
+                prev_reaction = event_history.previous_event()
+                if event_history.at_beginning():
+                    first_frame = True
+                event_history.increment_event(-1)
+                for i in range(len(prev_reaction.participants)):
+                    cell  = prev_reaction.participants[i]
+                    state = prev_reaction.rule.inputs[i]
+                    cell.state = state
+                prev_reaction_time = prev_reaction.time if prev_reaction else 0
+                display_next_event(prev_reaction, grid_display)
+        elif not running_backward and not last_frame:
+            while (not event_history.at_end() or not simulation.done()) \
+               and next_reaction_time < time:
+                if event_history.at_end():
+                    next_reaction = simulation.process_next_reaction()
+                    if next_reaction:
+                        event_history.add_event(next_reaction)
+                        event_history.increment_event(1)
+                else:
+                    next_reaction = event_history.next_event()
+                    event_history.increment_event(1)
+                    for i in range(len(next_reaction.participants)):
+                        cell = next_reaction.participants[i]
+                        state = next_reaction.rule.outputs[i]
+                        cell.state = state
+
+                next_reaction_time = next_reaction.time if next_reaction \
                                                     else opts.max_duration + 1
+                display_next_event(next_reaction, grid_display)
 
         # Render updates and make the next clock tick.
         pygame.display.update()
         fpsClock.tick(opts.fps)
 
-    # Set the time to final time when done.
-    time = opts.max_duration
-    time_display.time = time
-    time_display.render(display_surface, x_pos = 0,
-                        y_pos = 0)#opts_menu.display_height)
-    if next_reaction:
-        display_next_event(next_reaction, grid_display)
-    pygame.display.update()
-    if opts.debug:
-        print("Simulation state at final time " + str(opts.max_duration) + \
-              ":")
-        print(str(grid))
+        # Check for simulation completion...
+        if event_history.at_end() and running and not running_backward and \
+           (simulation.done() or time > opts.max_duration):
+            last_frame = True
+            running = False
+            # Set the time to final time when done.
+            time = opts.max_duration
+            time_display.time = time
+            time_display.render(display_surface, x_pos = 0,
+                                y_pos = 0)#opts_menu.display_height)
+            if next_reaction:
+                display_next_event(next_reaction, grid_display)
+            pygame.display.update()
+            if opts.debug:
+                print("Simulation state at final time " + str(opts.max_duration) + \
+                      ":")
+                print(str(grid))
+        if event_history.at_beginning() or time == 0:
+            first_frame = True
 
-    # Done. Wait until the user exits
-    while True:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                if opts.saving_movie:
-                    movie_file.close()
-                cleanup_and_exit(simulation)
-            #opts_menu.process_event(event)
-        pygame.display.update()
 #end def main()
 
 def display_next_event(next_reaction, grid_display):

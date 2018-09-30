@@ -23,9 +23,9 @@ class SynchronousSimulator:
         self.surface = surface
         self.init_state = surface.get_global_state()
 
-        self.reset()
+        self.initialize()
 
-    def reset(self):
+    def initialize(self):
         '''
         Start the simulation from the initial condition.
         '''

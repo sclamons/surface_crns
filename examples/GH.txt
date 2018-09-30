@@ -11,7 +11,7 @@
 
 # Run settings
 pixels_per_node    = 5
-speedup_factor     = 5
+speedup_factor     = 1
 rng_seed           = 123123123
 max_duration       = 100
 node_display       = Color

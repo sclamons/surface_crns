@@ -38,17 +38,17 @@ class QueueSimulator:
                 if not rule in self.rules_by_state[input_state]:
                     self.rules_by_state[input_state].append(rule)
 
+        self.time = 0
+        self.surface.set_global_state(self.init_state)
         self.reset()
         if self.debugging:
             print(self.surface)
 
     def reset(self):
         '''
-        Start the simulation from the initial condition.
+        Clear any reactions in the queue and populate with available reactions.
         '''
         self.event_queue = PriorityQueue()
-        self.time        = 0
-        self.surface.set_global_state(self.init_state)
         self.initialize_reactions()
 
     def initialize_reactions(self):
@@ -56,6 +56,7 @@ class QueueSimulator:
         Populate the reaction queue with initial reactions.
         '''
         for node in self.surface:
+            node.timestamp = self.time
             self.add_next_reactions_with_node(node=node,
                                               first_reactant_only=True,
                                               exclusion_list = [])
@@ -206,7 +207,6 @@ class QueueSimulator:
                 if local_debugging:
                     print("First node has index " + str(node_index))
 
-                print("Node is: " + str(node))
                 for neighbor_node, weight in node.neighbors:
                     if local_debugging:
                         print("\tChecking neighbor node with state " + \
