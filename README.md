@@ -64,7 +64,9 @@ A surface chemical reaction network (sCRN) on a square grid can be specified by 
 * General Settings
 
 Any line in a manifest beginning with a '#' will be treated as a comment and ignored.
-Transition Rules
+
+## Transition Rules
+
 The section of a manifest specifying transition rules begins with the line "!START_TRANSITION_RULES" and ends with the line "!END_TRANSITION_RULES" (no quotation marks). A single transition rule is specified by a line of the form
 
 (RATE) NAME1 -> NAME2
@@ -87,7 +89,8 @@ The section of a manifest specifying the initial state of the surface begins wit
 
 The contents of each cell in the grid are specified just as in the transition rule section. The name used in the initial state section must exactly match the name used in the transition rule section, or transition rules will not be applied to that position.
 
-Colormap
+## Colormap
+
 The section specifying a colormap begins with the line "!START_COLORMAP" and ends with the line "!END_COLORMAP". The colormap determines the colors that will be used to represent each species, and can be used to group multiple species to be displayed as one color. The colormap is optional; if no colormap is specified, then colors will be assigned automatically.
 
 A single species' color can be specified with a line of the form
@@ -111,18 +114,20 @@ where "CLASS" is the (optional) name under which the species should be displayed
 {X} X1, X2, X3, X4: (255, 0, 0)
 {Y} Y1, Y2, Y3, Y4: (0, 255, 0)
 
-General Settings
+## General Settings
+
 Any line not in a transition rule, initial state, or colormap block is interpreted as a general setting. General settings take the form
 
 SETTING = VALUE
 
 with the obvious meanings. Useful settings to know are:
 
-speedup_factor: A nonnegative real number dictating the speed of simulation playback. Larger numbers mean faster playback (Specifically, the movie will record one frame every (speedup_factor/FPS) in-simulation seconds, where FPS is 60 by default)
-rng_seed: Integer specifying the random number seed used by the simulation. Set this value to make simulations reproducible.
-max_duration: A nonnegative number specifying the maximum length of simulation in arbitrary time units (the same arbitrary time units specified by transition rule reaction rates).
-node_display: Determines whether the state of each position on the grid (node) is overlaid, in text, on that node. Set to "text" to overlay text, or "color" to only show node color (default)
-pixels_per_node: Determines the size of a node, in pixels.
+* speedup_factor: A nonnegative real number dictating the speed of simulation playback. Larger numbers mean faster playback.
+* rng_seed: Integer specifying the random number seed used by the simulation. Set this value to make simulations reproducible.
+* max_duration: A nonnegative number specifying the maximum length of simulation in arbitrary time units (the same arbitrary time units specified by transition rule reaction rates).
+* node_display: Determines whether the state of each position on the grid (node) is overlaid, in text, on that node. Set to "text" to overlay text, or "color" to only show node color (default)
+* pixels_per_node: Determines the size of a node, in pixels.
+* draw_cell_borders: Iff True, black lines will be drawn around the edges of each cell.
 
 Acknowledgements
 ================
