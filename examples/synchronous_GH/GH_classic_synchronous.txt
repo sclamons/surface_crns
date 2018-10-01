@@ -7,7 +7,6 @@ debug              = False
 rng_seed           = 12312313
 max_duration       = 100000
 fps                = 60
-#node_display       = Text
 node_display       = Color
 draw_cell_borders  = No
 

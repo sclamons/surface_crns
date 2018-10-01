@@ -21,7 +21,7 @@ This package is for Python 2 only. It does not support Python 3.
 Installation
 ============
 
-Install with the following (probably requires sudo): ``pip install git+git://github.com/sclamons/surface_crns.git@master``
+Install with the following (probably requires superuser privilege): ``pip install git+git://github.com/sclamons/surface_crns.git@master``
 
 To update, run (also with superuser privilege): ``pip install --upgrade --no-deps git+git://github.com/sclamons/surface_crns.git@master``
 
@@ -43,7 +43,7 @@ How do I use the simulator?
 
 The fastest way to start using the simulator is to use our hosted version of the simulator at http://centrosome.caltech.edu/Surface_CRN_Simulator/srv/.
 
-To use the simulator directly, yourself, <FINISH INSTRUCTIONS>
+To use the simulator directly, yourself, first install this package, as described
 
 Acknowledgements
 ================
