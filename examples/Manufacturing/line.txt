@@ -12,12 +12,12 @@ max_duration       = 200
 node_display       = Color
 
 !START_TRANSITION_RULES
-Seed + O -> right_head + left_head (1)
-right_head + O -> right_body + right_probe (1)
-right_body + right_probe -> right_head + O (1)
-left_head + O -> left_body + left_probe (1)
-left_body + left_probe -> left_head + O (1)
-right_probe + left_probe -> right_head + left_head (1)
+S + O -> RH + LH (1)
+RH + O -> RB + RP (1)
+RB + RP -> RH + O (1)
+LH + O -> LB + LP (1)
+LB + LP -> LH + O (1)
+RP + LP -> RH + LH (1)
 !END_TRANSITION_RULES
 
 !START_INIT_STATE
@@ -28,7 +28,7 @@ O O O O O O O O O O O O O O O O O
 O O O O O O O O O O O O O O O O O
 O O O O O O O O O O O O O O O O O
 O O O O O O O O O O O O O O O O O
-O O O O O O O O Seed O O O O O O O O
+O O O O O O O O S O O O O O O O O
 O O O O O O O O O O O O O O O O O
 O O O O O O O O O O O O O O O O O
 O O O O O O O O O O O O O O O O O
@@ -41,10 +41,10 @@ O O O O O O O O O O O O O O O O O
 
 !START_COLORMAP
 {Background} O: (200, 200, 200)
-{Right Head} right_head: (50, 50, 100)
-{Left Head} left_head: (75, 75, 125)
-{Right Body}right_body: (94, 46, 4)
-{Left Body} left_body: (170, 94, 27)
-{Right Probe} right_probe: (255, 0, 0)
-{Left Probe} left_probe: (0, 0, 255)
+{Right Head (RH)} RH: (50, 50, 100)
+{Left Head (LH)} LH: (75, 75, 125)
+{Right Body (RB)} RB: (94, 46, 4)
+{Left Body (LB)} LB: (170, 94, 27)
+{Right Probe(RP)} RP: (255, 0, 0)
+{Left Probe (LP)} LP: (0, 0, 255)
 !END_COLORMAP

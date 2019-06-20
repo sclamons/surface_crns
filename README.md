@@ -45,7 +45,7 @@ How do I use the simulator?
 
 The fastest way to start using the simulator is to use our hosted version of the simulator at http://centrosome.caltech.edu/Surface_CRN_Simulator/srv/.
 
-To use the simulator directly, yourself, first install this package, as described under "Installation". This will install an executable script SurfaceCRNQueueSimulator, which you can run directly from the command line with ``SurfaceCRNQueueSimulator -m <manifest_file>``, where ``<manifest_file>`` is the name of a valid manifest file (see below).
+To use the simulator directly, yourself, first install this package, as described under "Installation". This will install an executable script SurfaceCRNQueueSimulator, which you can run directly from the command line with ``SurfaceCRNQueueSimulator -m <manifest_file>``, where ``<manifest_file>`` is the name of a valid manifest file (see below). We have provided several example manifests in the ``examples`` folder. Please note that some of these manifests use information from other files in the ``examples`` folder. The easiest way to use these examples is to copy the entire folder.
 
 If you are one of the users affected by the Pygame mouse click registration bug mentioned in "Prerequisites", you can run SurfaceCRNQueueSimulator with pythonw. First, find the full name and location of SurfaceCRNQueueSimulator on your machine by running ``which SurfaceCRNQueueSimulator``. Then run ``pythonw <simulator_name> -m <manifest_file>``, where ``<simulator_name>`` is the output of the ``which`` command you ran.
 
