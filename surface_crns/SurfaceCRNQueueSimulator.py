@@ -29,8 +29,8 @@ import cProfile
 import optparse
 import sys
 import pygame
-#import pymedia.video.vcodec as vcodec
 from pygame.locals import *
+
 
 pygame.init()
 
@@ -48,6 +48,16 @@ button_width   = 60
 button_height  = 30
 button_buffer  = 5
 MIN_GRID_WIDTH = 6 * button_width + 10 * button_buffer
+
+###########################
+# MOVIE CAPTURE CONSTANTS #
+###########################
+MOVIE_DIRECTORY = "movies"
+DEBUG_DIRECTORY = "debug"
+FRAME_DIRECTORY = "frame"
+CUTOFF_TIME     = 600 # Cut off simulation at 10 minutes
+CUTOFF_SIZE     = 10000 * 500000 # Cut off simulation at roughly 1000 frames for
+                                # a typical image size.
 
 #############
 # VARIABLES #
@@ -72,7 +82,8 @@ def main():
 def simulate_surface_crn(manifest_filename, display_class = None,
                          init_state = None):
     '''
-    Runs a simulation, and displays it in a GUI window.
+    Runs a simulation, and displays it in a GUI window OR saves all frames
+    as PNG images.
 
     Normal operation is to read all options from a manifest file, given by
     manifest_filename. If you want to use a custom surface geometry (anything
@@ -94,6 +105,9 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     opts = SurfaceCRNOptionParser(manifest_options)
 
     print(" Done.")
+
+    if opts.capture_directory != None:
+        from signal import signal, SIGPIPE, SIG_DFL
 
     # Initialize simulation
     if init_state:
@@ -215,31 +229,19 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     grid_display.render(display_surface, x_pos = legend_display.display_width,
                                          y_pos = time_display.y_pos +
                                                  time_display.display_height)
-    play_back_button.draw(display_surface)
-    step_back_button.draw(display_surface)
-    pause_button.draw(display_surface)
-    step_button.draw(display_surface)
-    play_button.draw(display_surface)
-    clip_button.draw(display_surface)
-    pygame.display.update()
 
-    # Prepare movie capture
     if opts.saving_movie:
-        frame_number = 1
-        capture_time = 0
-        movie_file = open(opts.movie_title, 'wb')
-        movie_params = {\
-            'type': 0,
-            'gop_size': 12,
-            'frame_rate_base': 125, #fps,
-            'max_b_frames': 0,
-            'height': display_surface.get_height(),
-            'width': display_surface.get_width(),
-            'frame_rate': 2997, # fps,
-            'deinterlace': 0,
-            'bitrate': 9800000,
-            'id': vcodec.getCodecID('mpeg2video')}
-        movie_encoder = vcodec.Encoder(movie_params)
+        simulation.display_surface_size = display_height * display_width
+    else:
+        play_back_button.draw(display_surface)
+        step_back_button.draw(display_surface)
+        pause_button.draw(display_surface)
+        step_button.draw(display_surface)
+        play_button.draw(display_surface)
+        clip_button.draw(display_surface)
+
+
+    update_display(opts, simulation)
 
     # State variables for simulation
     next_reaction_time = 0
@@ -379,7 +381,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                 display_next_event(next_reaction, grid_display)
 
         # Render updates and make the next clock tick.
-        pygame.display.update()
+        update_display(opts, simulation)
         fpsClock.tick(opts.fps)
 
         # Check for simulation completion...
@@ -394,11 +396,63 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                                 y_pos = 0)#opts_menu.display_height)
             if next_reaction:
                 display_next_event(next_reaction, grid_display)
-            pygame.display.update()
+            update_display(opts, simulation)
             if opts.debug:
-                print("Simulation state at final time " + str(opts.max_duration) + \
-                      ":")
+                print("Simulation state at final time " + \
+                      str(opts.max_duration) + ":")
                 print(str(grid))
+            if opts.capture_directory != None:
+                # Use ffmpeg to convert images to movie.
+                if os.name == 'nt':
+                    ffmpeg_name = 'ffmpeg.exe'
+                elif os.name == 'posix':
+                    # ffmpeg_name = 'ffmpeg'
+                    name_found = False
+                    for possible_name in ['/usr/local/bin/ffmpeg',
+                                          '/usr/bin/ffmpeg']:
+                        if os.path.isfile(possible_name):
+                            ffmpeg_name = possible_name  # EW: not finding it?
+                            name_found = True
+                            break
+                    if not name_found:
+                        raise Exception("Could not find executable ffmpeg in"
+                                        " any of the expected locations!")
+                else:
+                    raise Exception("Unexpected OS name '" + os.name + "'")
+
+                signal(SIGPIPE, SIG_DFL)
+                width = display_surface.get_width()
+                height = display_surface.get_height()
+                movie_filename = os.path.join(".", MOVIE_DIRECTORY,
+                                              opts.movie_title + ".mp4")
+                debug_file.write(movie_filename + "\n")
+                command = [ffmpeg_name,
+                           '-y', # Overwrite output file
+                           #'-framerate', str(opts.fps),
+                           '-start_number', '1', # EW: might it default to
+                                                 # starting with 0?
+                           '-i', os.path.join(opts.capture_directory,
+                                              FRAME_DIRECTORY,
+                                              opts.movie_title + "_%d.jpeg"),
+                           '-an', #no audio
+                           #'vcodec', 'mpeg2',
+                           '-b', '5000k',
+                           movie_filename
+                           ]
+                print("Calling ffmpeg with: " + str(command))
+                print("And right now the current dir is " + os.getcwd())
+                print("opts.capture_directory = " + opts.capture_directory)
+
+                if opts.debug:
+                    debug_file.write("Writing movie with command:\n")
+                    debug_file.write("\t" + str(command) + "\n")
+                debug_output_stream = open(os.path.join(opts.capture_directory,
+                                                        "debug",
+                                                        "ffmpeg_debug.dbg"),'w')
+                proc = sp.Popen(command,
+                                stdout = debug_output_stream,
+                                stderr = sp.STDOUT)
+                proc.communicate()
         if event_history.at_beginning() or time == 0:
             first_frame = True
 
@@ -449,6 +503,71 @@ def cleanup_and_exit(simulation):
     print("Simulation state at termination (T = " + str(simulation.time) + "):")
     print(str(simulation.surface))
     sys.exit()
+
+def update_display(opts, simulation):
+    if opts.capture_directory == None:
+        pygame.display.update()
+    else:
+        try:
+            capture_time = simulation.capture_time
+        except AttributeError:
+            simulation.capture_time = 0
+            capture_time = 0
+
+        try:
+            frame_number = simulation.frame_number
+        except AttributeError:
+            simulation.frame_number = 1
+            frame_number = 1
+
+        if simulation.time >= capture_time:
+            frame_filename = os.path.join(opts.capture_directory,
+                             FRAME_DIRECTORY, opts.movie_title + "_" +
+                             str(frame_number) + ".jpeg")
+            # debug_file.write("Saving image " + frame_filename + "... ")
+            pygame.image.save(display_surface, frame_filename)
+            # debug_file.write("Done.\n")
+
+            # Determine next capture time
+            simulation.capture_time = capture_time + 1./opts.capture_rate
+            simulation.frame_number = frame_number + 1
+            # if opts.debug:
+            #     debug_file.write("Next capture at T=" + str(capture_time) +
+            #                      "\n")
+
+            # Check the space used. If it's too much, save one last frame and
+            # terminate.
+            try:
+                simulation.pixels_saved += simulation.display_surface_size
+            except AttributeError:
+                simulation.pixels_saved = simulation.display_surface_size
+
+            terminate = False
+            if pixels_saved > CUTOFF_SIZE:
+                termination_string = "Simulation terminated after " + \
+                                     str(simulation.pixels_saved) + \
+                                     " pixels saved (~" + \
+                                     str(CUTOFF_SIZE/10000000) +" Mb)."
+                teriminate = True
+
+            # Check the timer. If it's been more than an hour, terminate.
+            if Time.time() - simulator.init_time > CUTOFF_TIME:
+                # if opts.debug:
+                #     debug_file.write("Simulation terminated at " +
+                #                      str(CUTOFF_TIME) + " seconds wall time.")
+                termination_string = "Simulation cut off at max processing time"
+                terminate = True
+
+            if terminate:
+                text_display = TextDisplay(display_width)
+                text_display.text = termination_string
+                text_display.render(display_surface, x_pos = 0, y_pos = 0)
+                frame_filename = os.path.join(opts.capture_directory,
+                             FRAME_DIRECTORY, opts.movie_title + "_" +
+                             str(frame_number) + ".jpeg")
+                pygame.image.save(display_surface, frame_filename)
+
+                cleanup_and_exit(simulation)
 
 if __name__ == '__main__':
     if PROFILE:

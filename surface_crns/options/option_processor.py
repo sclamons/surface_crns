@@ -260,7 +260,7 @@ class SurfaceCRNOptionParser:
         if 'capture_directory' in options:
             capture_directory = options['capture_directory']
         else:
-            capture_directory = './'
+            capture_directory = None
         return capture_directory
 
     def process_surface_geometry(self, options):
