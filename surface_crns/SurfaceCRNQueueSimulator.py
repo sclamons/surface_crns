@@ -9,7 +9,15 @@ like algorithm for computing next reactions with a priority queue.
 '''
 
 from __future__ import print_function
+try:
+    import surface_crns
+except ImportError:
+    import sys
+    sys.path.append("./")
 import surface_crns.readers as readers
+
+import os
+
 from surface_crns.options.option_processor import SurfaceCRNOptionParser
 from surface_crns.models.grids import SquareGrid, HexGrid
 from surface_crns.views.time_display import TimeDisplay
@@ -20,19 +28,22 @@ from surface_crns.simulators.synchronous_simulator import SynchronousSimulator
 from surface_crns.simulators.event_history import EventHistory
 from surface_crns.simulators.event import Event
 from surface_crns.base.transition_rule import TransitionRule
-
 from surface_crns.pygbutton import *
+
 import numpy as np
 from queue import PriorityQueue
 import random
 import cProfile
 import optparse
 import sys
+from time import process_time
+
 import pygame
 from pygame.locals import *
 
 
-pygame.init()
+pygame.display.init()
+pygame.font.init()
 
 #############
 # CONSTANTS #
@@ -40,7 +51,8 @@ pygame.init()
 PROFILE = False
 WHITE = (255,255,255)
 BLACK = (0, 0, 0)
-time_font = pygame.font.SysFont('monospace', 24)
+#time_font = pygame.font.SysFont('monospace', 24)
+time_font = time_font = pygame.font.SysFont(pygame.font.get_default_font(), 24)
 TEXT_X_BUFFER  = 10
 TEXT_Y_BUFFER  = 5
 TEXT_HEIGHT    = time_font.get_linesize() + 2 * TEXT_Y_BUFFER
@@ -52,9 +64,9 @@ MIN_GRID_WIDTH = 6 * button_width + 10 * button_buffer
 ###########################
 # MOVIE CAPTURE CONSTANTS #
 ###########################
-MOVIE_DIRECTORY = "movies"
-DEBUG_DIRECTORY = "debug"
-FRAME_DIRECTORY = "frame"
+MOVIE_SUBDIRECTORY = "movies"
+DEBUG_SUBDIRECTORY = "debug"
+FRAME_SUBDIRECTORY = "frames"
 CUTOFF_TIME     = 600 # Cut off simulation at 10 minutes
 CUTOFF_SIZE     = 10000 * 500000 # Cut off simulation at roughly 1000 frames for
                                 # a typical image size.
@@ -78,6 +90,7 @@ def main():
         raise Exception("Manifest file required (use the flag -m <filename>, " +
                         "where <filename> is the name of your manifest file)")
     simulate_surface_crn(manifest_filename)
+
 
 def simulate_surface_crn(manifest_filename, display_class = None,
                          init_state = None):
@@ -108,6 +121,18 @@ def simulate_surface_crn(manifest_filename, display_class = None,
 
     if opts.capture_directory != None:
         from signal import signal, SIGPIPE, SIG_DFL
+        import subprocess as sp
+        base_dir = opts.capture_directory
+        MOVIE_DIRECTORY = base_dir
+        DEBUG_DIRECTORY = os.path.join(base_dir, DEBUG_SUBDIRECTORY)
+        FRAME_DIRECTORY = os.path.join(base_dir, FRAME_SUBDIRECTORY)
+        for d in [base_dir, MOVIE_DIRECTORY, DEBUG_DIRECTORY, FRAME_DIRECTORY]:
+            if not os.path.isdir(d):
+                os.mkdir(d)
+        os.environ["SDL_VIDEODRIVER"] = "dummy"
+        print("SDL_VIDEODRIVER set to 'dummy'")
+    else:
+        FRAME_DIRECTORY = ""
 
     # Initialize simulation
     if init_state:
@@ -121,12 +146,14 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                                     transition_rules = opts.transition_rules,
                                     seed = opts.rng_seed,
                                     simulation_duration = opts.max_duration)
+        simulation.init_wall_time = process_time()
     elif opts.simulation_type == "synchronous":
         simulation = SynchronousSimulator(
                                     surface = grid,
                                     update_rule = opts.update_rule,
                                     seed = opts.rng_seed,
                                     simulation_duration = opts.max_duration)
+        simulation.init_wall_time = process_time()
     else:
         raise Exception('Unknown simulation type "' + opts.simulation_type+'".')
     time = simulation.time
@@ -135,6 +162,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     ################
     # PYGAME SETUP #
     ################
+    print("Beginning Pygame setup...")
     if opts.grid_type == 'parallel_emulated':
         from surface_crns.views.grid_display \
                 import ParallelEmulatedSquareGridDisplay
@@ -210,12 +238,24 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     if opts.debug:
         print("Initializing display of size " + str(display_width) + ", " +
                 str(display_height) + ".")
-    display_surface = pygame.display.set_mode((display_width, display_height))
+    display_surface = pygame.display.set_mode((display_width,
+                                                   display_height), 0, 32)
+    simulation.display_surface = display_surface
+    # except:
+    #     display_surface = pygame.display.set_mode((display_width,
+    #                                                display_height))
+    if opts.debug:
+        print("Display initialized. Setting caption.")
     pygame.display.set_caption('Surface CRN Simulator')
+    if opts.debug:
+        print("Caption set, initializing clock.")
     fpsClock = pygame.time.Clock()
 
+    if opts.debug:
+        print("Clock initialized. Filling display with white.")
     # Initial render
     display_surface.fill(WHITE)
+    print("Pygame setup done, first render attempted.")
 
     # Make the options menu.
     #opts_menu = MainOptionMenu()
@@ -240,17 +280,19 @@ def simulate_surface_crn(manifest_filename, display_class = None,
         play_button.draw(display_surface)
         clip_button.draw(display_surface)
 
-
-    update_display(opts, simulation)
+    pygame.display.flip()
+    update_display(opts, simulation, FRAME_DIRECTORY)
 
     # State variables for simulation
     next_reaction_time = 0
     next_reaction = None
     prev_reaction = None
-    running = False
+    running = True #TEMPORARY FIX ME!!!
     first_frame = True
     last_frame  = False
+    running_backward = False
 
+    print("Beginning simulation....")
     # Iterate through events
     while True:
         # Check for interface events
@@ -337,17 +379,23 @@ def simulate_surface_crn(manifest_filename, display_class = None,
             continue
 
         # Update time
+        if opts.debug:
+            print("Updating time to... ", end="")
         if running_backward and not first_frame:
             prev_reaction_time = time
             time -= opts.speedup_factor * 1./opts.fps
         elif not running_backward and not last_frame:
             next_reaction_time = time
             time += opts.speedup_factor * 1./opts.fps
+        if opts.debug:
+            print("Updating time to... ", end="")
         time_display.time = time
         time_display.render(display_surface, x_pos = 0,
                             y_pos = 0)
 
         # Process any simulation events that have happened since the last tick.
+        if opts.debug:
+            print("Checking for new events...")
         if running_backward and not first_frame:
             while not event_history.at_beginning() and prev_reaction_time>time:
                 prev_reaction = event_history.previous_event()
@@ -359,6 +407,8 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                     state = prev_reaction.rule.inputs[i]
                     cell.state = state
                 prev_reaction_time = prev_reaction.time if prev_reaction else 0
+                if opts.debug:
+                    print("Displaying a new event")
                 display_next_event(prev_reaction, grid_display)
         elif not running_backward and not last_frame:
             while (not event_history.at_end() or not simulation.done()) \
@@ -378,15 +428,23 @@ def simulate_surface_crn(manifest_filename, display_class = None,
 
                 next_reaction_time = next_reaction.time if next_reaction \
                                                     else opts.max_duration + 1
+                if opts.debug:
+                    print("Displaying a new event")
                 display_next_event(next_reaction, grid_display)
 
         # Render updates and make the next clock tick.
-        update_display(opts, simulation)
+        if opts.debug:
+            print("Updating display.")
+        update_display(opts, simulation, FRAME_DIRECTORY)
         fpsClock.tick(opts.fps)
 
         # Check for simulation completion...
+        if opts.debug:
+            print("Checking for simulation completion...")
         if event_history.at_end() and running and not running_backward and \
            (simulation.done() or time > opts.max_duration):
+            if opts.debug:
+                print("Done! Cleaning up now.")
             last_frame = True
             running = False
             # Set the time to final time when done.
@@ -396,7 +454,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                                 y_pos = 0)#opts_menu.display_height)
             if next_reaction:
                 display_next_event(next_reaction, grid_display)
-            update_display(opts, simulation)
+            update_display(opts, simulation, FRAME_DIRECTORY)
             if opts.debug:
                 print("Simulation state at final time " + \
                       str(opts.max_duration) + ":")
@@ -425,18 +483,20 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                 height = display_surface.get_height()
                 movie_filename = os.path.join(".", MOVIE_DIRECTORY,
                                               opts.movie_title + ".mp4")
-                debug_file.write(movie_filename + "\n")
+                if opts.debug:
+                    print("Writing movie to  file " + movie_filename +
+                                 "\n")
                 command = [ffmpeg_name,
                            '-y', # Overwrite output file
                            #'-framerate', str(opts.fps),
                            '-start_number', '1', # EW: might it default to
                                                  # starting with 0?
-                           '-i', os.path.join(opts.capture_directory,
-                                              FRAME_DIRECTORY,
+                           '-i', os.path.join(FRAME_DIRECTORY,
                                               opts.movie_title + "_%d.jpeg"),
                            '-an', #no audio
-                           #'vcodec', 'mpeg2',
-                           '-b', '5000k',
+                           # Width and height need to be divisible by 2.
+                           # Round up if necessary.
+                           '-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2',
                            movie_filename
                            ]
                 print("Calling ffmpeg with: " + str(command))
@@ -444,8 +504,8 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                 print("opts.capture_directory = " + opts.capture_directory)
 
                 if opts.debug:
-                    debug_file.write("Writing movie with command:\n")
-                    debug_file.write("\t" + str(command) + "\n")
+                    print("Writing movie with command:\n")
+                    print("\t" + str(command) + "\n")
                 debug_output_stream = open(os.path.join(opts.capture_directory,
                                                         "debug",
                                                         "ffmpeg_debug.dbg"),'w')
@@ -453,6 +513,10 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                                 stdout = debug_output_stream,
                                 stderr = sp.STDOUT)
                 proc.communicate()
+                if opts.debug:
+                    print("Finished ffmpeg call.")
+
+                return
         if event_history.at_beginning() or time == 0:
             first_frame = True
 
@@ -504,10 +568,15 @@ def cleanup_and_exit(simulation):
     print(str(simulation.surface))
     sys.exit()
 
-def update_display(opts, simulation):
+def update_display(opts, simulation, FRAME_DIRECTORY = None):
     if opts.capture_directory == None:
         pygame.display.update()
+        pygame.display.flip()
     else:
+        print("capture directory is: " + str(opts.capture_directory))
+        if FRAME_DIRECTORY == None:
+            raise Exception("FRAME_DIRECTORY should be set if a capture" +
+                            " directory is set.")
         try:
             capture_time = simulation.capture_time
         except AttributeError:
@@ -521,29 +590,28 @@ def update_display(opts, simulation):
             frame_number = 1
 
         if simulation.time >= capture_time:
-            frame_filename = os.path.join(opts.capture_directory,
-                             FRAME_DIRECTORY, opts.movie_title + "_" +
-                             str(frame_number) + ".jpeg")
-            # debug_file.write("Saving image " + frame_filename + "... ")
-            pygame.image.save(display_surface, frame_filename)
-            # debug_file.write("Done.\n")
+            if opts.debug:
+                print("movie title is: " + str(opts.movie_title))
+            frame_filename = os.path.join(FRAME_DIRECTORY, opts.movie_title
+                                          + "_" + str(frame_number) +
+                                          ".jpeg")
+            if opts.debug:
+                print("Saving frame at: " + frame_filename)
+            pygame.image.save(simulation.display_surface, frame_filename)
 
             # Determine next capture time
             simulation.capture_time = capture_time + 1./opts.capture_rate
             simulation.frame_number = frame_number + 1
-            # if opts.debug:
-            #     debug_file.write("Next capture at T=" + str(capture_time) +
-            #                      "\n")
 
-            # Check the space used. If it's too much, save one last frame and
-            # terminate.
+            # Check the space used. If it's too much, save one last frame
+            # and terminate.
             try:
                 simulation.pixels_saved += simulation.display_surface_size
             except AttributeError:
                 simulation.pixels_saved = simulation.display_surface_size
 
             terminate = False
-            if pixels_saved > CUTOFF_SIZE:
+            if simulation.pixels_saved > CUTOFF_SIZE:
                 termination_string = "Simulation terminated after " + \
                                      str(simulation.pixels_saved) + \
                                      " pixels saved (~" + \
@@ -551,20 +619,20 @@ def update_display(opts, simulation):
                 teriminate = True
 
             # Check the timer. If it's been more than an hour, terminate.
-            if Time.time() - simulator.init_time > CUTOFF_TIME:
-                # if opts.debug:
-                #     debug_file.write("Simulation terminated at " +
-                #                      str(CUTOFF_TIME) + " seconds wall time.")
-                termination_string = "Simulation cut off at max processing time"
+            if process_time() - simulation.init_wall_time > CUTOFF_TIME:
+                termination_string = "Simulation cut off at max " \
+                                     "processing time"
                 terminate = True
 
             if terminate:
                 text_display = TextDisplay(display_width)
                 text_display.text = termination_string
                 text_display.render(display_surface, x_pos = 0, y_pos = 0)
-                frame_filename = os.path.join(opts.capture_directory,
-                             FRAME_DIRECTORY, opts.movie_title + "_" +
-                             str(frame_number) + ".jpeg")
+                frame_filename = os.path.join(FRAME_DIRECTORY,
+                                              opts.movie_title + "_" +
+                                              str(frame_number) + ".jpeg")
+                if opts.debug:
+                    print("Saving final frame at: " + frame_filename)
                 pygame.image.save(display_surface, frame_filename)
 
                 cleanup_and_exit(simulation)
