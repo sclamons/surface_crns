@@ -57,6 +57,8 @@ A manifest file is a text file that defines a surface CRN. It includes the rules
 
 How do I write a manifest file?
 ===============================
+You can find manifest files for several example surface CRNs in the "examples" folder and its subfolders (.txt files). There are also a number of examples available at http://www.dna.caltech.edu/Surface_CRN_Simulator/srv/.
+
 A surface chemical reaction network (sCRN) on a square grid can be specified by a manifest file consisting of four parts:
 
 * Transition rules
@@ -129,6 +131,7 @@ with the obvious meanings. Useful settings to know are:
 * node_display: Determines whether the state of each position on the grid (node) is overlaid, in text, on that node. Set to "text" to overlay text, or "color" to only show node color (default)
 * pixels_per_node: Determines the size of a node, in pixels.
 * draw_cell_borders: Iff True, black lines will be drawn around the edges of each cell.
+* grid: Toggles between a square grid (default, "square") or a hex grid ("hex").
 
 Acknowledgements
 ================
