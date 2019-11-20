@@ -10,43 +10,11 @@ geometry           = square
 wrap               = true
 
 !START_TRANSITION_RULES
-# General algorithm:
-#   1) Wander around until you find dirt.
-#   2) Pick up dirt.
-#   3) Wander until you find another dirt.
-#   4) If there's a second dirt around, go to (5); otherwise, go back to (3)
-#       with large probability or with small probability go to (5).
-#   5) Back up and drop the dirt where you were standing.
-#   6) Wander for a while without picking up dirt.
-#
-# As -> Ant searching for dirt
-# Ad -> Ant with dirt
-#   AdD -> Ant carrying dirt, next to other dirt, deciding whether or not to drop it (state 4).
-#   AdDD -> Ant that has decided to drop its dirt. (state 5)
-#   AdDm -> Ant that has decided to drop its dirt. (state 5)
-# Al -> Ant that recently dropped dirt
-
-# Movement rules
 (1) As + O -> O + As
 (1) Ad + O -> O + Ad
-(1) Al + O -> O + Al
-
-# Pick up dirt
 (1) As + D -> Ad + O
-
-# Put down dirt next to other dirt, especially next to two dirts.
-(1) Ad + D -> AdD + Ds
-(0.3) AdD + Ds -> Ad + D
-(0.01) AdD + Ds -> AdDm + D
-(1) AdD + D -> AdDD + D
-(1) AdDD + Ds -> AdDm + D
-(1) AdDm + O -> D + Al
-
-# Wander a bit before searching for more dirt.
-(0.1) Al -> As
-
-
-
+(1) Ad + D -> AdD + D
+(1) AdD + O -> D + As
 !END_TRANSITION_RULES
 
 # Initial state

@@ -142,6 +142,12 @@ def simulate_surface_crn(manifest_filename, display_class = None,
             raise Exception("Initial grid state required.")
         grid = opts.grid
     if opts.simulation_type == "asynchronous":
+        if opts.debug:
+            print("Grid is type " + str(type(grid)))
+            print("Initializing simulator with surface:\n" + str(grid))
+            for x in range(grid.x_size):
+                for y in range(grid.y_size):
+                    print("(" + str(x) + "," + str(y) + "): " + str(grid.grid[x,y]))
         simulation = QueueSimulator(surface = grid,
                                     transition_rules = opts.transition_rules,
                                     seed = opts.rng_seed,

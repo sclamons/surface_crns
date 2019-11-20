@@ -11,6 +11,7 @@ max_duration       = 2000
 node_display       = Color
 wrap               = true
 geometry           = hex
+debug = True
 
 !START_TRANSITION_RULES
 A + O -> X + x (1)
