@@ -291,6 +291,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
 
     # State variables for simulation
     next_reaction_time = 0
+    prev_reaction_time = 0
     next_reaction = None
     prev_reaction = None
     running = True #TEMPORARY FIX ME!!!
@@ -385,16 +386,15 @@ def simulate_surface_crn(manifest_filename, display_class = None,
             continue
 
         # Update time
-        if opts.debug:
-            print("Updating time to... ", end="")
         if running_backward and not first_frame:
-            prev_reaction_time = time
+            #prev_reaction_time = time
             time -= opts.speedup_factor * 1./opts.fps
         elif not running_backward and not last_frame:
-            next_reaction_time = time
+            #next_reaction_time = time
             time += opts.speedup_factor * 1./opts.fps
+            first_frame = False
         if opts.debug:
-            print("Updating time to... ", end="")
+            print(f"Updating time to {time}")
         time_display.time = time
         time_display.render(display_surface, x_pos = 0,
                             y_pos = 0)

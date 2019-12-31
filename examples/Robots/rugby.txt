@@ -22,15 +22,16 @@ node_display       = Color
 {background 7} 7: (185,185,185)
 {background 8} 8: (175,175,175)
 {background 9} 9: (165,165,165)
-{X team goal} GX: (140,70,20)
-{Y team goal} GY: (70,140,20)
+{X team goal} GX: (252,141,98)
+{Y team goal} GY: (102,194,165)
 {X wins goal} WX: (255,140,40)
 {Y wins goal} WY: (140,255,40)
+{Losing team} LX, LY: (0,0,0)
 {ball} B: (0, 0,0)
-{X} X: (128,0,0)
-{X w/ ball} XB: (255,0,0)
-{Y} Y: (0,128,0)
-{Y w/ ball} YB: (0,255,0)
+{X} X: (217,95,2)
+{X w/ ball} XB: (158,66,75)
+{Y} Y: (27,158,119)
+{Y w/ ball} YB: (21, 98, 150)
 !END_COLORMAP
 
 
@@ -46,10 +47,10 @@ XB + GY -> 0 + WX (10)
 GY + WX -> WX + WX (10)
 YB + GX -> 0 + WY (10)
 GX + WY -> WY + WY (10)
-X + WX -> 0 + WX (10)
-Y + WX -> 0 + WX (10)
-X + WY -> 0 + WY (10)
-Y + WY -> 0 + WY (10)
+X + WX -> WX + WX (10)
+Y + WX -> LY + WX (10)
+X + WY -> LX + WY (10)
+Y + WY -> WY + WY (10)
 
 # Movement and strategy for team X [rugby gods edit here]
 #    all rules must have exactly one X or XB on LHS and on RHS
