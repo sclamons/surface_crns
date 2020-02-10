@@ -12,7 +12,7 @@
 # The background A B C D repeat allows deterministic orientation.
 
 # Run settings
-pixels_per_node    = 5
+pixels_per_node    = 5 # A comment
 speedup_factor     = 5
 #rng_seed           = 123123123
 max_duration       = 1000

@@ -386,9 +386,14 @@ def simulate_surface_crn(manifest_filename, display_class = None,
             continue
 
         # Update time
+        if opts.debug:
+            print(f"Updating time: time = {time}, running_backward = "
+                  f"{running_backward}, first_frame = {first_frame}, "
+                  f"last_frame = {last_frame}")
         if running_backward and not first_frame:
             #prev_reaction_time = time
             time -= opts.speedup_factor * 1./opts.fps
+            last_frame = False
         elif not running_backward and not last_frame:
             #next_reaction_time = time
             time += opts.speedup_factor * 1./opts.fps
@@ -403,19 +408,34 @@ def simulate_surface_crn(manifest_filename, display_class = None,
         if opts.debug:
             print("Checking for new events...")
         if running_backward and not first_frame:
-            while not event_history.at_beginning() and prev_reaction_time>time:
+            if opts.debug and not event_history.at_beginning():
+                print(f"While running backwards, checking if there are any "
+                      f"events: time = {time}, previous event time = "
+                      f"{event_history.previous_event().time}")
+            while not event_history.at_beginning() and \
+             event_history.previous_event().time > time:
                 prev_reaction = event_history.previous_event()
+                previous_reaction_time = prev_reaction.time
                 if event_history.at_beginning():
                     first_frame = True
                 event_history.increment_event(-1)
+                # if opts.debug:
+                #     print("While running backwards, undoing reaction: "
+                #           f"{prev_reaction}")
                 for i in range(len(prev_reaction.participants)):
                     cell  = prev_reaction.participants[i]
                     state = prev_reaction.rule.inputs[i]
                     cell.state = state
-                prev_reaction_time = prev_reaction.time if prev_reaction else 0
+                next_reaction_time = prev_reaction_time
+                prev_reaction_time = prev_reaction.time if prev_reaction \
+                                                        else 0
                 if opts.debug:
                     print("Displaying a new event")
                 display_next_event(prev_reaction, grid_display)
+                if opts.debug and not event_history.at_beginning():
+                    print(f"While running backwards, checking if there are any "
+                      f"events: time = {time}, previous event time = "
+                      f"{event_history.previous_event().time}")
         elif not running_backward and not last_frame:
             while (not event_history.at_end() or not simulation.done()) \
                and next_reaction_time < time:
@@ -432,6 +452,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                         state = next_reaction.rule.outputs[i]
                         cell.state = state
 
+                prev_reaction_time = next_reaction_time
                 next_reaction_time = next_reaction.time if next_reaction \
                                                     else opts.max_duration + 1
                 if opts.debug:

@@ -3149,13 +3149,13 @@ node_display       = Color
 !START_INIT_STATE
 
 # Spiral wave
-!INCLUDE synchronous_GH/GH_spinning_arrow_spiral_init.txt
+!INCLUDE GH_spinning_arrow_spiral_init.txt
 
 # Single pulse
-#!INCLUDE synchronous_GH/GH_spinning_arrow_pulse_init.txt
+#!INCLUDE GH_spinning_arrow_pulse_init.txt
 
 # Random start
-#!INCLUDE synchronous_GH/GH_spinning_arrow_random_init.txt
+#!INCLUDE GH_spinning_arrow_random_init.txt
 
 !END_INIT_STATE
 

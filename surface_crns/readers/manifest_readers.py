@@ -39,7 +39,8 @@ def read_manifest(filename):
     '''
     file_location = filename[0:filename.rfind(os.sep)+1]
     with open(filename, 'rU') as manifest_file:
-        manifest_stream = splice_includes(manifest_file, file_location)
+        manifest_stream = remove_comments(splice_includes(manifest_file, 
+                                                          file_location))
         return parse_manifest_stream(manifest_stream)
 
 
@@ -91,6 +92,13 @@ def splice_includes(manifest_stream, file_location):
                     yield line
         else:
             yield line
+
+def remove_comments(manifest_stream):
+    '''
+    Removes all '#'s and everything after a '#' on the same line. 
+    '''
+    for line in manifest_stream:
+        yield line.split('#')[0]
 
 '''
 Internal use only
