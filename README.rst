@@ -14,9 +14,9 @@ This package provides:
 
 Prerequisites
 =============
-The GUI simulator requires pygame.
-
 This package is for Python 2 only. It does not support Python 3.
+
+The GUI simulator requires pygame. Installing surface_crns with pip, as described below, should also install pygame. 
 
 Installation
 ============
@@ -24,6 +24,10 @@ Installation
 Install with the following (probably requires superuser privilege): ``pip install git+git://github.com/sclamons/surface_crns.git@master``
 
 To update, run (also with superuser privilege): ``pip install --upgrade --no-deps git+git://github.com/sclamons/surface_crns.git@master``
+
+If you are using OSX and you get an error while installing surface_crns or pygame, you may need to install several SDL libraries used by pygame. Install them with brew (https://brew.sh/) with the command:
+
+``brew install sdl sdl_image sdl_mixer sdl_ttf portmidi``
 
 What's a surface CRN?
 =====================
