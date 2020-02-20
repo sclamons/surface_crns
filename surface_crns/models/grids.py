@@ -33,7 +33,7 @@ class SquareGrid(object):
         '''
         for x in range(self.x_size):
             for y in range(self.y_size):
-                self.grid[x,y] = (Node(), 1)
+                self.grid[x,y] = Node()
                 self.grid[x,y].position = (x,y)
         # Populate node neighbor lists
         for x in range(self.x_size):
