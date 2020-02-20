@@ -102,7 +102,7 @@ def parse_rule(line):
             output_species.append(output_string)
         except SyntaxError:
             raise Exception('Invalid transition rule "' + line + \
-                        '": Species ' + input_string + \
+                        '": Species ' + output_string + \
                         ' must be alphanumeric, but is not.')
 
     # Generate transition rule

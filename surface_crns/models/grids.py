@@ -34,7 +34,7 @@ class SquareGrid(object):
         for x in range(self.x_size):
             for y in range(self.y_size):
                 self.grid[x,y] = (Node(), 1)
-                self.grid[x,y][0].position = (x,y)
+                self.grid[x,y].position = (x,y)
         # Populate node neighbor lists
         for x in range(self.x_size):
             for y in range(self.y_size):
@@ -43,7 +43,7 @@ class SquareGrid(object):
                     ny = y + dy
                     if nx >= 0 and nx < self.x_size and \
                         ny >= 0 and ny < self.y_size:
-                        self.grid[x,y][0].neighbors.append((self.grid[nx, ny][0], 1))
+                        self.grid[x,y].neighbors.append((self.grid[nx, ny], 1))
                     elif self.wrap:
                         if nx < 0:
                             nx = self.x_size-1
@@ -53,7 +53,7 @@ class SquareGrid(object):
                             ny = self.y_size-1
                         elif ny >= self.y_size:
                             ny = 0
-                        self.grid[x,y][0].neighbors.append((self.grid[nx, ny][0], 1))
+                        self.grid[x,y].neighbors.append((self.grid[nx, ny], 1))
 
     def clear_timestamps(self):
         '''
@@ -61,7 +61,7 @@ class SquareGrid(object):
         '''
         for x in range(self.x_size):
             for y in range(self.y_size):
-                self.grid[x,y][0].timestamp = 0
+                self.grid[x,y].timestamp = 0
 
     def set_global_state(self, state_grid):
         '''
@@ -79,7 +79,7 @@ class SquareGrid(object):
             self.populate_grid()
         for x in range(self.x_size):
             for y in range(self.y_size):
-                self.grid[x,y][0].state = state_grid[x,y]
+                self.grid[x,y].state = state_grid[x,y]
         self.clear_timestamps()
 
     def get_global_state(self):
@@ -89,11 +89,11 @@ class SquareGrid(object):
         state_grid = np.empty([self.x_size, self.y_size], np.dtype(object))
         for x in range(self.x_size):
             for y in range(self.y_size):
-                state_grid[x,y] = self.grid[x,y][0].state
+                state_grid[x,y] = self.grid[x,y].state
         return state_grid
 
     def getnode(self, x, y):
-        return self.grid[x,y][0]
+        return self.grid[x,y]
 
     def __iter__(self):
         return SquareGridIterator(self)
@@ -106,7 +106,7 @@ class SquareGrid(object):
             for x in range(self.x_size):
                 if x > 0:
                     ret_str += ", "
-                ret_str += self.grid[x,y][0].state
+                ret_str += self.grid[x,y].state
             ret_str += ']'
         return ret_str
 
@@ -173,7 +173,7 @@ class SquareGridWithCornerLeak(SquareGrid):
                     if nx >= 0 and nx < self.x_size and \
                         ny >= 0 and ny < self.y_size:
                         neighbor_tuple = (self.grid[nx, ny], self.corner_rate)
-                        self.grid[x,y][0].neighbors.append(neighbor_tuple)
+                        self.grid[x,y].neighbors.append(neighbor_tuple)
                     elif self.wrap:
                         if nx < 0:
                             nx = self.x_size-1
@@ -183,8 +183,8 @@ class SquareGridWithCornerLeak(SquareGrid):
                             ny = self.y_size-1
                         elif ny >= self.y_size:
                             ny = 0
-                        neighbor_tuple = (self.grid[nx, ny][0], self.corner_rate)
-                        self.grid[x,y][0].neighbors.append(neighbor_tuple)
+                        neighbor_tuple = (self.grid[nx, ny], self.corner_rate)
+                        self.grid[x,y].neighbors.append(neighbor_tuple)
 
 
 class HexGrid(SquareGrid):
@@ -211,7 +211,7 @@ class HexGrid(SquareGrid):
         for x in range(self.x_size):
             for y in range(self.y_size):
                 self.grid[x,y] = (Node(), 1)
-                self.grid[x,y][0].position = (x,y)
+                self.grid[x,y].position = (x,y)
         # Populate node neighbor lists
         for x in range(self.x_size):
             for y in range(self.y_size):
@@ -227,8 +227,8 @@ class HexGrid(SquareGrid):
                     ny = y + dy
                     if nx >= 0 and nx < self.x_size and \
                         ny >= 0 and ny < self.y_size:
-                        self.grid[x,y][0].neighbors.append(
-                                                    (self.grid[nx, ny][0], 1))
+                        self.grid[x,y].neighbors.append(
+                                                    (self.grid[nx, ny], 1))
                     elif self.wrap:
                         if nx < 0:
                             nx = self.x_size-1
@@ -238,7 +238,7 @@ class HexGrid(SquareGrid):
                             ny = self.y_size-1
                         if ny >= self.y_size:
                             ny = 0
-                        self.grid[x,y][0].neighbors.append(
-                                                    (self.grid[nx, ny][0], 1))
+                        self.grid[x,y].neighbors.append(
+                                                    (self.grid[nx, ny], 1))
 
 

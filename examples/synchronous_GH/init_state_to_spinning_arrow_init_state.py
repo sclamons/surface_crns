@@ -20,13 +20,13 @@ def main():
         for j in range(init_state.shape[1] + 2):
             outfile.write("Edge_D ")
         for i in range(init_state.shape[0]):
-            outfile.write("\nEdge_R")
+            outfile.write("\nEdge_R ")
             for j in range(init_state.shape[1]):
                 orig_state = init_state[i, j]
-                position   = str(j%3 + 3*(i%3))
-                orientation = "b_D" if (i+j)%2 == 0 else "a_U"
-                outfile.write(" %s_%s%s_n" %(orig_state, position, orientation))
-            outfile.write(" Edge_L")
+                position   = str(j%3 + 3*(i%3) + 1)
+                orientation = "D" if (i+j)%2 == 0 else "U"
+                outfile.write(f"{orig_state}_{orientation}_{position}_None ")
+            outfile.write("Edge_L")
         outfile.write("\n")
         for j in range(init_state.shape[1] + 2):
             outfile.write("Edge_U ")

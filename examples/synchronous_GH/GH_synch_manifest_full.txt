@@ -5,7 +5,7 @@ pixels_per_node    = 9
 speedup_factor     = 10
 debug              = False
 rng_seed           = 123123123
-max_duration       = 300
+max_duration       = 3000
 fps                = 60
 node_display       = Color
 
@@ -18,7 +18,7 @@ node_display       = Color
 !START_INIT_STATE
 
 # Spiral wave
-!INCLUDE GH_spinning_arrow_spiral_init.txt
+!INCLUDE GH_spinning_arrow_init.txt
 
 # Single pulse
 #!INCLUDE GH_spinning_arrow_pulse_init.txt

@@ -162,13 +162,15 @@ class SurfaceCRNOptionParser:
             # If numpy version too low, have to iterate without nditer
             np_version = np.__version__.split('.')
             if int(np_version[1]) >= 7:
-                for node_state in np.nditer(init_state):
+                for node_state in np.nditer(init_state, flags = ["refs_ok"]):
                     self.update_colormap(str(node_state))
             else:
                 for line in init_state:
                     for node_state in line:
                         self.update_colormap(str(node_state))
             if self.surface_geometry == "square":
+                print("init_state: " + str(init_state))
+                print("shape: " + str(init_state.shape))
                 self.grid = SquareGrid(init_state.shape[0], init_state.shape[1],
                                        wrap = self.wrap_grid)
             elif self.surface_geometry == "hex":
