@@ -17,9 +17,11 @@ Prerequisites
 =============
 The GUI simulator requires pygame.
 
-This simulator should work in Python 2 and 3, though it is primarily tested in 3.
+This simulator is only tested in Python 3. It will likely not run in Python 2.
 
 **Important note for OSX users**: There is a known problem with Pygame mouse click registration on OSX with certain installations of Python. In Python 3, if you use virtualenv or a Conda installation of Python, Pygame will only register mouse movement when the mouse button is held down. You can fix this by turning off virtualenv or (if you use Conda) by using pythonw instead of python to run your simulations. If, for whatever reason, you cannot do either of these things, make sure to move your mouse *during* each click, ending the click on whatever button you want to press.
+
+**Important note for OSX 10.14 users**: The current public stable version of pygame (1.9.6) does not work in OSX 10.14 in some verisons of Python 3. The development version of pygame does work on OSX 10.14. If you are running OSX 10.14 and you don't get a window when you run ``SurfaceCRNQueueSimulator``, try downloading the pygame repository at https://github.com/pygame/pygame, navigate into the downloaded folder, and run ``python setup.py install``.
 
 Installation
 ============
