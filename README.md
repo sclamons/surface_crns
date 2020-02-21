@@ -56,7 +56,7 @@ The fastest way to start using the simulator is to use our hosted version of the
 
 To use the simulator directly, yourself, first install this package, as described under "Installation". This will install an executable script SurfaceCRNQueueSimulator, which you can run directly from the command line with ``SurfaceCRNQueueSimulator -m <manifest_file>``, where ``<manifest_file>`` is the name of a valid manifest file (see below). We have provided several example manifests in the ``examples`` folder. Please note that some of these manifests use information from other files in the ``examples`` folder. The easiest way to use these examples is to copy the entire folder.
 
-You can also run the simulator from a Python script. To run a surface CRN specified in a file "example_manifest.txt", you would run:
+You can also run the simulator from a Python script. To run a surface CRN specified in a file "example_manifest.txt", you would run (in your Python terminal or script)
 
 ``from surface_crns import SurfaceCRNQueueSimulator
 SurfaceCRNQueueSimulator.simulate_surface_crn("example_manifest.txt")``
