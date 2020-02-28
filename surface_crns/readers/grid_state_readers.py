@@ -22,6 +22,7 @@ def parse_grid_state_stream(grid_state_stream):
     See documentation for read_grid_state for a description of the grid state
     format.
     '''
+    print("Reading grid state... ", end = "")
     grid_state = []
     for line in grid_state_stream:
         if line.startswith(section_ends['init_state']):
@@ -35,4 +36,5 @@ def parse_grid_state_stream(grid_state_stream):
             new_row = new_row[0].split(',')
         grid_state.append(new_row)
     grid_state = np.array(grid_state).transpose()
+    print("done.")
     return grid_state

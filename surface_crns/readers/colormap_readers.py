@@ -29,6 +29,7 @@ def parse_colormap_stream(colormap_stream):
     See documentation for read_colormap for a description of the colormap file
     format.
     '''
+    print("Reading colormap... ", end="")
     colormap = OrderedDict()
     colormap[COLOR_CLASSES] = OrderedDict()
     for line in colormap_stream:
@@ -71,6 +72,7 @@ def parse_colormap_stream(colormap_stream):
                                 COLOR_CLASSES +
                                 " is reserved. Pick another state name.")
             colormap[state] = color_bits
+        print("done.")
     return colormap
 
 

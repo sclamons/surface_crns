@@ -111,8 +111,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     # READ MANIFEST AND INITIALIZE #
     ################################
     # Parse the manifest
-    print("Reading information from manifest file " + manifest_filename + "...",
-          end="")
+    print("Reading information from manifest file " + manifest_filename + "...")
     manifest_options = \
                 readers.manifest_readers.read_manifest(manifest_filename)
     opts = SurfaceCRNOptionParser(manifest_options)
@@ -319,6 +318,8 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                 else:
                     prev_reaction = event_history.previous_event()
                     event_history.increment_event(-1)
+                    if not event_history:
+                        continue
                     prev_reaction_rule = prev_reaction.rule
                     for i in range(len(prev_reaction.participants)):
                         cell = prev_reaction.participants[i]
@@ -357,15 +358,16 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                     if not reading_history:
                         event_history.add_event(next_reaction)
                         event_history.increment_event(1)
-                next_reaction_time = next_reaction.time
-                display_next_event(next_reaction, grid_display)
-                time = next_reaction_time
-                time_display.time = time
-                time_display.render(display_surface, x_pos = 0, y_pos = 0)
-                pygame.display.update()
-                next_reaction = None
-                if opts.debug:
-                    print("State after update: " + str(grid))
+                if next_reaction:
+                    next_reaction_time = next_reaction.time
+                    display_next_event(next_reaction, grid_display)
+                    time = next_reaction_time
+                    time_display.time = time
+                    time_display.render(display_surface, x_pos = 0, y_pos = 0)
+                    pygame.display.update()
+                    next_reaction = None
+                    if opts.debug:
+                        print("State after update: " + str(grid))
             if 'click' in play_button.handleEvent(event):
                 running = True
                 running_backward = False

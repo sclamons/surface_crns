@@ -34,6 +34,7 @@ def parse_transition_rule_stream(rules_stream):
     See documentation for read_transition_rules for a description of the
     transition rule format.
     '''
+    print("Reading transition rules... ", end = "")
     transition_rules = []
     for line in rules_stream:
         if line.startswith(section_ends['transition_rules']):
@@ -42,6 +43,7 @@ def parse_transition_rule_stream(rules_stream):
                 line.startswith("%") or
                 line.strip() == ""):
             transition_rules.append(parse_rule(line))
+    print("done.")
     return transition_rules
 
 '''

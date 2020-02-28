@@ -105,29 +105,33 @@ def main():
     # Get the reset rules in here too, in the innermost loop.
     for self_state in all_states:
         for position in range(1,10):
-            rule = edge_spinning_rule("U", 
-                                      self_state, 
-                                      position, 
-                                      "None")
-            transition_rule_file.write(rule)
+            for direction in ["U", "D"]:
+                rule = edge_spinning_rule(direction, 
+                                          self_state, 
+                                          position, 
+                                          "None")
+                transition_rule_file.write(rule)
             for s1 in all_states:
-                rule = edge_spinning_rule("R", 
+                for direction in ["R", "L"]:
+                    rule = edge_spinning_rule(direction, 
                                           self_state, 
                                           position, 
                                           s1)
-                transition_rule_file.write(rule)
+                    transition_rule_file.write(rule)
                 for s2 in all_states:
-                    rule = edge_spinning_rule("D", 
+                    for direction in ["U", "D"]:
+                        rule = edge_spinning_rule(direction, 
                                               self_state, 
                                               position, 
                                               s1+s2)
-                    transition_rule_file.write(rule)
+                        transition_rule_file.write(rule)
                     for s3 in all_states:
-                        rule = edge_spinning_rule("R", 
+                        for direction in ["R", "L"]:
+                            rule = edge_spinning_rule(direction, 
                                                   self_state, 
                                                   position, 
                                                   s1+s2+s3)
-                        transition_rule_file.write(rule)
+                            transition_rule_file.write(rule)
                         # Get the reset rules here.
                         for s4 in all_states:
                             for direction in ["U", "D"]:
@@ -150,7 +154,7 @@ def spinning_rule(direction, self_state, position, states_seen,
            f"{self_state}_{direction_transitions[direction]}_{position}"
                 f"_{('' if states_seen=='None' else states_seen)+n_state} + "
            f"{n_state}_{direction_transitions[n_direction]}_{n_position}"
-                f"_{('' if n_states_seen=='None' else n_states_seen)+n_state}\n")
+                f"_{('' if n_states_seen=='None' else n_states_seen)+self_state}\n")
 
 def edge_spinning_rule(direction, self_state, position, states_seen):
     edge_direction = direction_pairs[direction]
