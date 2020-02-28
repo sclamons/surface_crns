@@ -1,6 +1,7 @@
 import numpy as np
 import random
 import math
+import os
 from queue import *
 from surface_crns.simulators.event import Event
 
@@ -23,7 +24,12 @@ class QueueSimulator:
         else:
             self.rule_set = transition_rules
 
-        random.seed(seed)
+        if seed:
+            self.seed = seed
+        else:
+            import time
+            self.seed = int(time.time()) # use fractional seconds
+        random.seed(self.seed)
         self.simulation_duration = simulation_duration
         self.surface = surface
         self.init_state = surface.get_global_state()

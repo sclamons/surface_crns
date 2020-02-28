@@ -162,6 +162,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     else:
         raise Exception('Unknown simulation type "' + opts.simulation_type+'".')
     time = simulation.time
+    seed = simulation.seed
     event_history = EventHistory()
 
     ################
@@ -251,7 +252,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     #                                                display_height))
     if opts.debug:
         print("Display initialized. Setting caption.")
-    pygame.display.set_caption('Surface CRN Simulator')
+    pygame.display.set_caption(f'Surface CRN Simulator (Seed: {seed})')
     if opts.debug:
         print("Caption set, initializing clock.")
     fpsClock = pygame.time.Clock()
