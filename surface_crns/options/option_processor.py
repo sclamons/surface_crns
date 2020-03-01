@@ -111,15 +111,18 @@ class SurfaceCRNOptionParser:
         return display_text
 
     def process_colormap(self, options):
-        print("Processing colormap... ", end = "")
+        if self.debug:
+            print("Processing colormap... ", end = "")
         if 'colormap' in options:
             COLORMAP = options['colormap']
             if self.debug:
                 print("Colormap:\n" + str(COLORMAP))
         else:
-            print("No colormap defined. Setting colors randomly.")
+            if self.debug:
+                print("No colormap defined. Setting colors randomly.")
             COLORMAP = dict()
-        print("done.")
+        if self.debug:
+            print("done.")
         return COLORMAP
 
     def process_simulation_type(self, options):
@@ -135,7 +138,8 @@ class SurfaceCRNOptionParser:
         return options['totalistic_rule']
 
     def process_transition_rules(self, options):
-        print("Processing transition rules... ", end = "")
+        if self.debug:
+            print("Processing transition rules... ", end = "")
         transition_rules = options['transition_rules']
             # Check validity of rules and add colors if necessary.
         random.seed(12312)   # RNG seed for color generation.
@@ -157,11 +161,12 @@ class SurfaceCRNOptionParser:
         if self.debug:
             print("Transition rules:\n" + str(transition_rules))
             print("Colormap:\n" + str(self.COLORMAP))
-        print("done.")
+            print("done.")
         return transition_rules
 
     def process_init_state(self, options):
-        print("Processing initial state... ", end = "")
+        if self.debug:
+            print("Processing initial state... ", end = "")
         if 'init_state' in options:
             init_state = options['init_state']
             # Check for any new states that don't have color definitions
@@ -176,8 +181,9 @@ class SurfaceCRNOptionParser:
                     for node_state in line:
                         self.update_colormap(str(node_state))
             if self.surface_geometry == "square":
-                print("init_state: " + str(init_state))
-                print("shape: " + str(init_state.shape))
+                if self.debug:
+                    print("init_state: " + str(init_state))
+                    print("shape: " + str(init_state.shape))
                 self.grid = SquareGrid(init_state.shape[0], init_state.shape[1],
                                        wrap = self.wrap_grid)
             elif self.surface_geometry == "hex":
@@ -187,10 +193,12 @@ class SurfaceCRNOptionParser:
                 raise Exception("Surface geometry must be set before " + \
                                 "processing initial state.")
             self.grid.set_global_state(init_state)
-            print("done.")
+            if self.debug:
+                print("done.")
             return init_state
         else:
-            print("done.")
+            if self.debug:
+                print("done.")
             return None
 
     def process_pixels_per_node(self, options):

@@ -22,14 +22,15 @@ def read_colormap(filename):
     with open(filename, 'rU') as colormap_file:
         return parse_colormap_stream(colormap_file)
 
-def parse_colormap_stream(colormap_stream):
+def parse_colormap_stream(colormap_stream, debug = False):
     '''
     Read a colormap from a stream of strings, as might be contained in a
     colormap definition file.
     See documentation for read_colormap for a description of the colormap file
     format.
     '''
-    print("Reading colormap... ", end="")
+    if debug:
+        print("Reading colormap... ", end="")
     colormap = OrderedDict()
     colormap[COLOR_CLASSES] = OrderedDict()
     for line in colormap_stream:
@@ -72,7 +73,8 @@ def parse_colormap_stream(colormap_stream):
                                 COLOR_CLASSES +
                                 " is reserved. Pick another state name.")
             colormap[state] = color_bits
-        print("done.")
+        if debug:
+            print("done.")
     return colormap
 
 

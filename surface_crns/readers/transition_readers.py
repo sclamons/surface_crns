@@ -27,14 +27,15 @@ def read_transition_rules(filename):
     with open(filename, 'rU') as rule_file:
         return parse_transition_rule_stream(rule_file)
 
-def parse_transition_rule_stream(rules_stream):
+def parse_transition_rule_stream(rules_stream, debug = False):
     '''
     Parse a stream of strings containing  transition rules, as from a transition
     rule file.
     See documentation for read_transition_rules for a description of the
     transition rule format.
     '''
-    print("Reading transition rules... ", end = "")
+    if debug:
+        print("Reading transition rules... ", end = "")
     transition_rules = []
     for line in rules_stream:
         if line.startswith(section_ends['transition_rules']):
@@ -43,7 +44,8 @@ def parse_transition_rule_stream(rules_stream):
                 line.startswith("%") or
                 line.strip() == ""):
             transition_rules.append(parse_rule(line))
-    print("done.")
+    if debug:
+        print("done.")
     return transition_rules
 
 '''

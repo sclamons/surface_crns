@@ -15,14 +15,15 @@ def read_grid_state(filename):
     with open(filename, 'rU') as state_file:
         return parse_grid_state_stream(state_file)
 
-def parse_grid_state_stream(grid_state_stream):
+def parse_grid_state_stream(grid_state_stream, debug = False):
     '''
     Read a SimGrid state from a stream of strings, as might be contained in a
     state file.
     See documentation for read_grid_state for a description of the grid state
     format.
     '''
-    print("Reading grid state... ", end = "")
+    if debug:
+        print("Reading grid state... ", end = "")
     grid_state = []
     for line in grid_state_stream:
         if line.startswith(section_ends['init_state']):
@@ -36,5 +37,6 @@ def parse_grid_state_stream(grid_state_stream):
             new_row = new_row[0].split(',')
         grid_state.append(new_row)
     grid_state = np.array(grid_state).transpose()
-    print("done.")
+    if debug:
+        print("done.")
     return grid_state

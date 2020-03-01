@@ -139,7 +139,7 @@ def main():
                                                   self_state,
                                                   position,
                                                   s1+s2+s3+s4)
-                                transition_rule_file.write(rule)
+                                `transition_rule_file.write(rule)
 
     # Close out transition rule file.
     transition_rule_file.close()

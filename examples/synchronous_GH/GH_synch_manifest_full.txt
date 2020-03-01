@@ -8,7 +8,7 @@ pixels_per_node    = 10
 speedup_factor     = 10
 debug              = False
 rng_seed           = 123123123
-max_duration       = 3000
+max_duration       = 50
 fps                = 60
 node_display       = Color
 

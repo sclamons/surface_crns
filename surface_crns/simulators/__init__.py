@@ -1,1 +1,1 @@
-__all__ = ["queue_simulator"]
+__all__ = ["queue_simulator", "queue_simulator_eager"]

@@ -2,10 +2,10 @@ import numpy as np
 import random
 import math
 import os
-from queue import *
+import heapq
 from surface_crns.simulators.event import Event
 
-class QueueSimulator:
+class EagerQueueSimulator:
     '''
     Surface CRN simulator based on Gillespie-like next-reaction determination
     at each node. Upcoming reactions are stored in a priority queue, sorted
@@ -13,6 +13,13 @@ class QueueSimulator:
     each participating node is recalculated and added to the queue. Timestamps
     are used to ensure that a node does not react if it was changed between the
     time its reaction was issued and the time the reaction would occur.
+
+    Removes out-of-date reactions eagerly, meaning that each time a new reaction
+    is added to the queue, out-of-date reactions are immediately removed. This 
+    takes time (linearly) proportional to the number of possible reactions, but 
+    makes each (logN) dequeue reaction faster. 
+
+    Not sure yet if this is efficient for any practical problems.
 
     Uses unimolecular and bimolecular reactions only.
     '''
@@ -47,7 +54,8 @@ class QueueSimulator:
         self.time = 0
         self.surface.set_global_state(self.init_state)
         if self.debug:
-            print("QueueSimulator initialized with global state:\n" + str(self.init_state))
+            print("EagerQueueSimulator initialized with global state:\n" + 
+                    str(self.init_state))
         self.reset()
         if self.debug:
             print(self.surface)
@@ -56,7 +64,7 @@ class QueueSimulator:
         '''
         Clear any reactions in the queue and populate with available reactions.
         '''
-        self.event_queue = PriorityQueue()
+        self.event_queue = []
         self.initialize_reactions()
 
     def initialize_reactions(self):
@@ -68,90 +76,79 @@ class QueueSimulator:
             self.add_next_reactions_with_node(node=node,
                                               first_reactant_only=True,
                                               exclusion_list = [])
+
+    def add_reaction_to_queue(self, reaction):
+        heapq.heappush(self.event_queue, reaction)
+
     def done(self):
         '''
         True iff there are no more reactions or the simulation has reached
         final time.
         '''
-        return self.event_queue.empty() or self.time >= self.simulation_duration
+        return len(self.event_queue) == 0 \
+                or self.time >= self.simulation_duration
 
     def process_next_reaction(self):
         local_debugging = False
         '''
         Process and return the next reaction in the queue:
-        (1) Make sure the reaction is still valid (if not, try the next one
-            instead).
-        (2) Update the surface based on the reaction.
+        (1) Update the surface based on the reaction, step time.
+        (2) Remove all out-of-date reactions from the queue.
         (3) Determine the next reactions for each node involved in the reaction
             and add them to the event queue.
         '''
         next_reaction = None
-        while next_reaction == None:
-            if self.event_queue.empty():
-                self.time = self.simulation_duration
-                return None
+        if len(self.event_queue) == 0:
+            self.time = self.simulation_duration
+            return None
 
-            next_reaction = self.event_queue.get()
-            if next_reaction.time > self.simulation_duration:
-                self.time = self.simulation_duration
-                return None
-            self.time     = next_reaction.time
-            participants  = next_reaction.participants
-            outputs       = next_reaction.rule.outputs
+        next_reaction = heapq.heappop(self.event_queue)
+        if next_reaction.time > self.simulation_duration:
+            self.time = self.simulation_duration
+            return None
+        self.time     = next_reaction.time
+        participants  = next_reaction.participants
+        outputs       = next_reaction.rule.outputs
+        if local_debugging:
+            print(f"Processing event {next_reaction.rule} at time "
+                  f"{self.time}, position {participants[0].position} ")
+
+        if len(participants) > 1:
             if local_debugging:
-                print("Processing event " + str(next_reaction.rule) +
-                      " at time " + str(self.time) + ", position " +
-                      str(participants[0].position) + " ")
+                print(f"and {participants[1].position} ")
+            # Change second reactant
+            participants[1].state = outputs[1]
+        # Change first reactant
+        participants[0].state = outputs[0]
 
-            # If the first input was modified since the event was issued,
-            # don't run it
-            if participants[0].timestamp > next_reaction.time_issued:
-                if local_debugging:
-                    print("ignored -- first reactant changed since event " +
-                          "issued.")
-                next_reaction = None
-                continue
+        if local_debugging:
+            print("processed.")
 
-            if len(participants) > 1:
-                if local_debugging:
-                    print("and " + str(participants[1].position) + " ")
-                # If the second input was modified since the event was
-                # issued, don't run it
-                if participants[1].timestamp > next_reaction.time_issued:
-                    if local_debugging:
-                        print("ignored -- second reactant changed since " +
-                              "event issued.")
-                    next_reaction = None
-                    continue
-                # Change second reactant
-                participants[1].state = outputs[1]
-                participants[1].timestamp = self.time
-            # Change first reactant
-            participants[0].state = outputs[0]
-            participants[0].timestamp = self.time
+        # Empty the priority queue of anything involving site changed in 
+        # this reaction.
+        for site in participants:
+            self.event_queue = [r for r in self.event_queue 
+                                if not site in r.participants]
+        heapq.heapify(self.event_queue)
 
-            if local_debugging:
-                print("processed.")
-
-            # Determine the next reactions performed by each participant
-            # changed in this reaction.
+        # Determine the next reactions performed by each participant
+        # changed in this reaction.
+        if local_debugging:
+            print("Checking for new reactions with node:" + \
+                  str(participants[0]))
+        self.add_next_reactions_with_node(participants[0],
+                                          first_reactant_only = False,
+                                          exclusion_list = [])
+        if len(participants) > 1:
             if local_debugging:
                 print("Checking for new reactions with node:" + \
-                      str(participants[0]))
-            self.add_next_reactions_with_node(participants[0],
-                                              first_reactant_only = False,
-                                              exclusion_list = [])
-            if len(participants) > 1:
-                if local_debugging:
-                    print("Checking for new reactions with node:" + \
-                          str(participants[1]))
-                self.add_next_reactions_with_node(
-                                            participants[1],
-                                            first_reactant_only = False,
-                                            exclusion_list = [participants[0]])
+                      str(participants[1]))
+            self.add_next_reactions_with_node(
+                                        participants[1],
+                                        first_reactant_only = False,
+                                        exclusion_list = [participants[0]])
         if local_debugging:
-            print("process_next_reaction() returning event " +
-                  str(next_reaction))
+            print(f"process_next_reaction() returning event {next_reaction}")
         return next_reaction
     #end def process_next_reaction
 
@@ -199,7 +196,7 @@ class QueueSimulator:
                                   rule = rule,
                                   participants = [node],
                                   time_issued = self.time)
-                self.event_queue.put(new_event)
+                self.add_reaction_to_queue(new_event)
                 if local_debugging:
                     print("Event added: " + str(new_event))
                     print(str(new_event))
@@ -254,7 +251,7 @@ class QueueSimulator:
                                           rule = rule,
                                           participants = new_participants,
                                           time_issued = self.time)
-                        self.event_queue.put(new_event)
+                        self.add_reaction_to_queue(new_event)
                         if local_debugging:
                             print("Event added: " + str(new_event))
             else:
