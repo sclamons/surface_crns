@@ -83,8 +83,15 @@ simulation = None
 def main():
     available_options = optparse.OptionParser()
     available_options.add_option("-m", '--manifest', action = "store",
-                                 type = 'string', dest = 'manifest_filename')
+                                 type = 'string', dest = 'manifest_filename',
+                            help = "points to a manifest file to simulate")
+    available_options.add_option("-v", "--version",
+                  action="store_true", dest="querying_version", default=True,
+                  help="show version and exit")
     (command_line_options, args) = available_options.parse_args(sys.argv)
+    if command_line_options.querying_version:
+        print(f"surface_crns {surface_crns.__version__}")
+        return
     manifest_filename = command_line_options.manifest_filename
     if not manifest_filename:
         raise Exception("Manifest file required (use the flag -m <filename>, " +
