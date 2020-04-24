@@ -8,13 +8,13 @@ pixels_per_node    = 10
 speedup_factor     = 10
 debug              = False
 rng_seed           = 123123123
-max_duration       = 50
+max_duration       = 5000
 fps                = 60
 node_display       = Color
 
 # Transition rules
 !START_TRANSITION_RULES
-!INCLUDE GH_spinning_arrow_rules.txt
+!INCLUDE 3.2_GH_spinning_arrow_rules.txt
 !END_TRANSITION_RULES
 
 # Initial state
@@ -23,17 +23,17 @@ node_display       = Color
 !START_INIT_STATE
 
 # Spiral wave
-!INCLUDE GH_spinning_arrow_init.txt
+#!INCLUDE 3.2_GH_spinning_arrow_spiral_init.txt
 
 # Single pulse
-#!INCLUDE GH_spinning_arrow_pulse_init.txt
+!INCLUDE 3.2_GH_spinning_arrow_pulse_init.txt
 
 # Random start
-#!INCLUDE GH_spinning_arrow_random_init.txt
+#!INCLUDE 3.2_GH_spinning_arrow_random_init.txt
 
 !END_INIT_STATE
 
 # Colormap
 !START_COLORMAP
-!INCLUDE GH_spinning_arrow_colormap.txt
+!INCLUDE 3.2_GH_spinning_arrow_colormap.txt
 !END_COLORMAP

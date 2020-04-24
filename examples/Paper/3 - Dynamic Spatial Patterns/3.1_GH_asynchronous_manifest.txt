@@ -5,6 +5,10 @@
 # Reaction rates must be tuned carefully to prolong
 # the time before chaotic activity sets in.
 #
+# Three initial conditions are given. Uncomment the one you
+# want to use (including the !START_INIT_STATE and !END_INIT_STATE
+# lines) and leave the others commented.
+#
 # Q = quiescent, quiet, inactive
 # A = active, alive, infectious
 # R = refractory, resting, immune
@@ -14,7 +18,7 @@ pixels_per_node    = 10
 speedup_factor     = 5
 rng_seed           = 123123123
 max_duration       = 100
-node_display       = Text
+node_display       = Color
 
 # Transition rules
 !START_TRANSITION_RULES
@@ -105,7 +109,7 @@ R: (0, 100, 255)
 #Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q R R Q Q Q Q Q Q Q R Q Q Q Q Q Q Q A Q R Q Q Q Q Q Q Q Q R Q Q R A Q R R Q Q R Q Q Q Q Q Q Q A
 #!END_INIT_STATE
 
-# Large spiral
+## Large spiral
 !START_INIT_STATE
 Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q
 Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q Q

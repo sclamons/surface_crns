@@ -7,6 +7,11 @@ initial state for a spinning-arrow synchronous emulation surface CRN.
 
 Intended for use with the Greenberg-Hastings examples. No guarantee of success
 in other examples.
+
+Takes the name of a manifest with an initial state (not spinning-arrow 
+construction) as an argument. Call with:
+
+python init_state_to_spinning_arrow_init_state.py example_manifest_filename.txt
 '''
 
 def main():
