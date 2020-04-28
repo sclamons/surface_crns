@@ -1,0 +1,26 @@
+# Author: Erik Winfree
+
+Y + 0 -> 1 + Y (10)
+Y + 1 -> 2 + Y (9)
+Y + 2 -> 3 + Y (8)
+Y + 3 -> 4 + Y (7)
+Y + 4 -> 5 + Y (6)
+Y + 5 -> 6 + Y (5)
+Y + 6 -> 7 + Y (4)
+Y + 7 -> 8 + Y (3)
+Y + 8 -> 9 + Y (2)
+Y + 9 -> 9 + Y (1)
+
+YB + 0 -> 0 + YB (10)
+YB + 1 -> 1 + YB (9)
+YB + 2 -> 2 + YB (8)
+YB + 3 -> 3 + YB (7)
+YB + 4 -> 4 + YB (6)
+YB + 5 -> 5 + YB (5)
+YB + 6 -> 6 + YB (4)
+YB + 7 -> 7 + YB (3)
+YB + 8 -> 8 + YB (2)
+YB + 9 -> 9 + YB (1)
+
+# This strategy changes the markings on the field...
+# players preferentially migrate toward unvisited territory.

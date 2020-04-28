@@ -1,0 +1,26 @@
+# Author: Chigozie Nri
+
+X + 0 -> 9 + X (10)
+X + 1 -> 1 + X (10)
+X + 2 -> 1 + X (10)
+X + 3 -> 1 + X (10)
+X + 4 -> 1 + X (10)
+X + 5 -> 1 + X (10)
+X + 6 -> 1 + X (10)
+X + 7 -> 1 + X (10)
+X + 8 -> 1 + X (10)
+X + 9 -> 9 + X (1)
+
+XB + 0 -> 0 + XB (1)
+XB + 1 -> 1 + XB (1)
+XB + 2 -> 2 + XB (4)
+XB + 3 -> 3 + XB (5)
+XB + 4 -> 4 + XB (6)
+XB + 5 -> 5 + XB (7)
+XB + 6 -> 6 + XB (8)
+XB + 7 -> 7 + XB (9)
+XB + 8 -> 8 + XB (10)
+XB + 9 -> 9 + XB (1)
+
+# This strategy defends against and exploits default team Y (i.e. Erik Winfree's team 1),
+# but should be somewhat robust to exploitation itself.

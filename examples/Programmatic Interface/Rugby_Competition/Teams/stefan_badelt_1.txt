@@ -1,0 +1,24 @@
+# Author: Stefan Badelt
+
+X + 0 -> 5 + X (6) # Start by building
+X + 1 -> 7 + X (4) # the defense field 7
+X + 2 -> 7 + X (4)
+X + 3 -> 2 + X (2) # slowly convert the winners tail
+X + 4 -> 7 + X (4)
+X + 5 -> 7 + X (8)
+X + 6 -> 7 + X (4)
+X + 7 -> 7 + X (3) # slowly move within the defense
+X + 8 -> 7 + X (6)
+X + 9 -> 7 + X (6)
+XB + 0 -> 3 + XB (9)
+XB + 1 -> 3 + XB (8)
+XB + 2 -> 3 + XB (8)
+XB + 3 -> 7 + XB (5)
+XB + 4 -> 3 + XB (8)
+XB + 5 -> 3 + XB (8)
+XB + 6 -> 3 + XB (8)
+XB + 7 -> 3 + XB (5)  # run away from the defense field
+XB + 8 -> 3 + XB (8)
+XB + 9 -> 3 + XB (8)
+
+# Team name is "PrimeDefense"

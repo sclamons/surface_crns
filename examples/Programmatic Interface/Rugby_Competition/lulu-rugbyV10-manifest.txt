@@ -1,0 +1,225 @@
+# sCRN for a molecular game of rugby
+#
+# The background is 0...9, initially set to 0.
+# Team X has seven X's, Team Y has seven Y's.
+# The ball starts in the center.
+# The rugby gods (you all) can edit the rules for X's and Y's interacting with background.
+# X's and Y's interactions with each other, and with the ball, are fixed.
+
+pixels_per_node    = 20
+speedup_factor     = 10
+max_duration       = 200
+node_display       = Color
+
+!START_COLORMAP
+{background 0} 0: (255,255,255)
+{background 1} 1: (245,245,245)
+{background 2} 2: (235,235,235)
+{background 3} 3: (225,225,225)
+{background 4} 4: (215,215,215)
+{background 5} 5: (205,205,205)
+{background 6} 6: (195,195,195)
+{background 7} 7: (185,185,185)
+{background 8} 8: (175,175,175)
+{background 9} 9, 10, 11, 12, 13: (165,165,165)
+{X player & goal} X, GX: (157,91,11)
+{Y player & goal} Y, GY, Y1, Y2, Y3, Y4, Y5, Y6, Y7, Y8, Y9, Y10, Y11, Y12, Y13, Y14, Y15, Y16, Y17: (84,130,53)
+{ball} B: (0,0,0)
+{X w/ball & wins} XB, WX: (255,149,0)
+{Y w/ball & wins} YB, WY: (127,255,0)
+!END_COLORMAP
+
+!START_TRANSITION_RULES
+# Picking up the ball, tackling & grabbing the ball [fixed rules]
+X + B -> XB + 0 (10)
+Y + B -> YB + 0 (10)
+XB + Y -> X + YB (10)
+YB + X -> Y + XB (10)
+
+# Making a goal, declaring the winner [fixed rules]
+XB + GY -> 0 + WX (10)
+GY + WX -> WX + WX (10)
+YB + GX -> 0 + WY (10)
+GX + WY -> WY + WY (10)
+X + WX -> 0 + WX (10)
+Y + WX -> 0 + WX (10)
+X + WY -> 0 + WY (10)
+Y + WY -> 0 + WY (10)
+
+# Movement and strategy for team X [rugby gods edit here]
+#    all rules must have exactly one X or XB on LHS and on RHS
+#    and exactly one 0...9 on LHS and on RHS
+#    with maximum rate 10
+X + 0 -> 0 + X (10)
+X + 1 -> 1 + X (10)
+X + 2 -> 2 + X (10)
+X + 3 -> 3 + X (10)
+X + 4 -> 4 + X (10)
+X + 5 -> 5 + X (10)
+X + 6 -> 6 + X (10)
+X + 7 -> 7 + X (10)
+X + 8 -> 8 + X (10)
+X + 9 -> 9 + X (10)
+XB + 0 -> 0 + XB (10)
+XB + 1 -> 1 + XB (10)
+XB + 2 -> 2 + XB (10)
+XB + 3 -> 3 + XB (10)
+XB + 4 -> 4 + XB (10)
+XB + 5 -> 5 + XB (10)
+XB + 6 -> 6 + XB (10)
+XB + 7 -> 7 + XB (10)
+XB + 8 -> 8 + XB (10)
+XB + 9 -> 9 + XB (10)
+# This strategy is just random walking, plain and simple... and slow, at that.
+
+# Movement and strategy for team Y [rugby gods edit here]
+#    all rules must have exactly one Y or YB on LHS and on RHS
+#    and exactly one 0...9 on LHS and on RHS
+#    with maximum rate 10
+
+# set up initial condition for a line
+Y + 0 -> Y1 + 1 (10)
+Y + 0 -> Y2 + 2 (10)
+Y + 0 -> Y3 + 3 (10)
+Y + 0 -> Y4 + 4 (10)
+Y + 0 -> Y5 + 5 (10)
+Y + 0 -> Y6 + 6 (10)
+Y + 0 -> Y7 + 7 (10)
+
+Y1 + 0 -> Y1 + 1 (10)
+Y2 + 0 -> Y2 + 2 (10)
+Y3 + 0 -> Y3 + 3 (10)
+Y4 + 0 -> Y4 + 4 (10)
+Y5 + 0 -> Y5 + 5 (10)
+Y6 + 0 -> Y6 + 6 (10)
+Y7 + 0 -> Y7 + 7 (10)
+
+Y1 + 2 -> Y8 + 8 (10)
+Y1 + 3 -> Y8 + 8 (10)
+Y1 + 4 -> Y8 + 8 (10)
+Y1 + 5 -> Y8 + 8 (10)
+Y1 + 6 -> Y8 + 8 (10)
+Y1 + 7 -> Y8 + 8 (10)
+
+Y2 + 1 -> Y8 + 8 (10)
+Y2 + 3 -> Y8 + 8 (10)
+Y2 + 4 -> Y8 + 8 (10)
+Y2 + 5 -> Y8 + 8 (10)
+Y2 + 6 -> Y8 + 8 (10)
+Y2 + 7 -> Y8 + 8 (10)
+
+Y3 + 1 -> Y8 + 8 (10)
+Y3 + 2 -> Y8 + 8 (10)
+Y3 + 4 -> Y8 + 8 (10)
+Y3 + 5 -> Y8 + 8 (10)
+Y3 + 6 -> Y8 + 8 (10)
+Y3 + 7 -> Y8 + 8 (10)
+
+Y4 + 1 -> Y8 + 8 (10)
+Y4 + 2 -> Y8 + 8 (10)
+Y4 + 3 -> Y8 + 8 (10)
+Y4 + 5 -> Y8 + 8 (10)
+Y4 + 6 -> Y8 + 8 (10)
+Y4 + 7 -> Y8 + 8 (10)
+
+Y5 + 1 -> Y8 + 8 (10)
+Y5 + 2 -> Y8 + 8 (10)
+Y5 + 3 -> Y8 + 8 (10)
+Y5 + 4 -> Y8 + 8 (10)
+Y5 + 6 -> Y8 + 8 (10)
+Y5 + 7 -> Y8 + 8 (10)
+
+Y6 + 1 -> Y8 + 8 (10)
+Y6 + 2 -> Y8 + 8 (10)
+Y6 + 3 -> Y8 + 8 (10)
+Y6 + 4 -> Y8 + 8 (10)
+Y6 + 5 -> Y8 + 8 (10)
+Y6 + 7 -> Y8 + 8 (10)
+
+Y7 + 1 -> Y8 + 8 (10)
+Y7 + 2 -> Y8 + 8 (10)
+Y7 + 3 -> Y8 + 8 (10)
+Y7 + 4 -> Y8 + 8 (10)
+Y7 + 5 -> Y8 + 8 (10)
+Y7 + 6 -> Y8 + 8 (10)
+
+Y8 + 8 -> 8 + Y9 (10)
+
+Y9 + 1 -> Y10 + 9 (10)
+Y9 + 2 -> Y10 + 9 (10)
+Y9 + 3 -> Y10 + 9 (10)
+Y9 + 4 -> Y10 + 9 (10)
+Y9 + 5 -> Y10 + 9 (10)
+Y9 + 6 -> Y10 + 9 (10)
+Y9 + 7 -> Y10 + 9 (10)
+
+Y1 + Y10 -> Y11 + Y10 (10)
+Y2 + Y10 -> Y11 + Y10 (10)
+Y3 + Y10 -> Y11 + Y10 (10)
+Y4 + Y10 -> Y11 + Y10 (10)
+Y5 + Y10 -> Y11 + Y10 (10)
+Y6 + Y10 -> Y11 + Y10 (10)
+Y7 + Y10 -> Y11 + Y10 (10)
+
+# line
+Y10 + 0 -> Y10 + 10 (10)
+Y10 + 1 -> Y10 + 10 (10)
+Y10 + 2 -> Y10 + 10 (10)
+Y10 + 3 -> Y10 + 10 (10)
+Y10 + 4 -> Y10 + 10 (10)
+Y10 + 5 -> Y10 + 10 (10)
+Y10 + 6 -> Y10 + 10 (10)
+Y10 + 7 -> Y10 + 10 (10)
+Y10 + 8 -> Y10 + 10 (10)
+Y11 + 0 -> Y11 + 11 (10)
+Y11 + 1 -> Y11 + 11 (10)
+Y11 + 2 -> Y11 + 11 (10)
+Y11 + 3 -> Y11 + 11 (10)
+Y11 + 4 -> Y11 + 11 (10)
+Y11 + 5 -> Y11 + 11 (10)
+Y11 + 6 -> Y11 + 11 (10)
+Y11 + 7 -> Y11 + 11 (10)
+Y11 + 8 -> Y11 + 11 (10)
+10 + 11 -> 12 + 13 (10)
+12 + Y10 -> Y10 + 9 (10)
+13 + Y11 -> Y11 + 9 (10)
+
+# pick ball
+Y10 + B -> YB + 0 (10)
+Y10 + XB -> YB + X (10)
+
+# continue line
+YB + 0 -> YB + 10 (10)
+YB + 1 -> YB + 10 (10)
+YB + 2 -> YB + 10 (10)
+YB + 3 -> YB + 10 (10)
+YB + 4 -> YB + 10 (10)
+YB + 5 -> YB + 10 (10)
+YB + 6 -> YB + 10 (10)
+YB + 7 -> YB + 10 (10)
+YB + 8 -> YB + 10 (10)
+12 + YB -> YB + 9 (10)
+
+!END_TRANSITION_RULES
+
+!START_INIT_STATE 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0
+0 GX GX GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY GY GY 0
+0 GX 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 GY 0
+0 GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY 0
+0 GX 0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0 GY 0
+0 GX 0 0 0 X 0 0 0 0 0 0 0 B 0 0 0 0 0 0 0 Y 0 0 0 GY 0
+0 GX 0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0 GY 0
+0 GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY 0
+0 GX 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 GY 0
+0 GX GX GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY GY GY 0
+0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+!END_INIT_STATE

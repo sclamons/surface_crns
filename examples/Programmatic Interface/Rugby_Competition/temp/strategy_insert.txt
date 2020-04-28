@@ -1,0 +1,50 @@
+# Author: Erik Winfree
+
+X + 0 -> 0 + X (100)
+X + 1 -> 1 + X (100)
+X + 2 -> 2 + X (100)
+X + 3 -> 3 + X (100)
+X + 4 -> 4 + X (100)
+X + 5 -> 5 + X (100)
+X + 6 -> 6 + X (100)
+X + 7 -> 7 + X (100)
+X + 8 -> 8 + X (100)
+X + 9 -> 9 + X (100)
+
+XB + 0 -> 0 + XB (100)
+XB + 1 -> 1 + XB (100)
+XB + 2 -> 2 + XB (100)
+XB + 3 -> 3 + XB (100)
+XB + 4 -> 4 + XB (100)
+XB + 5 -> 5 + XB (100)
+XB + 6 -> 6 + XB (100)
+XB + 7 -> 7 + XB (100)
+XB + 8 -> 8 + XB (100)
+XB + 9 -> 9 + XB (100)
+
+# This strategy is just random walking, plain and simple... but cheating fast!
+# Author: Erik Winfree
+
+Y + 0 -> 0 + Y (100)
+Y + 1 -> 1 + Y (100)
+Y + 2 -> 2 + Y (100)
+Y + 3 -> 3 + Y (100)
+Y + 4 -> 4 + Y (100)
+Y + 5 -> 5 + Y (100)
+Y + 6 -> 6 + Y (100)
+Y + 7 -> 7 + Y (100)
+Y + 8 -> 8 + Y (100)
+Y + 9 -> 9 + Y (100)
+
+YB + 0 -> 0 + YB (100)
+YB + 1 -> 1 + YB (100)
+YB + 2 -> 2 + YB (100)
+YB + 3 -> 3 + YB (100)
+YB + 4 -> 4 + YB (100)
+YB + 5 -> 5 + YB (100)
+YB + 6 -> 6 + YB (100)
+YB + 7 -> 7 + YB (100)
+YB + 8 -> 8 + YB (100)
+YB + 9 -> 9 + YB (100)
+
+# This strategy is just random walking, plain and simple... but cheating fast!

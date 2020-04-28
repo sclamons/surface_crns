@@ -1,0 +1,25 @@
+# Author: Erik Winfree, based on suggestion by Chigozie Nri
+
+X + 0 -> 3 + X (10)
+X + 1 -> 4 + X (10)
+X + 2 -> 5 + X (10)
+X + 3 -> 6 + X (10)
+X + 4 -> 7 + X (10)
+X + 5 -> 8 + X (10)
+X + 6 -> 9 + X (10)
+X + 7 -> 0 + X (10)
+X + 8 -> 1 + X (10)
+X + 9 -> 2 + X (10)
+
+XB + 0 -> 7 + XB (10)
+XB + 1 -> 8 + XB (10)
+XB + 2 -> 9 + XB (10)
+XB + 3 -> 0 + XB (10)
+XB + 4 -> 1 + XB (10)
+XB + 5 -> 2 + XB (10)
+XB + 6 -> 3 + XB (10)
+XB + 7 -> 4 + XB (10)
+XB + 8 -> 5 + XB (10)
+XB + 9 -> 6 + XB (10)
+
+# This strategy is just random walking, while also scrambling signals on the field.

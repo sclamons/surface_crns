@@ -1,0 +1,9 @@
+# Author: Chigozie Nri
+# For Competition 3 only -- total sum of rates <= 200
+
+X + 0 -> 0 + X (100)
+
+XB + 0 -> 0 + XB (100)
+
+# Try to get there first!
+

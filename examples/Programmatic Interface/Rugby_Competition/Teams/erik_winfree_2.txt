@@ -1,0 +1,28 @@
+# Author: Erik Winfree
+
+Y + 0 -> 1 + Y (10)
+Y + 1 -> 1 + Y (1)
+Y + 2 -> 2 + Y (1)
+Y + 3 -> 3 + Y (1)
+Y + 4 -> 4 + Y (1)
+Y + 5 -> 5 + Y (1)
+Y + 6 -> 6 + Y (1)
+Y + 7 -> 7 + Y (1)
+Y + 8 -> 8 + Y (5)
+Y + 8 -> 1 + Y (1)
+Y + 9 -> 8 + Y (10)
+
+YB + 0 -> 9 + YB (10)
+YB + 1 -> 9 + YB (10)
+YB + 2 -> 9 + YB (10)
+YB + 3 -> 9 + YB (10)
+YB + 4 -> 9 + YB (10)
+YB + 5 -> 9 + YB (10)
+YB + 6 -> 9 + YB (10)
+YB + 7 -> 9 + YB (10)
+YB + 8 -> 9 + YB (10)
+YB + 9 -> 9 + YB (1)
+
+# After a sprint into new territory to try to get the ball,
+# this strategy tries to attract all of the players on the team to surround 
+# the player carrying the ball, protecting the ball carrier from having the ball stolen.

@@ -1,0 +1,26 @@
+# Author: Erik Winfree, combining two suggestions by Chigozie Nri
+
+X + 0 -> 3 + X (28)
+X + 1 -> 4 + X (8)
+X + 2 -> 5 + X (8)
+X + 3 -> 6 + X (8)
+X + 4 -> 7 + X (8)
+X + 5 -> 8 + X (8)
+X + 6 -> 9 + X (8)
+X + 7 -> 0 + X (8)
+X + 8 -> 1 + X (8)
+X + 9 -> 2 + X (8)
+
+XB + 0 -> 7 + XB (28)
+XB + 1 -> 8 + XB (8)
+XB + 2 -> 9 + XB (8)
+XB + 3 -> 0 + XB (8)
+XB + 4 -> 1 + XB (8)
+XB + 5 -> 2 + XB (8)
+XB + 6 -> 3 + XB (8)
+XB + 7 -> 4 + XB (8)
+XB + 8 -> 5 + XB (8)
+XB + 9 -> 6 + XB (8)
+
+# This strategy is just random walking, while also scrambling signals on the field.
+# It starts with a burst of speed to get to the ball first and score quickly.

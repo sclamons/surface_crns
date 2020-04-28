@@ -1,0 +1,26 @@
+# Author: Chigozie Nri and Adam Butler
+# For Competition 3 only -- total sum of rates <= 200
+
+X + 0 -> 0 + X (91)
+X + 1 -> 0 + X (1)
+X + 2 -> 0 + X (1)
+X + 3 -> 0 + X (1)
+X + 4 -> 0 + X (1)
+X + 5 -> 0 + X (1)
+X + 6 -> 0 + X (1)
+X + 7 -> 0 + X (1)
+X + 8 -> 0 + X (1)
+X + 9 -> 0 + X (1)
+XB + 0 -> 0 + XB (1)
+XB + 1 -> 0 + XB (11)
+XB + 2 -> 0 + XB (11)
+XB + 3 -> 0 + XB (11)
+XB + 4 -> 0 + XB (11)
+XB + 5 -> 0 + XB (11)
+XB + 6 -> 0 + XB (11)
+XB + 7 -> 0 + XB (11)
+XB + 8 -> 0 + XB (11)
+XB + 9 -> 0 + XB (11)
+
+# Try to get there first!  But don't get stuck.
+

@@ -1,0 +1,32 @@
+# Author: Sam Clamons
+
+X + 0 -> 0 + X (1)
+X + 1 -> 0 + X (10)
+X + 2 -> 0 + X (10)
+X + 3 -> 0 + X (10)
+X + 4 -> 0 + X (10)
+X + 5 -> 0 + X (10)
+X + 6 -> 0 + X (10)
+X + 7 -> 0 + X (10)
+X + 8 -> 0 + X (10)
+X + 9 -> 0 + X (10)
+
+XB + 0 -> 1 + XB (10)
+XB + 1 -> 1 + XB (1)
+XB + 2 -> 1 + XB (10)
+XB + 3 -> 1 + XB (10)
+XB + 4 -> 1 + XB (10)
+XB + 5 -> 1 + XB (10)
+XB + 6 -> 1 + XB (10)
+XB + 7 -> 1 + XB (10)
+XB + 8 -> 1 + XB (10)
+XB + 9 -> 1 + XB (10)
+
+# This strategy assumes that other strategies will attempt to modify the field.
+# Players wander slowly, leaving the field unmarked until they encounters another team's "scent".
+# They then zip upstream toward the source of the scent (hopefully),
+# blanking out that scent as they go both to try to bias movement toward the other team
+# and to scramble whatever that team is trying to set up. 
+#
+# Once a player has the ball, it switches from moving slowly through 0s
+# to moving slowly through 0s and zipping through everything else in an effort to find the goal.

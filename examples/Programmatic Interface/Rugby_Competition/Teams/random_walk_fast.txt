@@ -1,0 +1,25 @@
+# Author: Erik Winfree
+
+X + 0 -> 0 + X (10)
+X + 1 -> 1 + X (10)
+X + 2 -> 2 + X (10)
+X + 3 -> 3 + X (10)
+X + 4 -> 4 + X (10)
+X + 5 -> 5 + X (10)
+X + 6 -> 6 + X (10)
+X + 7 -> 7 + X (10)
+X + 8 -> 8 + X (10)
+X + 9 -> 9 + X (10)
+
+XB + 0 -> 0 + XB (10)
+XB + 1 -> 1 + XB (10)
+XB + 2 -> 2 + XB (10)
+XB + 3 -> 3 + XB (10)
+XB + 4 -> 4 + XB (10)
+XB + 5 -> 5 + XB (10)
+XB + 6 -> 6 + XB (10)
+XB + 7 -> 7 + XB (10)
+XB + 8 -> 8 + XB (10)
+XB + 9 -> 9 + XB (10)
+
+# This strategy is just random walking, plain and simple... but fast!
