@@ -1,0 +1,109 @@
+# Run settings
+pixels_per_node    = 10
+speedup_factor     = 500
+debug              = False
+rng_seed           = 123123123
+max_duration       = 50000
+fps                = 60
+node_display       = color
+geometry           = square
+wrap               = true
+
+!START_TRANSITION_RULES
+# Background: O
+# Dirt: D
+# Dirt on dirt: DD
+# Searching ant: As
+# Dirt carrying ant: Ad
+# Running away ant: Al
+
+# random walk
+(1) As + O -> O + As
+# pick up dirt
+(1) As + D -> Ad + O
+# random walk while carrying dirt
+(1) Ad + O -> O + Ad
+# put down dirt on top of another dirt
+(1) Ad + D -> Al + DD
+# dirt moves on dirt until finds an empty spot
+(1) DD + D -> D + DD
+(0.1) DD + O -> D + D
+# take a few steps away
+(1) Al + O -> O + Al
+(0.1) Al -> As
+
+!END_TRANSITION_RULES
+
+# Initial state
+!START_INIT_STATE
+O O O O O O O O O D O O O O O O O O O O O O O O O O O D D O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O
+O O O O O D O O O O O O O O O D O O O O O D O O O O O O O O O D O O O O O O O O O O O O O O O O O O O O O O O O O O O O
+O O O O D O O D O O O O O O O O O D O D O O O O D O O O D O O O O O O O D O D O O O O O O O O O D O O O O O O O O O D O
+O O O O D O O O O O O O O O O D O O O O D O O O O O O O O O O O O O O O O O O D D O O O O D O O O O O O O O O O O O O O
+D O O O D D O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O O O O O O O O O D O O O O
+O O O O D O O O D O O O O O D O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O O D O O O O O O
+D O O O O O D D O O O O O D O O O O O O O O O O O O D O O O O O O D O O O D O O O O O O O O O O O O O O O O O O O O O O
+D O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O O D O O O O O O O O O O O
+D O O O O O O O O O O O O D O O O O O O O O O D O O O O O O O O O O O O O O D O O O O O D O O O D O O O O O O O O O O O
+O O D O O O O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O O D O O O D O D O D O D O D O O O O O O O O O O
+O D O O O O O O O O O O O O O O O O O O O D O O O D D O O O O O O O O D O O O O O O O D O O O O O O O D O O D O O O O O
+O O O O O O O O O O O O O O O O O O O D O O O O O O D O O O O O O O O O O O O O O O O O O O O D O O O O O O O O D O O O
+O O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O O O O O O O O O O O D D O O O D O D O O O O D D D O
+O O O O O O O O O O O O D O O O O O O O O O O O O O O O O O D O O O O O O O O O O O D O O O O O O O D O O O O O O O O O
+O O O O O O O O O O D O As O O O O D D O O O O D O O O O O O O O D O O O O O O D O O D O O O O O O O O O D O O O D O O O
+O O O O O D O O O O O O O O O O O O O O D O O O D O O O O O O O O O O D O O O D O O O O O O O O O O O O O O O O O D O O
+O O O O O O O D O O O O D O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O D O O O O O O O O O O O O O
+O O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O D O O O O O O O O O O O D O O O O O O O O D O O O O D O D
+O O O O O O O D O O O O O O O O O O O O O O O O D O O O O O O O As O O D O D O O O O O O D O D O O O O O O O O O O O O O
+O O O O O O D O D O O O O O O O O O O O D D O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O O O O O O O O
+O O O O O O O O D O O O O O D O O O O O O O D O O O O O O O O O O D O O O O O O O O O O O O O O O O O O O O O O O O O O
+O O O O O O O O O O O D O O O O O O D O O O D O O O O O O O O O O O O O O O D O O O O O O O O O O D O O O O O O O O O O
+O O O D O D O O O O O O O O O O O O O O O O O O As O O O O D O O O O O O O O O D O O O O O D O O D O O O O O O O O O D O
+O O O D O O O O O O D O O O O O O O O O O D O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O O O O O O
+O O O D D O O O O O O O O O O As O D O O O O O O O O O O O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O
+O O O O O O O O O O O O O O D O O O O O D O O D O O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O O O
+O O O O O D O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O O O O D O D O O
+O O O O D O O O O D O O O O As D O O O O O O O O O O O O O O O O O O O D O O O O O O As D O O O O O D O O O O O O O O O O
+O O D D D O O O O O O O O O O O O D O O O O O O O O O O O O O D O O O O O O D O O O D O O O O O O O O O O O O O O O O D
+O O O O O O O O O O O O O O O O O O O O O D O O D O O D O O O O O O O O O O O O O O O O O O O O O O O O O O D O O O O O
+O O O O O O O O O O D O O O O O D O O O O O O O O O O D O D O O O O O O O O O D D O O D O O O O O O O D O O O O O O O D
+O O O O O O O O O O O O O O O O O O D O O O D O D O O O O O O O O O D O O O D O O O O O O D D O O O O O O O O O O O O O
+O O O O O O O O O O O D O O O O O O O O O O O O O O O O O O O O D O O O O O O O D O O O O O O O O O O O O O O O O O O O
+O O O O O O D O O O O O O D O O O O D O O O O O O O D O O O O O O O O O O O O D O O O O O O O O D O O O O O O O O O D O
+O O O O O O O O O O O O O O D O O O O O O O O O O O D D O O O O O O O O O O O O O O O O O D O O O O D O O O O O O O O O
+O O O O O D O O O O O O O O O O O O D O O O D O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O D O O O O O O
+O O O D O O O O O O O O O O D O O O O O O O O O O O O D D O O O O O D O O O O O O O O O D O D O O O O O O O O O O O O O
+O O O O O O O D O O O O O D O O O O O O D O O D O O O O O O D O O O O O O O O D O D O O O O O O O O O O O O O O O O O O
+O D O O O O O O O D O O O O O O O O O D O O O O O O O O O O O O O O O O O D O O D O O O O O O O O O O O O O O O D O O O
+O O O O O O O O O O O O O O O O O O D O O D O O O O O O O O O D O O O O O O O O O O O O D O O O O O O O O O O O O O O O
+O O O O O O O O O O O O O O O O O O O O O O O D O D D O O O O O D O O O O O O O O O O O O O O O O O O O O D O O O O O O
+O O O O O O O O O O O O O O O O D O O O D O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O O O O D O O O O O
+O O D O O O O O O O O O O O O O O O D D D O O O O O O O O D O O O O O O O D O O O O O O O O O O O D O O O O O O O O O O
+O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O D O O O O O O O O O O O O
+O O O O O O O O D O O O O O O O O O O O O O O As O O O O O O O D O O O D O O O O O O O O O O O O O O O O D O O O O O O O
+O O O O O O O O O O D O O O O O O O D O O O O O O O O O D O O O O O O O O O O O O O D O O O O O O O O O O O O D O O O O
+O O O O D O O O O O O O O D O O O O O O O O O D O O O D O O O O D O O O O O O O O O O D D O O O O O O O As O O D O O O O
+O O O D O O O O O D O O O O O O O O O O O O O O O O O O O O O O O O O O O D O D O O O O O O D O O O O O O O O O O O O O
+O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O O O O O O O O D O O O O O O
+O O D O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O O O D O O O D
+O O O O O O O O O O O O O O D O D O O O O O O O D O O O O O O O O O O O D O O O O O O O O O D O O O O O O O O O O O O O
+O O O O O O O O O O O O O O O D O O O O O O D O O O O O O O O O O O O O D O O O O O O O O O D O O O O O D O O O O O O O
+O O O O O O O O O O O O O O O O O O O O O O O O D D O O O O O O O O O O O O O O D O O D O O O O O O O O O O D O O O O O
+O O O O O O O O O O O O O O D O O O D O O D O O O O O O O O O O O O O O O D O O D O O O D O D O O O O O O O O O O O D O
+O O D O O O O O O D O D O O O O O O O O O O O O O O O O O O O D O O O O O O O O D O O D O O O O O O O O O O O O O O O D
+O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O D O O O O D O O O O O O O O O
+O O O O O D O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O O O O O O O D
+O O O O O O O O O O D O O D O O O O O O O D O O O O O O O O O O O O O O O O O O O D O O O O O O O O O O O O D O D O O O
+O O O As O D O O O O O O O O O D D O O D O D O O O O O O O O O O O O O O O O O O O D O O O O O D As O O O D D O O O O D O
+O O O O O O O D O D D O O O O O O D O D O O O O D O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O O
+!END_INIT_STATE
+
+# Colormap
+!START_COLORMAP
+{Background} O: (240, 240, 240)
+{Dirt} D: (140,81, 10)
+{Dirt Pile} DD: (70, 40, 5)
+{Searching ant} As: (175, 175, 255)
+{Ant carrying dirt} Ad: (1, 100, 255)
+{Ant Running Away} Al: (255, 0, 0)
+!END_COLORMAP

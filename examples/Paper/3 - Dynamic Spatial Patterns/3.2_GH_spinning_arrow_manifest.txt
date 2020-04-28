@@ -4,7 +4,7 @@
 # Please be patient; this simulation can take a few minutes to initialize. 
 
 # Run settings
-pixels_per_node    = 10
+pixels_per_node    = 1
 speedup_factor     = 10
 debug              = False
 rng_seed           = 123123123
