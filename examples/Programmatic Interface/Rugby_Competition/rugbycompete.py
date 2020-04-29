@@ -43,9 +43,8 @@ def main():
   # THEN set the random seed for simulations for replicability.
   all_results = [f for f in os.listdir(results_loc) 
                   if os.path.isfile(os.path.join(results_loc, f))]  
-  used_uids = [filename.split(".")[0].split("_")[-1] 
+  used_uids = [int(filename.split(".")[0].split("_")[-1]) 
                for filename in all_results]
-
   random.seed(0)
   while True:
     uid = random.randint(1,1000000)
@@ -61,47 +60,68 @@ def main():
   K=len(teams)
 
   score=[[(0,0) for i in range(K)] for j in range(K)]
+  match_count = 0
   for i in range(K):
     for j in range(K):
       if not i==j:
         #print(f"\n({i*K + j+1}/{K*K}) ", end = "")
         #print(f"Playing {teamnames[i]} vs. {teamnames[j]}\t\t", end = "")
         create_strategy_insert(teams[i], teams[j])
-        score[i][j] = compete_teams(teams[i], teams[j], n_points, manifest_file)
-        print('Finished competing team {} against team {}.'.format(i,j))
+        res = []
+        for k in range(n_points):
+          progress = 100*(match_count*n_points + k) /(K*(K-1)*n_points)
+          progress_text = f"\r({progress:3.1f}%) Running game " + \
+                          f"{k+1}/{n_points} of " + \
+                          f"{teams[i]} against {teams[j]}"
+          if match_count==0 and k==0:
+            prev_text_len = len(progress_text) 
+          print(("{0:<" + str(prev_text_len) + "}").format(progress_text), 
+                end = "")
+          prev_text_len = len(progress_text)
+          res.append(run_game(manifest_file))
 
-  print()
-  line = "{:<30}  ".format("")
-  for j in range(K):
-      teamabrv= "".join([w[0] for w in teams[j].split("_")])
-      line=line+" {:^7} ".format(teamabrv)
-  print(line)
-  for i in range(K):
-    line = "{:<30} :".format(teams[i])
+        Xpoints = sum([(r=='X') for r in res])
+        Ypoints = sum([(r=='Y') for r in res])
+        # print('X (%s) wins %d times' % (teamXfile,Xpoints))
+        # print('Y (%s) wins %d times' % (teamYfile,Ypoints))
+        # print('%d ties' % (sum([(i=='N') for i in res])))
+        score[i][j] = (Xpoints,Ypoints)
+        match_count += 1
+        # print('Finished competing team {} against team {}.'.format(i,j))
+
+  result_filename = os.path.join(results_loc, f"results_{uid}.txt")
+  print("Done. Writing results to " + result_filename)
+
+  with open(result_filename, 'w') as outfile:
+    line = "{:<30}  ".format("")
     for j in range(K):
-        line=line+" {:>3}/{:<3} ".format(score[i][j][0],score[i][j][1])
-    print(line)
-  print()
-
-  wins=[0 for i in range(K)]
-  for i in range(K):
+        teamabrv= "".join([w[0] for w in teams[j].split("_")])
+        line=line+" {:^7} ".format(teamabrv)
+    outfile.write(line + "\n")
+    for i in range(K):
+      line = "{:<30} :".format(teams[i])
       for j in range(K):
-          if not i==j:
-              wins[i]=wins[i]+int(score[i][j][0]>score[i][j][1])
-              wins[i]=wins[i]+int(score[j][i][1]>score[j][i][0])
-  totals=[0 for i in range(K)]
-  for i in range(K):
-      for j in range(K):
-          if not i==j:
-              totals[i]=totals[i]+score[i][j][0]
-              totals[i]=totals[i]+score[j][i][1]
-              
-  ranked=sorted(range(K), key=lambda k: -wins[k])
-  for k in range(K):            
-      print('Team {} won {} points against other teams, while beating {} teams.'.format(teams[ranked[k]],totals[ranked[k]],wins[ranked[k]]))
-  print()
-
-  # os.remove(manifile)
+          line=line+" {:>3}/{:<3} ".format(score[i][j][0],score[i][j][1])
+      outfile.write(line + "\n")
+    outfile.write("\n")
+    wins=[0 for i in range(K)]
+    for i in range(K):
+        for j in range(K):
+            if not i==j:
+                wins[i]=wins[i]+int(score[i][j][0]>score[i][j][1])
+                wins[i]=wins[i]+int(score[j][i][1]>score[j][i][0])
+    totals=[0 for i in range(K)]
+    for i in range(K):
+        for j in range(K):
+            if not i==j:
+                totals[i]=totals[i]+score[i][j][0]
+                totals[i]=totals[i]+score[j][i][1]
+                
+    ranked=sorted(range(K), key=lambda k: -wins[k])
+    for k in range(K):            
+        outfile.write(f'Team {teams[ranked[k]]} won {totals[ranked[k]]} ' + \
+                      f'points against other teams, while beating ' + \
+                      f'{wins[ranked[k]]} teams.\n')
 
 
 def create_strategy_insert(teamXfile,teamYfile):
@@ -138,17 +158,7 @@ def run_game(manifest_file):
         return 'X'
     elif 'WY' in [j for i in end_state for j in i]:
         return 'Y'
-    return 'N'
-
-def compete_teams(teamXfile, teamYfile, n_points, manifest_file):
-  print(f'Competing {teamXfile} against {teamYfile} for {n_points} games.')
-  res = [run_game(manifest_file) for i in range(n_points)]
-  Xpoints = sum([(i=='X') for i in res])
-  Ypoints = sum([(i=='Y') for i in res])
-  print('X (%s) wins %d times' % (teamXfile,Xpoints))
-  print('Y (%s) wins %d times' % (teamYfile,Ypoints))
-  print('%d ties' % (sum([(i=='N') for i in res])))
-  return (Xpoints,Ypoints)
+    return 'N'  
 
 
 if __name__ == "__main__":

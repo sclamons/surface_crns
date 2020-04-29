@@ -1,0 +1,10 @@
+                                   rwc      cn1      rwf      ew1   
+random_walk_cheat.txt          :   0/0      4/6      6/4      2/8   
+chigozie_nri_1.txt             :   5/2      0/0      2/7      1/8   
+random_walk_fast.txt           :   2/8      6/4      0/0      4/6   
+erik_winfree_1.txt             :   0/10     0/7      0/8      0/0   
+
+Team random_walk_cheat.txt won 32 points against other teams, while beating 3 teams.
+Team chigozie_nri_1.txt won 25 points against other teams, while beating 3 teams.
+Team random_walk_fast.txt won 31 points against other teams, while beating 3 teams.
+Team erik_winfree_1.txt won 22 points against other teams, while beating 3 teams.

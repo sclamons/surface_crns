@@ -1,28 +1,28 @@
 # Author: Erik Winfree
-# For Competition 3 only -- total sum of rates <= 200
+# For Competition 3 onlX -- total sum of rates <= 200
 
-Y + 0 -> 1 + Y (46)
-Y + 1 -> 1 + Y (1)
-Y + 2 -> 1 + Y (1)
-Y + 3 -> 1 + Y (1)
-Y + 4 -> 1 + Y (1)
-Y + 5 -> 1 + Y (1)
-Y + 6 -> 1 + Y (1)
-Y + 7 -> 1 + Y (1)
-Y + 8 -> 1 + Y (1)
-Y + 9 -> 1 + Y (1)
+X + 0 -> 1 + X (46)
+X + 1 -> 1 + X (1)
+X + 2 -> 1 + X (1)
+X + 3 -> 1 + X (1)
+X + 4 -> 1 + X (1)
+X + 5 -> 1 + X (1)
+X + 6 -> 1 + X (1)
+X + 7 -> 1 + X (1)
+X + 8 -> 1 + X (1)
+X + 9 -> 1 + X (1)
 
-YB + 0 -> 1 + YB (5)
-YB + 1 -> 1 + YB (100)
-YB + 2 -> 1 + YB (5)
-YB + 3 -> 1 + YB (5)
-YB + 4 -> 1 + YB (5)
-YB + 5 -> 1 + YB (5)
-YB + 6 -> 1 + YB (5)
-YB + 7 -> 1 + YB (5)
-YB + 8 -> 1 + YB (5)
-YB + 9 -> 1 + YB (5)
+XB + 0 -> 1 + XB (5)
+XB + 1 -> 1 + XB (100)
+XB + 2 -> 1 + XB (5)
+XB + 3 -> 1 + XB (5)
+XB + 4 -> 1 + XB (5)
+XB + 5 -> 1 + XB (5)
+XB + 6 -> 1 + XB (5)
+XB + 7 -> 1 + XB (5)
+XB + 8 -> 1 + XB (5)
+XB + 9 -> 1 + XB (5)
 
-# After a sprint into new territory to try to get the ball,
-# try to make the background all "1" so the player in posession
-# can run as fast as possible (though only to visited sites).
+# After a sprint into new territorX to trX to get the ball,
+# trX to make the background all "1" so the plaXer in posession
+# can run as fast as possible (though onlX to visited sites).

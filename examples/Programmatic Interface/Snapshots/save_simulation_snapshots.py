@@ -10,10 +10,10 @@ def main():
     # # sCRNs maps manifest filenames to lists of times at which to save. 
     # # Uncomment lines for sCRNs you'd like to save.
     sCRNs = dict()
-    sCRNs["GH_big_spiral_manifest.txt"] = [50, 200, 350, 770, 1200]
-    # sCRNs["big_GoL_manifest.txt"] = [0, 1]
-    sCRNs["bitmap_butterfly_manifest.txt"] = [0, 50, 150, 250, 300, 350, 500]
-    sCRNs["anthill_manifest.txt"] = [100, 2000, 5000, 14000, 20000]
+    # sCRNs["GH_big_spiral_manifest.txt"] = [50, 200, 350, 770, 1200]
+    sCRNs["big_GoL_manifest.txt"] = [500*i for i in range(10)]
+    # sCRNs["bitmap_butterfly_manifest.txt"] = [0, 50, 150, 250, 300, 350, 500]
+    # sCRNs["anthill_manifest.txt"] = [100, 2000, 5000, 14000, 20000]
 
     for name, times in sCRNs.items():
         base_name = name.split(".")[0].replace("_manifest", "")

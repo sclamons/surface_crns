@@ -1,62 +1,5 @@
-# sCRN for a molecular game of rugby
-#
-# The background is 0...9, initially set to 0.
-# Team X has seven X's, Team Y has seven Y's.
-# The ball starts in the center.
-# The rugby gods (you all) can edit the rules for X's and Y's interacting with background.
-# X's and Y's interactions with each other, and with the ball, are fixed.
 
-pixels_per_node    = 25
-speedup_factor     = 5
-max_duration       = 200
-node_display       = Color
-
-
-!START_COLORMAP
-{background 0} 0: (255,255,255)
-{background 1} 1: (245,245,245)
-{background 2} 2: (235,235,235)
-{background 3} 3: (225,225,225)
-{background 4} 4: (215,215,215)
-{background 5} 5: (205,205,205)
-{background 6} 6: (195,195,195)
-{background 7} 7: (185,185,185)
-{background 8} 8: (175,175,175)
-{background 9} 9: (165,165,165)
-{X team goal} GX: (140,70,20)
-{Y team goal} GY: (70,140,20)
-{X wins goal} WX: (255,140,40)
-{Y wins goal} WY: (140,255,40)
-{ball} B: (255,255,0)
-{X} X: (128,0,0)
-{X w/ ball} XB: (255,0,0)
-{Y} Y: (0,128,0)
-{Y w/ ball} YB: (0,255,0)
-!END_COLORMAP
-
-
-!START_TRANSITION_RULES
-# Picking up the ball, tackling & grabbing the ball [fixed rules]
-X + B -> XB + 0 (10)
-Y + B -> YB + 0 (10)
-XB + Y -> X + YB (10)
-YB + X -> Y + XB (10)
-
-# Making a goal, declaring the winner [fixed rules]
-XB + GY -> 0 + WX (10)
-GY + WX -> WX + WX (10)
-YB + GX -> 0 + WY (10)
-GX + WY -> WY + WY (10)
-X + WX -> 0 + WX (10)
-Y + WX -> 0 + WX (10)
-X + WY -> 0 + WY (10)
-Y + WY -> 0 + WY (10)
-
-# Movement and strategy for team X [rugby gods edit here]
-#    all rules must have exactly one X or XB on LHS and on RHS
-#    and exactly one 0...9 on LHS and on RHS
-#    with maximum rate 10
-X + 0 -> 0 + X (1)
+X + 0 -> 1 + X (10)
 X + 1 -> 1 + X (1)
 X + 2 -> 2 + X (1)
 X + 3 -> 3 + X (1)
@@ -64,88 +7,30 @@ X + 4 -> 4 + X (1)
 X + 5 -> 5 + X (1)
 X + 6 -> 6 + X (1)
 X + 7 -> 7 + X (1)
-X + 8 -> 8 + X (1)
-X + 9 -> 9 + X (1)
-XB + 0 -> 0 + XB (1)
-XB + 1 -> 1 + XB (1)
-XB + 2 -> 2 + XB (1)
-XB + 3 -> 3 + XB (1)
-XB + 4 -> 4 + XB (1)
-XB + 5 -> 5 + XB (1)
-XB + 6 -> 6 + XB (1)
-XB + 7 -> 7 + XB (1)
-XB + 8 -> 8 + XB (1)
+X + 8 -> 8 + X (5)
+X + 8 -> 1 + X (1)
+X + 9 -> 8 + X (10)
+
+XB + 0 -> 9 + XB (10)
+XB + 1 -> 9 + XB (10)
+XB + 2 -> 9 + XB (10)
+XB + 3 -> 9 + XB (10)
+XB + 4 -> 9 + XB (10)
+XB + 5 -> 9 + XB (10)
+XB + 6 -> 9 + XB (10)
+XB + 7 -> 9 + XB (10)
+XB + 8 -> 9 + XB (10)
 XB + 9 -> 9 + XB (1)
-# This strategy is just random walking, plain and simple... and slow, at that.
 
-# Movement and strategy for team Y [rugby gods edit here]
-#    all rules must have exactly one Y or YB on LHS and on RHS
-#    and exactly one 0...9 on LHS and on RHS
-#    with maximum rate 10
+X + XB -> X1 + XB (10)
 
-Y + 0 -> 1 + Y (10)
-Y + 1 -> 1 + Y (1)
-Y + 2 -> 2 + Y (1)
-Y + 3 -> 3 + Y (1)
-Y + 4 -> 4 + Y (1)
-Y + 5 -> 5 + Y (1)
-Y + 6 -> 6 + Y (1)
-Y + 7 -> 7 + Y (1)
-Y + 8 -> 8 + Y (5)
-Y + 8 -> 1 + Y (1)
-Y + 9 -> 8 + Y (10)
-
-YB + 0 -> 9 + YB (10)
-YB + 1 -> 9 + YB (10)
-YB + 2 -> 9 + YB (10)
-YB + 3 -> 9 + YB (10)
-YB + 4 -> 9 + YB (10)
-YB + 5 -> 9 + YB (10)
-YB + 6 -> 9 + YB (10)
-YB + 7 -> 9 + YB (10)
-YB + 8 -> 9 + YB (10)
-YB + 9 -> 9 + YB (1)
-
-Y + YB -> Y1 + YB (10)
-
-Y1 + 9 -> 9 + Y1 (10)
-Y1 + 8 -> 8 + Y (1)
-Y1 + 7 -> 7 + Y (1)
-Y1 + 6 -> 6 + Y (1)
-Y1 + 5 -> 5 + Y (1)
-Y1 + 4 -> 4 + Y (1)
-Y1 + 3 -> 3 + Y (1)
-Y1 + 2 -> 2 + Y (1)
-Y1 + 1 -> 1 + Y (1)
-Y1 + 0 -> 0 + Y (1)
-
-
-# After a sprint into new territory to try to get the ball,
-# this strategy tries to attract all of the players on the team to surround 
-# the player carrying the ball, protecting the ball carrier from having the ball stolen.
-
-
-!END_TRANSITION_RULES
-
-!START_INIT_STATE
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0
-0 GX GX GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY GY GY 0
-0 GX 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 GY 0
-0 GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY 0
-0 GX 0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0 GY 0
-0 GX 0 0 0 X 0 0 0 0 0 0 0 B 0 0 0 0 0 0 0 Y 0 0 0 GY 0
-0 GX 0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0 GY 0
-0 GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY 0
-0 GX 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 GY 0
-0 GX GX GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY GY GY 0
-0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-!END_INIT_STATE
-
+X1 + 9 -> 9 + X1 (10)
+X1 + 8 -> 8 + X (1)
+X1 + 7 -> 7 + X (1)
+X1 + 6 -> 6 + X (1)
+X1 + 5 -> 5 + X (1)
+X1 + 4 -> 4 + X (1)
+X1 + 3 -> 3 + X (1)
+X1 + 2 -> 2 + X (1)
+X1 + 1 -> 1 + X (1)
+X1 + 0 -> 0 + X (1)

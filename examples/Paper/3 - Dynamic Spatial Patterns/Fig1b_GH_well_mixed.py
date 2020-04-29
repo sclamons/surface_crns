@@ -5,13 +5,11 @@ import math
 import scipy.integrate
 import warnings
 import copy
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
 import matplotlib.cm as mplcm
 import matplotlib as mpl
-import numdifftools as nd
 # mpl.rcParams['figure.dpi'] = 300
 
 from matplotlib.font_manager import FontProperties

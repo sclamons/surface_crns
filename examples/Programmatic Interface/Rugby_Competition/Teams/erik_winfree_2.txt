@@ -1,28 +1,28 @@
 # Author: Erik Winfree
 
-Y + 0 -> 1 + Y (10)
-Y + 1 -> 1 + Y (1)
-Y + 2 -> 2 + Y (1)
-Y + 3 -> 3 + Y (1)
-Y + 4 -> 4 + Y (1)
-Y + 5 -> 5 + Y (1)
-Y + 6 -> 6 + Y (1)
-Y + 7 -> 7 + Y (1)
-Y + 8 -> 8 + Y (5)
-Y + 8 -> 1 + Y (1)
-Y + 9 -> 8 + Y (10)
+X + 0 -> 1 + X (10)
+X + 1 -> 1 + X (1)
+X + 2 -> 2 + X (1)
+X + 3 -> 3 + X (1)
+X + 4 -> 4 + X (1)
+X + 5 -> 5 + X (1)
+X + 6 -> 6 + X (1)
+X + 7 -> 7 + X (1)
+X + 8 -> 8 + X (5)
+X + 8 -> 1 + X (1)
+X + 9 -> 8 + X (10)
 
-YB + 0 -> 9 + YB (10)
-YB + 1 -> 9 + YB (10)
-YB + 2 -> 9 + YB (10)
-YB + 3 -> 9 + YB (10)
-YB + 4 -> 9 + YB (10)
-YB + 5 -> 9 + YB (10)
-YB + 6 -> 9 + YB (10)
-YB + 7 -> 9 + YB (10)
-YB + 8 -> 9 + YB (10)
-YB + 9 -> 9 + YB (1)
+XB + 0 -> 9 + XB (10)
+XB + 1 -> 9 + XB (10)
+XB + 2 -> 9 + XB (10)
+XB + 3 -> 9 + XB (10)
+XB + 4 -> 9 + XB (10)
+XB + 5 -> 9 + XB (10)
+XB + 6 -> 9 + XB (10)
+XB + 7 -> 9 + XB (10)
+XB + 8 -> 9 + XB (10)
+XB + 9 -> 9 + XB (1)
 
-# After a sprint into new territory to try to get the ball,
-# this strategy tries to attract all of the players on the team to surround 
-# the player carrying the ball, protecting the ball carrier from having the ball stolen.
+# After a sprint into new territorX to trX to get the ball,
+# this strategX tries to attract all of the plaXers on the team to surround 
+# the plaXer carrXing the ball, protecting the ball carrier from having the ball stolen.

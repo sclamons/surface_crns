@@ -1,0 +1,38 @@
+                                   rs       ew4      rws      ew2      rwc      rsz      ew5       r     mcaac1     cn1      sc1      cn3      rwf    abacn3      r       ew1      sb1      ew3   
+random_scrambler.txt           :   0/0      0/1      0/1      1/0      1/0      1/0      0/1      0/1      1/0      1/0      0/1      1/0      0/1      0/1      1/0      1/0      0/1      1/0   
+erik_winfree_4.txt             :   1/0      0/0      1/0      1/0      0/1      0/1      1/0      1/0      1/0      1/0      1/0      1/0      0/1      0/1      0/1      0/1      0/1      0/1   
+random_walk_slow.txt           :   1/0      0/1      0/0      0/1      1/0      1/0      0/1      1/0      1/0      0/1      0/1      0/1      0/1      1/0      1/0      0/1      0/0      1/0   
+erik_winfree_2.txt             :   1/0      1/0      1/0      0/0      1/0      0/1      0/1      0/1      0/1      0/1      1/0      1/0      0/1      0/1      0/1      0/1      1/0      0/1   
+random_walk_cheat.txt          :   1/0      1/0      0/1      1/0      0/0      1/0      1/0      0/1      0/1      0/1      0/1      0/1      1/0      0/1      1/0      1/0      0/1      0/1   
+random_scrambler_zero.txt      :   1/0      0/1      1/0      0/1      0/1      0/0      1/0      1/0      0/1      0/1      0/1      1/0      1/0      1/0      0/1      1/0      1/0      0/1   
+erik_winfree_5.txt             :   0/1      0/1      0/1      0/1      0/1      0/1      0/0      0/1      0/1      0/1      0/1      0/1      0/1      0/1      0/1      0/1      1/0      1/0   
+rugby-defense1-test.txt        :   0/1      1/0      0/1      0/1      1/0      0/1      1/0      0/0      1/0      0/1      0/1      0/1      0/1      1/0      1/0      0/1      0/1      1/0   
+matt_cook_and_andras_cook_1.txt :   0/1      0/1      1/0      0/1      0/1      0/1      1/0      1/0      0/0      0/1      0/1      0/1      0/1      1/0      0/1      1/0      0/1      1/0   
+chigozie_nri_1.txt             :   1/0      0/1      0/0      0/0      0/0      0/1      1/0      1/0      1/0      0/0      1/0      1/0      1/0      0/1      0/1      1/0      1/0      1/0   
+sam_clamons_1.txt              :   0/1      0/1      0/1      1/0      1/0      0/1      0/1      0/1      1/0      1/0      0/0      0/1      0/1      1/0      1/0      1/0      1/0      0/1   
+chigozie_nri_3.txt             :   1/0      0/1      1/0      1/0      0/1      0/1      0/1      0/1      0/1      0/1      0/1      0/0      0/1      0/1      0/1      0/1      0/1      1/0   
+random_walk_fast.txt           :   1/0      0/1      0/1      1/0      0/1      0/1      0/1      1/0      0/1      1/0      1/0      1/0      0/0      0/1      0/1      1/0      0/1      1/0   
+adam_butler_and_chigozie_nri_3.txt :   0/1      1/0      1/0      1/0      1/0      0/1      0/1      0/1      0/1      0/1      0/1      0/1      0/1      0/0      1/0      0/0      0/1      1/0   
+rugby-defense2-test.txt        :   1/0      1/0      1/0      1/0      0/1      0/1      0/1      0/1      0/1      0/1      1/0      1/0      1/0      0/1      0/0      1/0      1/0      0/1   
+erik_winfree_1.txt             :   1/0      1/0      1/0      0/1      0/1      1/0      1/0      1/0      0/1      0/0      0/1      0/1      0/1      0/1      0/1      0/0      0/1      0/1   
+stefan_badelt_1.txt            :   1/0      1/0      1/0      1/0      1/0      1/0      1/0      1/0      0/1      1/0      1/0      0/1      1/0      1/0      0/1      0/1      0/0      1/0   
+erik_winfree_3.txt             :   0/1      1/0      1/0      0/1      0/1      0/1      0/1      0/1      0/1      0/1      0/1      0/1      0/1      0/1      1/0      1/0      0/1      0/0   
+
+Team stefan_badelt_1.txt won 23 points against other teams, while beating 23 teams.
+Team random_scrambler_zero.txt won 21 points against other teams, while beating 21 teams.
+Team chigozie_nri_1.txt won 21 points against other teams, while beating 21 teams.
+Team random_walk_fast.txt won 20 points against other teams, while beating 20 teams.
+Team sam_clamons_1.txt won 19 points against other teams, while beating 19 teams.
+Team rugby-defense2-test.txt won 19 points against other teams, while beating 19 teams.
+Team erik_winfree_4.txt won 18 points against other teams, while beating 18 teams.
+Team random_walk_cheat.txt won 17 points against other teams, while beating 17 teams.
+Team matt_cook_and_andras_cook_1.txt won 17 points against other teams, while beating 17 teams.
+Team adam_butler_and_chigozie_nri_3.txt won 17 points against other teams, while beating 17 teams.
+Team rugby-defense1-test.txt won 16 points against other teams, while beating 16 teams.
+Team random_scrambler.txt won 15 points against other teams, while beating 15 teams.
+Team random_walk_slow.txt won 14 points against other teams, while beating 14 teams.
+Team erik_winfree_2.txt won 14 points against other teams, while beating 14 teams.
+Team chigozie_nri_3.txt won 14 points against other teams, while beating 14 teams.
+Team erik_winfree_1.txt won 13 points against other teams, while beating 13 teams.
+Team erik_winfree_5.txt won 11 points against other teams, while beating 11 teams.
+Team erik_winfree_3.txt won 11 points against other teams, while beating 11 teams.
