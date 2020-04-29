@@ -10,7 +10,7 @@ Paper
 =====
 This section mostly contains self-contained examples, sorted by paper section. Any file ending with "_manifest.txt" can be run directly with the simulator. For example, from the "examples" directory, `SurfaceCRNQueueSimulator -m "Paper/3 - Dynamic Spatial Patterns/3.1_GH_asynchronous_manifest.txt"` will run the simple, asynchronous Greenberg-Hastings example from section 3.1 (though see the main page README about running with pythonw on some OSX systems).
 
-### Chapter 3: Dynamic Spatial Patterns
+## Chapter 3: Dynamic Spatial Patterns
 
 #### Manifests:
 * `3.1_GH_asynchronous_manifest.txt`: Asynchronous Greenberg-Hastings (GH) spiral, as in the third column of Fig. 1d. 
@@ -26,4 +26,4 @@ You can make spinning-arrow emulators for any synchronous cellular automaton wit
 * `init_state_to_spinning_arrow_init_state.py`: This program takes the name of any manifest specifying an initial state that is *not* in spinning-arrow form. It will produce a file containing a corresponding initial state for a spinning-arrow emulation of the initial state in the manifest. For example, `init_state_to_spinning_arrow_init_state.py` was used to produce `3.2_GH_spinning_arrow_random_init.txt` from a manifest containing the output of `generate_random_GH_init.py` in its initial state block.
 * `synch_GH_automata_rule_generator`: This script is hard-coded to genrate transition rule and colormap files for a spinning-arrow implementation of the GH automaton. It cannot, as written, generate spinning-arrow implementations of other rule sets, but it may serve as a useful guide if you wish to create your own.
 
-### Chapter 4: Continuously Active Logic Circuits
+## Chapter 4: Continuously Active Logic Circuits
