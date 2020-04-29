@@ -34,7 +34,7 @@ All logic gate examples share transition rules and colormaps from `logic_circuit
 
 * `Fig4a-2-bit_adder_manifest.txt`: A 2-bit adder, as shown in Fig. 4a (but rotated on its side). Set the inputs by changing initial states at positions E1, G1, I1, and L1 (as viewed in Excel). The inputs are `2*E1 + G1` and `2*I1 + L1`, and the output is `4*F28 + 2*M25 + O16`. 
 * `Fig4b-binary_counter_manifest.txt`: A 4-bit binary counter, as shown in Fig. 4b (but rotated on its side).
-* `Fig4c-Game_of_Life_one_cell_manifest.txt`: A single (alive) cell from a logic-circuit-based Game of Life implementation. For an example with multiple cells, see the **Snapshots** example from [**Programmatic Interface Examples**](prog_interface_ex).
+* `Fig4c-Game_of_Life_one_cell_manifest.txt`: A single (alive) cell from a logic-circuit-based Game of Life implementation. For an example with multiple cells, see the **Snapshots** example from [**Programmatic Interface Examples**](#prog_interface_ex).
 
 #### Other Files
 
