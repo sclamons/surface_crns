@@ -6,8 +6,8 @@ This package includes a few sets of examples:
 * **Programmatic Interface**: Examples that show how to use the surface_crn package within python. This lets you do things like run headless simulations (no graphics) and swap out features like the simulator algorithm or underlying grid geometry. 
 * **Other**: A few other fun examples that didn't make it into the paper.
 
-Paper
-=====
+Paper Examples
+==============
 This section mostly contains self-contained examples, sorted by paper section. Any file ending with "_manifest.txt" can be run directly with the simulator. For example, from the "examples" directory, `SurfaceCRNQueueSimulator -m "Paper/3 - Dynamic Spatial Patterns/3.1_GH_asynchronous_manifest.txt"` will run the simple, asynchronous Greenberg-Hastings example from section 3.1 (though see the main page README about running with pythonw on some OSX systems).
 
 ## Chapter 3: Dynamic Spatial Patterns
@@ -18,7 +18,7 @@ This section mostly contains self-contained examples, sorted by paper section. A
 * `3.3_Game_of_Life_broadcast_swap_sum_manifest.txt`: Broadcast-swap-sum synchronous emulation of a Game of Life glider, as in Fig. 2f. Edit the "E0" and "E1" states to try different Game of Life configurations.
 * `3.3_GH_broadcast_swap_sum_manifest.txt`: Broadcast-swap-sum synchronous emulation of a GH spiral, as in Fig. 2g.
 
-#### Other files:
+#### Other Files:
 
 `Fig1b_GH_well_mixed` reproduces Fig. 1b (requires `matplotlib` and `numpy` packages).
 
@@ -27,3 +27,34 @@ You can make spinning-arrow emulators for any synchronous cellular automaton wit
 * `synch_GH_automata_rule_generator`: This script is hard-coded to genrate transition rule and colormap files for a spinning-arrow implementation of the GH automaton. It cannot, as written, generate spinning-arrow implementations of other rule sets, but it may serve as a useful guide if you wish to create your own.
 
 ## Chapter 4: Continuously Active Logic Circuits
+
+#### Manifests
+
+All logic gate examples share transition rules and colormaps from `logic_circuit_transition_rules.txt` and `logic_gate_colormap.txt`, respectively. 
+
+* `Fig4a-2-bit_adder_manifest.txt`: A 2-bit adder, as shown in Fig. 4a (but rotated on its side). Set the inputs by changing initial states at positions E1, G1, I1, and L1 (as viewed in Excel). The inputs are `2*E1 + G1` and `2*I1 + L1`, and the output is `4*F28 + 2*M25 + O16`. 
+* `Fig4b-binary_counter_manifest.txt`: A 4-bit binary counter, as shown in Fig. 4b (but rotated on its side).
+* `Fig4c-Game_of_Life_one_cell_manifest.txt`: A single (alive) cell from a logic-circuit-based Game of Life implementation. For an example with multiple cells, see the **Snapshots** example from [**Programmatic Interface Examples**](prog_interface_ex).
+
+#### Other Files
+
+`Box5-logic_circuit_transition_rules_compressed.txt` demonstrates a 46-rule compressed transition rule set that eschews "redundant" gates (i.e., AND, NOT, OR, and XOR are replaced by NOR), as alluded to in Box 5. This will NOT work directly with any of the initial states used here, as it uses a different set of gates.
+
+## Chapter 5: Manufacturing
+
+#### Manifests
+
+#### Other Files
+
+
+## Chapter 6: Robots and Swarms
+
+#### Manifests
+
+## Chapter 7: Rugby
+
+<a name="prog_interface_ex"></a>Programmatic Interface Examples
+===============================
+
+Other Examples
+==============
