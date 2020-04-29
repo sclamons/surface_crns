@@ -12,11 +12,13 @@ This section mostly contains self-contained examples, sorted by paper section. A
 
 ### Chapter 3: Dynamic Spatial Patterns
 
-Manifests:
+#### Manifests:
 * `3.1_GH_asynchronous_manifest.txt`: Asynchronous Greenberg-Hastings (GH) spiral, as in the third column of Fig. 1d. 
 * `3.2_GH_spinning_arrow_manifest.txt`: Synchronous suface CRN emulation of one of several GH patterns, as in the fourth column of Fig 1.c-e. Comment in exactly one of the three INCLUDE statements in the initial state section of the manifest to get either a single pulse, a spiral wave, or a random-start pattern. Transition rules, colormap, and initial states are in separate files with suggestive names. The random initialization function was produced with `generate_random_GH_init.py` and `init_state_to_spinning_arrow_init_state.py`.
 * `3.3_Game_of_Life_broadcast_swap_sum_manifest.txt`: Broadcast-swap-sum synchronous emulation of a Game of Life glider, as in Fig. 2f. Edit the "E0" and "E1" states to try different Game of Life configurations.
 * `3.3_GH_broadcast_swap_sum_manifest.txt`: Broadcast-swap-sum synchronous emulation of a GH spiral, as in Fig. 2g.
+
+#### Other files:
 
 `Fig1b_GH_well_mixed` reproduces Fig. 1b (requires `matplotlib` and `numpy` packages).
 
