@@ -64,10 +64,10 @@ where ``<manifest_file>`` is the name of a valid manifest file (see below). We h
 
 You can also run the simulator from a Python script. If you are having difficulty running `SurfaceCRNQueueSimulator` directly, this is the next thing you should try. To run a surface CRN specified in a file "example_manifest.txt", you would run (in your Python terminal or script)
 
-'''
+```
 from surface_crns import SurfaceCRNQueueSimulator
 SurfaceCRNQueueSimulator.simulate_surface_crn("example_manifest.txt")
-'''
+```
 
 If you are one of the users affected by the Pygame mouse click registration bug mentioned in "Prerequisites", you can run SurfaceCRNQueueSimulator with pythonw. First, find the full name and location of SurfaceCRNQueueSimulator on your machine by running ``which SurfaceCRNQueueSimulator``. Then run ``pythonw <simulator_name> -m <manifest_file>``, where ``<simulator_name>`` is the output of the ``which`` command you ran. You'll also have to use pythonw to run any script you run that uses `SurfaceCRNQueueSimulator`.
 
