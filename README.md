@@ -1,7 +1,7 @@
 Simulation of Chemical Reaction Networks (CRNs) on a surface
 ============================================================
 
-This package is a companion to Clamons, Qian, & Winfree 2020 ("Programming and Simulating Chemical Reaction Networks on a Surface"). It simulates surface Chemical Reaction Networks (surface CRNs), as defined in Qian & Winfree 2014 (["Parallel and Scalable Computation and Spatial Dynamics with DNA-Based Chemical Reaction Networks on a Surface"](http://www.dna.caltech.edu/Papers/surface_CRNs_DNA20.pdf)). The package is 
+This package is a companion to Clamons, Qian, & Winfree 2020 ("Programming and Simulating Chemical Reaction Networks on a Surface"). It simulates surface Chemical Reaction Networks (surface CRNs), as defined in Qian & Winfree 2014 (["Parallel and Scalable Computation and Spatial Dynamics with DNA-Based Chemical Reaction Networks on a Surface"](http://www.dna.caltech.edu/Papers/surface_CRNs_DNA20.pdf)). A version frozen at the release of the paper will be made available on a `paper-release` branch, while the `master` branch will be kept up-to-date with any subsequent bug fixes or improvements.
 
 This package provides:
 
