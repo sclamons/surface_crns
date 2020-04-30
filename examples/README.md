@@ -95,7 +95,7 @@ This leaky-corner model is implemented with the `SquareGridWithCornerLeak` class
 
 ## <a name="snapshots"></a>Snapshots
 
-The script `examples/Programmatic Interface/Snapshots/save_simulation_snapshots.py headlessly simulates four example simulations, defined in a "Manifests" subfolder, and saves snapshots at defined time to an "Outputs" subfolder. These snapshots are saved as CSV files, which can be rendered into an image with [`visualize_state.py`](#visualize).
+The script `examples/Programmatic Interface/Snapshots/save_simulation_snapshots.py` headlessly simulates four example simulations, defined in a "Manifests" subfolder, and saves snapshots at defined time to an "Outputs" subfolder. These snapshots are saved as CSV files, which can be rendered into an image with [`visualize_state.py`](#visualize).
 
 This script is a useful example of how to directly use the simulator objects underlying SurfaceCRNQueueSimulator, and shows how to interact directly with a model object. The "Manifests" subfolder also contains a helper script GoL_state_to_sCRN_init.py, which converts a Game of Life state (stored in Manifests/gol_state.txt) into an initial state for a logic-gate-implemented Game of Life surface CRN.
 

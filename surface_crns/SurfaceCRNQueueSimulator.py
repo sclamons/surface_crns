@@ -52,7 +52,7 @@ PROFILE = False
 WHITE = (255,255,255)
 BLACK = (0, 0, 0)
 #time_font = pygame.font.SysFont('monospace', 24)
-time_font = time_font = pygame.font.SysFont(pygame.font.get_default_font(), 24)
+time_font = pygame.font.SysFont(pygame.font.get_default_font(), 24)
 TEXT_X_BUFFER  = 10
 TEXT_Y_BUFFER  = 5
 TEXT_HEIGHT    = time_font.get_linesize() + 2 * TEXT_Y_BUFFER

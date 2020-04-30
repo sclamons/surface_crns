@@ -18,7 +18,7 @@ if sys.version_info[0] == 2:
     install_requires.append("unicodecsv")
 
 setup(
-    name='surface_crns-sclamons',
+    name='surface_crns',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see

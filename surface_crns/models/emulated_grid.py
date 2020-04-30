@@ -101,7 +101,7 @@ class SimulationGridIterator:
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         if self.done:
             raise StopIteration
         next_node = self.simgrid.getnode(self.x, self.y)
