@@ -19,7 +19,8 @@ If you are having difficulty using SurfaceCRNQueueSimulator from the command lin
 ```from surface_crns import SurfaceCRNQueueSimulator
 
     manifest_filename = "some_manifest.txt"
-    SurfaceCRNQueueSimulator.simulate_surface_crn(manifest_filename)```
+    SurfaceCRNQueueSimulator.simulate_surface_crn(manifest_filename)
+```
 
 SurfaceCRNQueueSimulator is somewhat modular, and the `simulate_surface_crn` function allows you to drop in custom display classes and state objects as the `display_class` and `init_state` arguments. The [**Water Adsorption Model**](#water_adsorption) and [**Long-Range Leaky Interactions**](#long_range) examples to see how to do this.
 
