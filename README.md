@@ -93,15 +93,17 @@ or
 
 where "RATE" is a (nonnegative) number designating the reaction rate of the transition rule, and NAME1, NAME2, NAME3, and NAME4 are alphanumeric species identifiers. Species identifiers may contain letters, numbers, commas, and underscores, but not other punctuation or whitespace. For example, a rule that species X1 and Y1 react to form species X2 and Y2 with rate 10 (in arbitrary units of 1/time) would be specified with:
 
+```
 (10) X1 + Y1 -> X2 + Y2
+```
 
 Rates may be placed anywhere in a transition rule statement except inside an identifier or the "->" token. For example, the following transition rules are all valid:
 
+```
 (10) X + Y -> A + B
-
 X + Y ->(10) A + B
-
 X + Y -> A + B (10)
+```
 
 ## Initial state
 
@@ -119,11 +121,15 @@ NAME: (R, G, B)
 
 where "NAME" is the name of the species (of the same format used to specify species names in the transition rules and initial state sections) and "R", "G", and "B" are integers between 0 and 255 (inclusive) specifying the red, green, and blue components of the specified color. For instance, to make species "X1" display as black, one would write
 
+```
 X1: (0, 0, 0)
+```
 
 and to make species "Y1" display as vibrant red, one would write
 
+```
 Y1: (255, 0, 0)
+```
 
 Multiple species can also be grouped to be displayed with the same color and given a single display name using a statement of the form
 
@@ -144,7 +150,7 @@ SETTING = VALUE
 
 with the obvious meanings. Useful settings to know are:
 
-* speedup_factor: A nonnegative real number dictating the speed of simulation playback. Larger numbers mean faster playback.
+* **speedup_factor** *(default 1)*: A nonnegative real number dictating the speed of simulation playback. Larger numbers mean faster playback, up to the processing limits of pygame and of the simulator.
 * rng_seed: Integer specifying the random number seed used by the simulation. Set this value to make simulations reproducible.
 * max_duration: A nonnegative number specifying the maximum length of simulation in arbitrary time units (the same arbitrary time units specified by transition rule reaction rates).
 * node_display: Determines whether the state of each position on the grid (node) is overlaid, in text, on that node. Set to "text" to overlay text, or "color" to only show node color (default)
