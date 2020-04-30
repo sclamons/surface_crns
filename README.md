@@ -131,7 +131,8 @@ Multiple species can also be grouped to be displayed with the same color and giv
 
 where "CLASS" is the (optional) name under which the species should be displayed, "NAME1, NAME2,..." is a comma-separated list of species names of any length, and "R", "G", and "B" are as above. For instance, to display all of the species X1, X2, X3, and X4 as red and all of the species Y1, Y2, Y3, and Y4 as green, one would write
 
-```{X} X1, X2, X3, X4: (255, 0, 0)
+```
+{X} X1, X2, X3, X4: (255, 0, 0)
 {Y} Y1, Y2, Y3, Y4: (0, 255, 0)
 ```
 
