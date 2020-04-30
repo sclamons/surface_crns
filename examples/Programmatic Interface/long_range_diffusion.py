@@ -1,5 +1,5 @@
 from surface_crns import SurfaceCRNQueueSimulator
-from surface_crns.models.grids import *
+from surface_crns.models.grids import SquareGridWithCornerLeak
 from surface_crns.base.node import *
 from surface_crns.views.grid_display import *
 from surface_crns.simulators.queue_simulator import *

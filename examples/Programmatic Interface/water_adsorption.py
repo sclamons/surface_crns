@@ -7,7 +7,7 @@ import pygame, math, random, sys
 import matplotlib.pyplot as plt
 
 def main():
-    manifest_file = "co_reduction.txt"
+    manifest_file = "water_adsorption.txt"
     if len(sys.argv) > 1 and sys.argv[1] == "headless":
         lattice = HexGridPlusIntersections(10, 10)
         for n in lattice:
@@ -43,7 +43,7 @@ def simulate_without_display(manifest_file, lattice):
     from surface_crns.options.option_processor import SurfaceCRNOptionParser
     species_tracked = ["O", "OH_3F", "OH_top", "H2O"]
 
-    manifest_options = read_manifest("co_reduction.txt")
+    manifest_options = read_manifest("water_adsorption.txt")
     opts = SurfaceCRNOptionParser(manifest_options)
     simulator = QueueSimulator(surface = lattice,
                                transition_rules = opts.transition_rules,
@@ -77,7 +77,7 @@ def simulate_without_display(manifest_file, lattice):
     plt.legend()
     plt.xlabel("Time (s)")
     plt.ylabel("Molecule Count (#)")
-    plt.title("Evolution of CO reduction system with OH poisoning")
+    plt.title("Evolution of water adsorption and splitting on Ag crystal")
     plt.show()
 
 class HexGridPlusIntersections(HexGrid):

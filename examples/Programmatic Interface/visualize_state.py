@@ -35,7 +35,7 @@ def render_state(state_file, colormap_file, pixels_per_node):
     state_array = read_grid_state(state_file)
     x_size, y_size = state_array.shape
     state = SquareGrid(x_size, y_size)
-    state.set_global_state(state_array)
+    state.set_global_state(state_array.T)
     colormap = read_colormap(colormap_file)
 
     display = SquareGridDisplay(state, colormap, pixels_per_node)

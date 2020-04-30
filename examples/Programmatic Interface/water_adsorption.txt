@@ -16,6 +16,7 @@ wrap               = false
 
 # Reaction
 (6.226) O + H2O -> OH_3F + OH_top
+(6.226) OH_3F + OH_top -> O + H2O
 
 # Diffusion
 (0.2) H2O + Ag -> Ag + H2O
@@ -32,7 +33,7 @@ wrap               = false
 
 # Initial state
 !START_INIT_STATE
-Ag Ag Ag Ag Ag Ag Ag Ag Ag Ag 
+Ag Ag Ag Ag Ag Ag Ag Ag Ag Ag
 Ag Ag Ag Ag Ag Ag Ag Ag Ag Ag
 Ag Ag Ag Ag Ag Ag Ag Ag Ag Ag
 Ag Ag Ag Ag Ag Ag Ag Ag Ag Ag
