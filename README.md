@@ -64,7 +64,8 @@ where ``<manifest_file>`` is the name of a valid manifest file (see below). We h
 
 You can also run the simulator from a Python script. If you are having difficulty running `SurfaceCRNQueueSimulator` directly, this is the next thing you should try. To run a surface CRN specified in a file "example_manifest.txt", you would run (in your Python terminal or script)
 
-```from surface_crns import SurfaceCRNQueueSimulator
+```python
+from surface_crns import SurfaceCRNQueueSimulator
 SurfaceCRNQueueSimulator.simulate_surface_crn("example_manifest.txt")
 ```
 
