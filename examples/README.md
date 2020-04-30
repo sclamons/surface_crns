@@ -69,7 +69,7 @@ The second simulator, EagerQueueSimulator, checks every reaction in the queue fo
 #### <a name="water_adsorption"></a>Physical Surface Chemistry (Water adsorption/splitting Model)
 
 The script `water_adsorption.py` simulates the interaction of gaseous water and the a regular hexagonal silver crystal (Ag(111)) surface, loosely adapted from [Jin Qian, Yifan Ye, Hao Yang, Junko Yano, Ethan J. Crumlin, and William A. Goddard III
-*Journal of the American Chemical Society* 2019 141 (17), 6946-6954](https://doi.org/10.1021/jacs.8b13672. This system uses non-square grid geometry -- reactions can occur at either a silver molecule or at the tri-fold intersection (3F) of three sites -- and so shows how to use custom grid geometries and custom displays.
+*Journal of the American Chemical Society* 2019 141 (17), 6946-6954](https://doi.org/10.1021/jacs.8b13672). This system uses non-square grid geometry -- reactions can occur at either a silver molecule or at the tri-fold intersection (3F) of three sites -- and so shows how to use custom grid geometries and custom displays.
 
 Briefly, water can interact with a silver surface as follows:
 * Water can adsorb from the air onto any open silver site. Adsorption is greatly enhanced by the presence of molecular oxygen already on the surface.
