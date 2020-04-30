@@ -1,0 +1,131 @@
+# sCRN for a molecular game of rugby
+#
+# The background is 0...9, initially set to 0.
+# Team X has seven X's, Team Y has seven Y's.
+# The ball starts in the center.
+# Rules for X and Y with the background are given by the teams playing.
+# X's and Y's interactions with each other, and with the ball, are fixed.
+
+pixels_per_node    = 25
+speedup_factor     = 5
+max_duration       = 200
+node_display       = Color
+
+
+!START_COLORMAP
+{background 0} 0: (255,255,255)
+{background 1} 1: (245,245,245)
+{background 2} 2: (235,235,235)
+{background 3} 3: (225,225,225)
+{background 4} 4: (215,215,215)
+{background 5} 5: (205,205,205)
+{background 6} 6: (195,195,195)
+{background 7} 7: (185,185,185)
+{background 8} 8: (175,175,175)
+{background 9} 9: (165,165,165)
+{chigozie_nri_1 team goal} GX: (140,70,20)
+{random_scrambler team goal} GY: (70,140,20)
+{chigozie_nri_1 wins goal} WX: (255,140,40)
+{random_scrambler wins goal} WY: (140,255,40)
+{ball} B: (255,255,0)
+{chigozie_nri_1} X: (128,0,0)
+{chigozie_nri_1 w/ ball} XB: (255,0,0)
+{random_scrambler} Y: (0,128,0)
+{random_scrambler w/ ball} YB: (0,255,0)
+!END_COLORMAP
+
+
+!START_TRANSITION_RULES
+# Picking up the ball, tackling & grabbing the ball [fixed rules]
+X + B -> XB + 0 (10)
+Y + B -> YB + 0 (10)
+XB + Y -> X + YB (10)
+YB + X -> Y + XB (10)
+
+# Making a goal, declaring the winner [fixed rules]
+XB + GY -> 0 + WX (10)
+GY + WX -> WX + WX (10)
+YB + GX -> 0 + WY (10)
+GX + WY -> WY + WY (10)
+X + WX -> 0 + WX (10)
+Y + WX -> 0 + WX (10)
+X + WY -> 0 + WY (10)
+Y + WY -> 0 + WY (10)
+
+# Team strategies go here
+# Author: Chigozie Nri
+
+X + 0 -> 9 + X (10)
+X + 1 -> 1 + X (10)
+X + 2 -> 1 + X (10)
+X + 3 -> 1 + X (10)
+X + 4 -> 1 + X (10)
+X + 5 -> 1 + X (10)
+X + 6 -> 1 + X (10)
+X + 7 -> 1 + X (10)
+X + 8 -> 1 + X (10)
+X + 9 -> 9 + X (1)
+
+XB + 0 -> 0 + XB (1)
+XB + 1 -> 1 + XB (1)
+XB + 2 -> 2 + XB (4)
+XB + 3 -> 3 + XB (5)
+XB + 4 -> 4 + XB (6)
+XB + 5 -> 5 + XB (7)
+XB + 6 -> 6 + XB (8)
+XB + 7 -> 7 + XB (9)
+XB + 8 -> 8 + XB (10)
+XB + 9 -> 9 + XB (1)
+
+# This strategy defends against and exploits default team Y (i.e. Erik Winfree's team 1),
+# but should be somewhat robust to exploitation itself.
+# Author: Erik Winfree, based on suggestion by Chigozie Nri
+
+Y + 0 -> 3 + Y (10)
+Y + 1 -> 4 + Y (10)
+Y + 2 -> 5 + Y (10)
+Y + 3 -> 6 + Y (10)
+Y + 4 -> 7 + Y (10)
+Y + 5 -> 8 + Y (10)
+Y + 6 -> 9 + Y (10)
+Y + 7 -> 0 + Y (10)
+Y + 8 -> 1 + Y (10)
+Y + 9 -> 2 + Y (10)
+
+YB + 0 -> 7 + YB (10)
+YB + 1 -> 8 + YB (10)
+YB + 2 -> 9 + YB (10)
+YB + 3 -> 0 + YB (10)
+YB + 4 -> 1 + YB (10)
+YB + 5 -> 2 + YB (10)
+YB + 6 -> 3 + YB (10)
+YB + 7 -> 4 + YB (10)
+YB + 8 -> 5 + YB (10)
+YB + 9 -> 6 + YB (10)
+
+# This strategy is just random walking, while also scrambling signals on the field.
+
+!END_TRANSITION_RULES
+
+!START_INIT_STATE
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0
+0 GX GX GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY GY GY 0
+0 GX 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 GY 0
+0 GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY 0
+0 GX 0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0 GY 0
+0 GX 0 0 0 X 0 0 0 0 0 0 0 B 0 0 0 0 0 0 0 Y 0 0 0 GY 0
+0 GX 0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0 GY 0
+0 GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY 0
+0 GX 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 GY 0
+0 GX GX GX 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 GY GY GY 0
+0 0 0 0 0 X 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Y 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+!END_INIT_STATE
+

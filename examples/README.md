@@ -99,9 +99,11 @@ This script is a useful example of how to directly use the simulator objects und
 
 ## <a name="rugby_ex"></a>Rugby Competition
 
-The script `examples/Programmatic Interface/Rugby Competition/rugbycompete.py` runs a round-robin tournament between any molecular rugby strategies defined in files inside a "Teams" subfolder, printing the results to a uniquely-indexed text file in a "results" subfolder.
+This folder is for running molecular rugby competitions. The basic molecular rugby rules (and simulation specs) are given in `templated_rugby_manifest.txt`. Team strategies should be stored in individual text files in the "Teams" subfolder, and should always be defined for team X. 
 
-The basic molecular rugby rules (and simulation specs) are given in `templated_rugby_manifest.txt`. Team strategies should be stored in individual text files in the "Teams" subfolder, and should always be defined for team X. For each pair of strategies, `rugbycompete.py` will flip one team to be team Y, play some number of games N (which can be specified in a command line argument or left to a default 100), and determines a winner. A team wins if it beats the other team by at least sqrt(N). If no team beats the other by at least this margin, the game is considered a tie.
+You can watch a game between two strategies using the `examples/Programmatic Interface/Rugby Competition/rugby_game.py` script. The script takes two text files specifying strategies (for example, the ones in the "Teams" folder) as inputs. It will create a manifest file for the matchup in the "temp" folder, which it will then use to run and display the game. 
+
+The script `examples/Programmatic Interface/Rugby Competition/rugby_tournament.py` runs a round-robin tournament between any molecular rugby strategies defined in files inside a "Teams" subfolder, printing the results to a uniquely-indexed text file in a "results" subfolder. For each pair of strategies, `rugbycompete.py` will flip one team to be team Y, play some number of games N (which can be specified in a command line argument or left to a default 100), and determines a winner. A team wins if it beats the other team by at least sqrt(N). If no team beats the other by at least this margin, the game is considered a tie.
 
 Because surface CRN simulation is stochastic, this program is not guaranteed to always provide the same results. If you want consistent, reproducible outputs, change the `SEED` variable near the top of the python script.
 
