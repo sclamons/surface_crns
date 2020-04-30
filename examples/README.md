@@ -16,10 +16,11 @@ This package includes a few sets of examples:
 
 If you are having difficulty using SurfaceCRNQueueSimulator from the command line -- or you just want to invoke it programmatically -- `simple_python_interface_example.py` will show you what to do. In short:
 
-```from surface_crns import SurfaceCRNQueueSimulator
+```python
+from surface_crns import SurfaceCRNQueueSimulator
 
-    manifest_filename = "some_manifest.txt"
-    SurfaceCRNQueueSimulator.simulate_surface_crn(manifest_filename)
+manifest_filename = "some_manifest.txt"
+SurfaceCRNQueueSimulator.simulate_surface_crn(manifest_filename)
 ```
 
 SurfaceCRNQueueSimulator is somewhat modular, and the `simulate_surface_crn` function allows you to drop in custom display classes and state objects as the `display_class` and `init_state` arguments. The [**Water Adsorption Model**](#water_adsorption) and [**Long-Range Leaky Interactions**](#long_range) examples to see how to do this.
@@ -49,7 +50,8 @@ Invoke either from the command line:
 
 Or invoke in python, from the same directory as `visualize_state.py`:
 
-```import visualize_state
+```python
+import visualize_state
 state_file = "example_state.txt"
 colormap_file = "example_colormap.txt"
 pix_per_node = 25
