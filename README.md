@@ -1,7 +1,7 @@
 Simulation of Chemical Reaction Networks (CRNs) on a surface
 ============================================================
 
-This package is for simulating surface CRNs, as defined in Qian & Winfree 2014 ("Parallel and Scalable Computation and Spatial Dynamics with DNA-Based Chemical Reaction Networks on a Surface"). The package is a companion to Clamons, Qian, & Winfree 2020 ("Programming and Simulating Chemical Reaction Networks on a Surface").
+This package is a companion to Clamons, [Qian, & Winfree 2020 ("Programming and Simulating Chemical Reaction Networks on a Surface")](http://www.dna.caltech.edu/Papers/surface_CRNs_DNA20.pdf). It simulates surface Chemical Reaction Networks (surface CRNs), as defined in Qian & Winfree 2014 ("Parallel and Scalable Computation and Spatial Dynamics with DNA-Based Chemical Reaction Networks on a Surface"). The package is 
 
 This package provides:
 
@@ -15,7 +15,7 @@ This package provides:
 
 Prerequisites
 =============
-The GUI simulator requires pygame.
+The GUI simulator requires pygame and numpy, both of which can be installed with [pip](https://pip.pypa.io/en/stable/).
 
 This simulator is only tested in Python 3. It will likely not run in Python 2.
 
@@ -30,7 +30,7 @@ Install with the following (probably requires sudo): ``pip install git+git://git
 
 To update, run (also with superuser privilege): ``pip install --upgrade --no-deps git+git://github.com/sclamons/surface_crns.git@master``
 
-If you are using OSX and you get an error while installing surface\_crns
+If you are using OSX and you get a mysterious error while installing surface\_crns
 or pygame, you may need to install several SDL libraries used by pygame.
 Install them with brew (<https://brew.sh/>) with the command:
 
@@ -39,29 +39,29 @@ Install them with brew (<https://brew.sh/>) with the command:
 What's a surface CRN?
 =====================
 
-In brief, a surface CRN is a chemical reaction network where individual molecules are tethered to positions on a surface; or, alternatively, a surface CRN is an asynchronous cellular automata with transition rules that resemble those of unimolecular and bimolecular chemical reactions.
+In brief, a surface CRN is a stochastic chemical reaction network where individual molecules are tethered to fixed positions on a surface such that they can only interact with neighbors; stated another way, a surface CRN is an asynchronous cellular automata with transition rules that resemble those of unimolecular and bimolecular chemical reactions.
 
-A surface CRN consists of a number of sites with states on an arbitrary lattice (often a grid, but possibly any graph), along with transition rules of the form ``A -> B`` or ``A + B -> C + D``, with a real-valued reaction rate for each transition rule. States change stochastically according to the transition rules for the surface CRN, with expected time specified by the reaction rate for each reaction.
+A surface CRN consists of a number of sites with states on an arbitrary lattice (we usually use a square grid, but a surface CRN could use any graph as its lattice), along with transition rules of the form ``A -> B`` or ``A + B -> C + D``, with a real-valued reaction rate for each transition rule. States change stochastically according to the transition rules for the surface CRN, with expected time specified by the reaction rate for each reaction.
 
 For example, a site with state ``A`` can undergo ``A -> B`` to instantaneously switch to state ``B``.
 
 Bimolecular reactions (of the form ``A + B -> C + D``) can occur only if *both* of the species before the arrow are present and next to each other on the lattice (note that there is no "directionality" inherent to the surface, so an ``A`` next to a ``B`` is equivalent to a ``B`` next to an ``A``). When a bimolecular reaction occurs, the first reactant instantaneously becomes the first product, and the second reactant simultaneously and becomes the second product, so the states ``A B`` would become ``C D`` (or, equivalently, ``B A`` would become ``D C``).
 
-What can you do with a surface CRN? Some examples are shown in Qian and Winfree 2014; See what you can make!
+What can you do with a surface CRN? Some examples are shown in the paper, and also in [this earlier paper by Qian and Winfree](https://link.springer.com/chapter/10.1007/978-3-319-11295-4_8); See what you can make!
 
 How do I use the simulator?
 ===========================
 
 The fastest way to start using the simulator is to use our hosted version of the simulator at http://centrosome.caltech.edu/Surface_CRN_Simulator/srv/.
 
-To use the simulator directly, yourself, first install this package, as described under "Installation". This will install an executable script SurfaceCRNQueueSimulator, which you can run directly from the command line with ``SurfaceCRNQueueSimulator -m <manifest_file>``, where ``<manifest_file>`` is the name of a valid manifest file (see below). We have provided several example manifests in the ``examples`` folder. Please note that some of these manifests use information from other files in the ``examples`` folder. The easiest way to use these examples is to copy the entire folder.
+This package lets you run simulations locally, with more control and a less cumbersome interface. First install this package, as described under "Installation". This will install an executable script `SurfaceCRNQueueSimulator`, which you can run directly from the command line with ``SurfaceCRNQueueSimulator -m <manifest_file>``, where ``<manifest_file>`` is the name of a valid manifest file (see below). We have provided a number of example manifests in the ``examples`` folder, and you can get more from [the online simulator](http://www.dna.caltech.edu/Surface_CRN_Simulator/srv/). Please note that some of these manifests use information from other files in the ``examples`` folder. The easiest way to use these examples is to clone this repository and copy the entire ``examples`` folder.
 
-You can also run the simulator from a Python script. To run a surface CRN specified in a file "example_manifest.txt", you would run (in your Python terminal or script)
+You can also run the simulator from a Python script. If you are having difficulty running `SurfaceCRNQueueSimulator` directly, this is the next thing you should try. To run a surface CRN specified in a file "example_manifest.txt", you would run (in your Python terminal or script)
 
 ``from surface_crns import SurfaceCRNQueueSimulator
 SurfaceCRNQueueSimulator.simulate_surface_crn("example_manifest.txt")``
 
-If you are one of the users affected by the Pygame mouse click registration bug mentioned in "Prerequisites", you can run SurfaceCRNQueueSimulator with pythonw. First, find the full name and location of SurfaceCRNQueueSimulator on your machine by running ``which SurfaceCRNQueueSimulator``. Then run ``pythonw <simulator_name> -m <manifest_file>``, where ``<simulator_name>`` is the output of the ``which`` command you ran.
+If you are one of the users affected by the Pygame mouse click registration bug mentioned in "Prerequisites", you can run SurfaceCRNQueueSimulator with pythonw. First, find the full name and location of SurfaceCRNQueueSimulator on your machine by running ``which SurfaceCRNQueueSimulator``. Then run ``pythonw <simulator_name> -m <manifest_file>``, where ``<simulator_name>`` is the output of the ``which`` command you ran. You'll also have to use pythonw to run any script you run that uses `SurfaceCRNQueueSimulator`.
 
 What is a "manifest file"?
 ==========================
@@ -70,7 +70,7 @@ A manifest file is a text file that defines a surface CRN. It includes the rules
 
 How do I write a manifest file?
 ===============================
-You can find manifest files for several example surface CRNs in the "examples" folder and its subfolders (.txt files). There are also a number of examples available at http://www.dna.caltech.edu/Surface_CRN_Simulator/srv/.
+You can find manifest files for several example surface CRNs in [the "examples" folder of this repository](https://github.com/sclamons/surface_crns/tree/master/examples). There are also a number of examples available at http://www.dna.caltech.edu/Surface_CRN_Simulator/srv/.
 
 A surface chemical reaction network (sCRN) on a square grid can be specified by a manifest file consisting of four parts:
 
@@ -79,7 +79,7 @@ A surface chemical reaction network (sCRN) on a square grid can be specified by 
 * Colormap
 * General Settings
 
-Any line in a manifest beginning with a '#' will be treated as a comment and ignored.
+Any line in a manifest beginning with a '#' (or anything after a '#'# in the middle of a line) will be treated as a comment and ignored.
 
 ## Transition Rules
 
@@ -98,9 +98,13 @@ where "RATE" is a (nonnegative) number designating the reaction rate of the tran
 Rates may be placed anywhere in a transition rule statement except inside an identifier or the "->" token. For example, the following transition rules are all valid:
 
 (10) X + Y -> A + B
+
 X + Y ->(10) A + B
+
 X + Y -> A + B (10)
-Initial state
+
+## Initial state
+
 The section of a manifest specifying the initial state of the surface begins with the line "!START_INIT_STATE" and ends with the line "!END_INIT_STATE". An initial state is specified in a comma- or whitespace-separated format, with rows separated by newlines and columns are separated by either whitespace or commas (either is acceptable).
 
 The contents of each cell in the grid are specified just as in the transition rule section. The name used in the initial state section must exactly match the name used in the transition rule section, or transition rules will not be applied to that position.

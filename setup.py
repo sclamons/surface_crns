@@ -8,7 +8,7 @@ import sys
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
-with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 # To parse requirements.txt file
@@ -18,7 +18,7 @@ if sys.version_info[0] == 2:
     install_requires.append("unicodecsv")
 
 setup(
-    name='surface_crns',
+    name='surface_crns-sclamons',
 
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
@@ -27,6 +27,7 @@ setup(
 
     description='Simulation of chemical reaction networks (CRNs) on a surface',
     long_description=long_description,
+    long_description_type="text/markdown",
 
     # The project's main homepage.
     url='https://github.com/sclamons/surface_crns',
@@ -44,7 +45,7 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 4 - Alpha',
+        'Development Status :: 5 - Production/Stable',
 
         # Indicate who your project is intended for
         'Intended Audience :: Science/Research',
@@ -60,6 +61,9 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+
+        # Other tags
+        "Operating System :: OS Independent",
 
         'Natural Language :: English'
     ],
