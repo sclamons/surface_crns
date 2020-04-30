@@ -107,11 +107,11 @@ X + Y -> A + B (10)
 
 The section of a manifest specifying the initial state of the surface begins with the line "!START_INIT_STATE" and ends with the line "!END_INIT_STATE". An initial state is specified in a comma- or whitespace-separated format, with rows separated by newlines and columns are separated by either whitespace or commas (either is acceptable).
 
-The contents of each cell in the grid are specified just as in the transition rule section. The name used in the initial state section must exactly match the name used in the transition rule section, or transition rules will not be applied to that position.
+The contents of each cell in the grid are specified just as species in the transition rule section. The name used in the initial state section must exactly match the name used in the transition rule section, or transition rules will not be applied to that position.
 
 ## Colormap
 
-The section specifying a colormap begins with the line "!START_COLORMAP" and ends with the line "!END_COLORMAP". The colormap determines the colors that will be used to represent each species, and can be used to group multiple species to be displayed as one color. The colormap is optional; if no colormap is specified, then colors will be assigned automatically.
+The colormap section of the manifest begins with the line "!START_COLORMAP" and ends with the line "!END_COLORMAP". The colormap determines the colors that will be used to represent each species, and can be used to group multiple species to be displayed as one color. The colormap is optional; if no colormap is specified, then colors will be assigned automatically and each species will be labeled with its species name.
 
 A single species' color can be specified with a line of the form
 
@@ -131,8 +131,9 @@ Multiple species can also be grouped to be displayed with the same color and giv
 
 where "CLASS" is the (optional) name under which the species should be displayed, "NAME1, NAME2,..." is a comma-separated list of species names of any length, and "R", "G", and "B" are as above. For instance, to display all of the species X1, X2, X3, and X4 as red and all of the species Y1, Y2, Y3, and Y4 as green, one would write
 
-{X} X1, X2, X3, X4: (255, 0, 0)
+```{X} X1, X2, X3, X4: (255, 0, 0)
 {Y} Y1, Y2, Y3, Y4: (0, 255, 0)
+```
 
 ## General Settings
 
