@@ -4,6 +4,13 @@ local_reinstall_package.sh
 push_package.sh
 reinstall_package.sh
 
+# Documentation on the web server's
+# directory. DO NOT CHANGE.
+useful_info.txt
+
+# Web server code. Not part of the overall Git project.
+srv/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
