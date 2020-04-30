@@ -53,7 +53,8 @@ Or invoke in python, from the same directory as `visualize_state.py`:
 state_file = "example_state.txt"
 colormap_file = "example_colormap.txt"
 pix_per_node = 25
-visualize_state.render_state(state_file, colormap_file, pix_per_node)```
+visualize_state.render_state(state_file, colormap_file, pix_per_node)
+```
 
 For more example usage, see `render_GoLs.py`, which produces renders of the Game of Life snapshots produced in the [**Snapshots**](#snapshots) example.
 
