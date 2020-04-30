@@ -1,8 +1,7 @@
 Simulation of Chemical Reaction Networks (CRNs) on a surface
 ============================================================
 
-This package is for simulating surface CRNs, as defined in Qian & Winfree 2014 ("Parallel and Scalable Computation and Spatial Dynamics with DNA-Based Chemical Reaction Networks on a Surface").
-
+This package is for simulating surface CRNs, as defined in Qian & Winfree 2014 ("Parallel and Scalable Computation and Spatial Dynamics with DNA-Based Chemical Reaction Networks on a Surface"). The package is a companion to Clamons, Qian, & Winfree 2020 ("Programming and Simulating Chemical Reaction Networks on a Surface").
 
 This package provides:
 
@@ -10,6 +9,7 @@ This package provides:
 * Models and views for square-grid and hex-grid surface CRNs.
 * A manifest-reading system to simplify setting up new surface CRNs.
 * A pygame-powered GUI for visualizing square-grid and hex-grid surface CRNs.
+* A number of [examples](https://github.com/sclamons/surface_crns/tree/master/examples) of surface CRNs, including examples from the paper and examples of programmatic access to the package's underlying functionality.
 
 **If you are using surface_crns on OSX, read the note for you in "Prerequisites".**
 
