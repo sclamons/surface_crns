@@ -26,9 +26,9 @@ This simulator is only tested in Python 3. It will likely not run in Python 2.
 Installation
 ============
 
-Install with the following (probably requires sudo): ``pip install git+git://github.com/sclamons/surface_crns.git@master``
+Install with the following (probably requires sudo): ``pip install surface_crns``
 
-To update, run (also with superuser privilege): ``pip install --upgrade --no-deps git+git://github.com/sclamons/surface_crns.git@master``
+To update, run (also with superuser privilege): ``pip install --upgrade --no-deps surface_crns``
 
 If you are using OSX and you get a mysterious error while installing surface\_crns
 or pygame, you may need to install several SDL libraries used by pygame.
