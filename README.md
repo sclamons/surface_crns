@@ -54,7 +54,12 @@ How do I use the simulator?
 
 The fastest way to start using the simulator is to use our hosted version of the simulator at http://centrosome.caltech.edu/Surface_CRN_Simulator/srv/.
 
-This package lets you run simulations locally, with more control and a less cumbersome interface. First install this package, as described under "Installation". This will install an executable script `SurfaceCRNQueueSimulator`, which you can run directly from the command line with ``SurfaceCRNQueueSimulator -m <manifest_file>``, where ``<manifest_file>`` is the name of a valid manifest file (see below). We have provided a number of example manifests in the ``examples`` folder, and you can get more from [the online simulator](http://www.dna.caltech.edu/Surface_CRN_Simulator/srv/). Please note that some of these manifests use information from other files in the ``examples`` folder. The easiest way to use these examples is to clone this repository and copy the entire ``examples`` folder.
+This package lets you run simulations locally, with more control and a less cumbersome interface. First, install this package as described under "Installation". This will install an executable script `SurfaceCRNQueueSimulator`, which you can run directly from the command line with 
+
+```
+SurfaceCRNQueueSimulator -m <manifest_file>
+```
+where ``<manifest_file>`` is the name of a valid manifest file (see below). We have provided a number of example manifests in the ``examples`` folder, and you can get more from [the online simulator](http://www.dna.caltech.edu/Surface_CRN_Simulator/srv/). Please note that some of these manifests use information from other files in the ``examples`` folder. The easiest way to use these examples is to clone this repository and copy the entire ``examples`` folder.
 
 You can also run the simulator from a Python script. If you are having difficulty running `SurfaceCRNQueueSimulator` directly, this is the next thing you should try. To run a surface CRN specified in a file "example_manifest.txt", you would run (in your Python terminal or script)
 
