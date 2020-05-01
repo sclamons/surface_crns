@@ -1,5 +1,5 @@
 import os
-from surface_crns.readers.statements import *
+from surface_crns.readers.statements import section_starts, include_mark
 import surface_crns.readers.transition_readers as transition_readers
 import surface_crns.readers.colormap_readers as colormap_readers
 import surface_crns.readers.grid_state_readers as grid_state_readers
@@ -88,8 +88,8 @@ def splice_includes(manifest_stream, file_location):
             if not os.path.isfile(filename):
                 filename = file_location + filename
             with open(filename, 'rU') as include_file:
-                for line in splice_includes(include_file, file_location):
-                    yield line
+                for inner_line in splice_includes(include_file, file_location):
+                    yield inner_line
         else:
             yield line
 

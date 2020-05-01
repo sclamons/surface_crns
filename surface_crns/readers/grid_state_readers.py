@@ -1,4 +1,4 @@
-from surface_crns.readers.statements import *
+from surface_crns.readers.statements import section_ends
 import numpy as np
 
 def read_grid_state(filename):

@@ -1,4 +1,3 @@
-import copy
 import random
 from surface_crns.base.transition_rule import TransitionRule
 from surface_crns.simulators.event import Event
@@ -13,7 +12,7 @@ class SynchronousSimulator:
     def __init__(self, surface = None, update_rule = None, seed = None,
                  simulation_duration = 100):
         self.debugging = False
-        if update_rule == None:
+        if update_rule is None:
             self.update_rule = []
         else:
             self.update_rule = update_rule
@@ -39,7 +38,6 @@ class SynchronousSimulator:
         return self.time >= self.simulation_duration
 
     def process_next_reaction(self):
-        local_debugging = False
         '''
         Update the surface one clock tick according to the rule given in
         update_rule

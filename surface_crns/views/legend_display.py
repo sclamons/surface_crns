@@ -1,5 +1,4 @@
-from surface_crns.base import *
-from surface_crns.constants import *
+from surface_crns.constants import COLOR_CLASSES
 from surface_crns.ordered_dict import OrderedDict
 import pygame
 

@@ -7,9 +7,9 @@ class TransitionRule(object):
     Transition rules are static.
     '''
     def __init__(self, inputs = None, outputs = None, rate = 1):
-        if inputs == None:
+        if inputs is None:
             self.inputs = []
-        if outputs == None:
+        if outputs is None:
             self.outputs = []
         if not isinstance(inputs, list):
             self.inputs = [inputs]

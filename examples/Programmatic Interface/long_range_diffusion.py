@@ -1,11 +1,6 @@
 from surface_crns import SurfaceCRNQueueSimulator
 from surface_crns.models.grids import SquareGridWithCornerLeak
-from surface_crns.base.node import *
-from surface_crns.views.grid_display import *
-from surface_crns.simulators.queue_simulator import *
 import surface_crns.readers as readers
-import pygame, math, random, sys
-import matplotlib.pyplot as plt
 
 def main():
     manifest_file = "long_range_diffusion.txt"

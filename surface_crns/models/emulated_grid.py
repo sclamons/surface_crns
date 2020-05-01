@@ -1,7 +1,6 @@
 import numpy as np
-from surface_crns.base.node import *
-from surface_crns.models.grids import SquareGrid
-from warnings import *
+from surface_crns.base.node import Node
+import warnings
 
 class EmulatedSimulationGrid(object):
     '''
@@ -52,7 +51,7 @@ class EmulatedSimulationGrid(object):
         if isinstance(state_grid, list):
             state_grid = np.array(state_grid)
         if state_grid.shape != self.grid.shape:
-            warn(Warning("State grid set to state with different size than " +
+            warnings.warn(Warning("State grid set to state with different size than " +
                          "previously set. Changing size."))
             self.grid = np.empty(state_grid.shape, np.dtype(object))
             self.x_size = state_grid.shape[0]

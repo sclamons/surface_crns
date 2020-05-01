@@ -1,6 +1,6 @@
 import os,sys,random
-from surface_crns.models.grids import *
-from surface_crns.simulators.queue_simulator import *
+from surface_crns.models.grids import SquareGrid
+from surface_crns.simulators.queue_simulator import QueueSimulator
 from surface_crns.readers.manifest_readers import read_manifest
 from surface_crns.options.option_processor import SurfaceCRNOptionParser
 
@@ -50,12 +50,10 @@ def main():
     uid = random.randint(1,1000000)
     if uid not in used_uids:
       break
-  result_file = os.path.join('results', f'competition_manifest_{uid}.txt')
 
   random.seed(SEED)
   
   teams = [f for f in os.listdir(teamfile_loc) if f.endswith(".txt")]
-  teamnames = [filename.split(".")[0] for filename in teams]
 
   K=len(teams)
 
@@ -64,8 +62,6 @@ def main():
   for i in range(K):
     for j in range(K):
       if not i==j:
-        #print(f"\n({i*K + j+1}/{K*K}) ", end = "")
-        #print(f"Playing {teamnames[i]} vs. {teamnames[j]}\t\t", end = "")
         create_strategy_insert(teams[i], teams[j])
         res = []
         for k in range(n_points):
@@ -82,12 +78,8 @@ def main():
 
         Xpoints = sum([(r=='X') for r in res])
         Ypoints = sum([(r=='Y') for r in res])
-        # print('X (%s) wins %d times' % (teamXfile,Xpoints))
-        # print('Y (%s) wins %d times' % (teamYfile,Ypoints))
-        # print('%d ties' % (sum([(i=='N') for i in res])))
         score[i][j] = (Xpoints,Ypoints)
         match_count += 1
-        # print('Finished competing team {} against team {}.'.format(i,j))
 
   result_filename = os.path.join(results_loc, f"results_{uid}.txt")
   print("Done. Writing results to " + result_filename)

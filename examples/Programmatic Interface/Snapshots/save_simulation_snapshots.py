@@ -1,7 +1,7 @@
 from surface_crns.simulators.queue_simulator import QueueSimulator
 from surface_crns.readers.manifest_readers import read_manifest
 from surface_crns.options.option_processor import SurfaceCRNOptionParser
-import math, random, sys, os
+import os
 
 def main():
     '''
@@ -36,7 +36,7 @@ def main():
                     break
                 next_t = times[t_idx]
             next_rxn = simulator.process_next_reaction()
-            if next_rxn == None:
+            if next_rxn is None:
                 break
             time = next_rxn.time
 

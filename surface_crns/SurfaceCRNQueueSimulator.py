@@ -19,27 +19,21 @@ import surface_crns.readers as readers
 import os
 
 from surface_crns.options.option_processor import SurfaceCRNOptionParser
-from surface_crns.models.grids import SquareGrid, HexGrid
 from surface_crns.views.time_display import TimeDisplay
 from surface_crns.views.grid_display import SquareGridDisplay, HexGridDisplay
 from surface_crns.views.legend_display import LegendDisplay
 from surface_crns.simulators.queue_simulator import QueueSimulator
 from surface_crns.simulators.synchronous_simulator import SynchronousSimulator
 from surface_crns.simulators.event_history import EventHistory
-from surface_crns.simulators.event import Event
-from surface_crns.base.transition_rule import TransitionRule
-from surface_crns.pygbutton import *
+from surface_crns.pygbutton import PygButton
 
-import numpy as np
-from queue import PriorityQueue
-import random
 import cProfile
 import optparse
 import sys
 from time import process_time
 
 import pygame
-from pygame.locals import *
+import pygame.locals as pygl
 
 
 pygame.display.init()
@@ -386,7 +380,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                 simulation.reset()
                 for rxn in list(simulation.event_queue.queue):
                     print(rxn)
-            if event.type == QUIT:
+            if event.type == pygl.QUIT:
                 if opts.saving_movie:
                     movie_file.close()
                 cleanup_and_exit(simulation)
@@ -425,7 +419,6 @@ def simulate_surface_crn(manifest_filename, display_class = None,
             while not event_history.at_beginning() and \
              event_history.previous_event().time > time:
                 prev_reaction = event_history.previous_event()
-                previous_reaction_time = prev_reaction.time
                 if event_history.at_beginning():
                     first_frame = True
                 event_history.increment_event(-1)
@@ -516,8 +509,8 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                     raise Exception("Unexpected OS name '" + os.name + "'")
 
                 signal(SIGPIPE, SIG_DFL)
-                width = display_surface.get_width()
-                height = display_surface.get_height()
+                # width = display_surface.get_width()
+                # height = display_surface.get_height()
                 movie_filename = os.path.join(".", MOVIE_DIRECTORY,
                                               opts.movie_title + ".mp4")
                 if opts.debug:
@@ -606,12 +599,12 @@ def cleanup_and_exit(simulation):
     sys.exit()
 
 def update_display(opts, simulation, FRAME_DIRECTORY = None):
-    if opts.capture_directory == None:
+    if opts.capture_directory is None:
         pygame.display.update()
         pygame.display.flip()
     else:
         print("capture directory is: " + str(opts.capture_directory))
-        if FRAME_DIRECTORY == None:
+        if FRAME_DIRECTORY is None:
             raise Exception("FRAME_DIRECTORY should be set if a capture" +
                             " directory is set.")
         try:

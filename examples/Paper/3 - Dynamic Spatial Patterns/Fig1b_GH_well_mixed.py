@@ -1,14 +1,6 @@
-import csv
-import os
-import string
-import math
 import scipy.integrate
-import warnings
-import copy
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.colors as colors
-import matplotlib.cm as mplcm
 import matplotlib as mpl
 # mpl.rcParams['figure.dpi'] = 300
 

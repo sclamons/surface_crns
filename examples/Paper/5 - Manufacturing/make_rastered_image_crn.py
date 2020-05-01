@@ -5,8 +5,6 @@
 # which will create
 # image_crn.txt
 
-import sys, os, time
-
 # debugging test image
 # image=[[0,0,0,0,0,1,1,0,0,0],
 #        [1,1,0,0,0,1,1,0,0,1],

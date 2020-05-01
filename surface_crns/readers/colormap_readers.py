@@ -1,5 +1,5 @@
-from surface_crns.readers.statements import *
-from surface_crns.constants import *
+from surface_crns.readers.statements import section_ends
+from surface_crns.constants import COLOR_CLASSES
 from surface_crns.ordered_dict import OrderedDict
 
 def read_colormap(filename):

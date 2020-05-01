@@ -62,11 +62,13 @@ For more example usage, see `render_GoLs.py`, which produces renders of the Game
 
 #### <a name="comparing_queues"></a>Comparing Queue Implementations
 
-This script compares the performance profile of two different queue-based simulator objects on the Rule 110 example shown in Fig. 5a. It shows a compact example of how to run a surface CRN simulation "headlessly" (without graphic display).
+This script compares the performance profile of two different queue-based simulator objects on a couple of different examples from the "Paper" section. It shows a compact example of how to run a surface CRN simulation "headlessly" (without graphic display).
 
 Both simulators implement the efficient queue-based algorithm described in the second half of Box 2, from the paper. The two simulators differ in how they remove "stale" reactions (reactions scheduled to occur at a site that has already been modified by another reaction) from the queue. `QueueSimulator`, the standard simulator, checks each reaction for staleness as it is popped from the queue. This is fast per-reaction, but it leaves potentially large numbers of stale reactions in the queue, which slows down every dequeueing event.
 
 The second simulator, EagerQueueSimulator, checks every reaction in the queue for staleness after each reaction, so that stale reactions are never stored. This introduces a step linear in the size of the queue to each event, but it keeps the queue smaller, which can be faster for small queues and for systems where many reactions are possible at each site.
+
+This one can take a while to run.
 
 #### <a name="water_adsorption"></a>Physical Surface Chemistry (Water adsorption/splitting Model)
 

@@ -36,7 +36,7 @@ authors and should not be interpreted as representing official policies, either 
 or implied, of Al Sweigart.
 """
 import pygame
-from pygame.locals import *
+import pygame.locals as pygl
 
 pygame.font.init()
 PYGBUTTON_FONT = pygame.font.Font('freesansbold.ttf', 14)
@@ -125,8 +125,10 @@ class PygButton(object):
         when mouseUp() or mouseClick() is called. lastMouseDownOverButton is
         always False when mouseUp() or mouseClick() is called."""
 
-        if eventObj.type not in (MOUSEMOTION, MOUSEBUTTONUP, MOUSEBUTTONDOWN) or not self._visible:
-            # The button only cares bout mouse-related events (or no events, if it is invisible)
+        if eventObj.type not in (pygl.MOUSEMOTION, pygl.MOUSEBUTTONUP, 
+                                 pygl.MOUSEBUTTONDOWN) or not self._visible:
+            # The button only cares bout mouse-related events (or no events, if 
+            # it is invisible)
             return []
 
         retVal = []
@@ -140,27 +142,29 @@ class PygButton(object):
         elif self.mouseOverButton and not self._rect.collidepoint(eventObj.pos):
             # if mouse has exited the button:
             self.mouseOverButton = False
-            hasExited = True # call mouseExit() later, since we want mouseMove() to be handled before mouseExit()
+            hasExited = True # call mouseExit() later, since we want mouseMove() 
+                             # to be handled before mouseExit()
 
         if self._rect.collidepoint(eventObj.pos):
         #if self._rect.collidepoint(pygame.mouse.get_pos()):
             # if mouse event happened over the button:
-            if eventObj.type == MOUSEMOTION:
+            if eventObj.type == pygl.MOUSEMOTION:
                 self.mouseMove(eventObj)
                 retVal.append('move')
-            elif eventObj.type == MOUSEBUTTONDOWN:
+            elif eventObj.type == pygl.MOUSEBUTTONDOWN:
                 self.buttonDown = True
                 self.lastMouseDownOverButton = True
                 self.mouseDown(eventObj)
                 retVal.append('down')
         else:
-            if eventObj.type in (MOUSEBUTTONUP, MOUSEBUTTONDOWN):
-                # if an up/down happens off the button, then the next up won't cause mouseClick()
+            if eventObj.type in (pygl.MOUSEBUTTONUP, pygl.MOUSEBUTTONDOWN):
+                # if an up/down happens off the button, then the next up won't 
+                # cause mouseClick()
                 self.lastMouseDownOverButton = False
 
         # mouse up is handled whether or not it was over the button
         doMouseClick = False
-        if eventObj.type == MOUSEBUTTONUP:
+        if eventObj.type == pygl.MOUSEBUTTONUP:
             if self.lastMouseDownOverButton:
                 doMouseClick = True
             self.lastMouseDownOverButton = False
@@ -193,7 +197,8 @@ class PygButton(object):
 
 
     def _update(self):
-        """Redraw the button's Surface object. Call this method when the button has changed appearance."""
+        """Redraw the button's Surface object. Call this method when the button 
+           has changed appearance."""
         if self.customSurfaces:
             self.surfaceNormal    = pygame.transform.smoothscale(self.origSurfaceNormal, self._rect.size)
             self.surfaceDown      = pygame.transform.smoothscale(self.origSurfaceDown, self._rect.size)
@@ -209,7 +214,8 @@ class PygButton(object):
         self.surfaceHighlight.fill(self.bgcolor)
 
         # draw caption text for all buttons
-        captionSurf = self._font.render(self._caption, True, self.fgcolor, self.bgcolor)
+        captionSurf = self._font.render(self._caption, True, self.fgcolor, 
+                                        self.bgcolor)
         captionRect = captionSurf.get_rect()
         captionRect.center = int(w / 2), int(h / 2)
         self.surfaceNormal.blit(captionSurf, captionRect)
@@ -268,14 +274,17 @@ class PygButton(object):
         if type(highlightSurface) == str:
             self.origSurfaceHighlight = pygame.image.load(highlightSurface)
 
-        if self.origSurfaceNormal.get_size() != self.origSurfaceDown.get_size() != self.origSurfaceHighlight.get_size():
+        if self.origSurfaceNormal.get_size() != self.origSurfaceDown.get_size()\
+           != self.origSurfaceHighlight.get_size():
             raise Exception('foo')
 
         self.surfaceNormal = self.origSurfaceNormal
         self.surfaceDown = self.origSurfaceDown
         self.surfaceHighlight = self.origSurfaceHighlight
         self.customSurfaces = True
-        self._rect = pygame.Rect((self._rect.left, self._rect.top, self.surfaceNormal.get_width(), self.surfaceNormal.get_height()))
+        self._rect = pygame.Rect((self._rect.left, self._rect.top, 
+                                  self.surfaceNormal.get_width(), 
+                                  self.surfaceNormal.get_height()))
 
 
 
@@ -294,7 +303,8 @@ class PygButton(object):
 
 
     def _propSetRect(self, newRect):
-        # Note that changing the attributes of the Rect won't update the button. You have to re-assign the rect member.
+        # Note that changing the attributes of the Rect won't update the button. 
+        # You have to re-assign the rect member.
         self._update()
         self._rect = newRect
 

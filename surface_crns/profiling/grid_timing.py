@@ -1,13 +1,8 @@
 from __future__ import print_function
 import surface_crns.models.grids as grids
 import surface_crns.readers.manifest_readers as manifest_readers
-import surface_crns.readers.grid_state_readers as init_readers
 import surface_crns.simulators.queue_simulator as simulators
 from surface_crns.profiling.timing import TimeProfiler
-import cProfile
-import optparse
-import sys
-import numpy
 import itertools
 
 class GridSimTimeProfiler():
@@ -41,7 +36,7 @@ class GridSimTimeProfiler():
             else:
                 self.DEBUG = bool(int(self.options['debug']))
         else:
-            DEBUG = debug
+            self.DEBUG = debug
         if 'rng_seed' in self.options:
             self.RAND_SEED = int(self.options['rng_seed'])
         else:

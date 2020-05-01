@@ -1,6 +1,6 @@
-from surface_crns.readers.statements import *
+from surface_crns.readers.statements import section_ends
 import re
-from surface_crns.base.transition_rule import *
+from surface_crns.base.transition_rule import TransitionRule
 
 '''
 For external use

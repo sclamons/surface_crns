@@ -1,10 +1,11 @@
 from surface_crns import SurfaceCRNQueueSimulator
-from surface_crns.models.grids import *
-from surface_crns.base.node import *
-from surface_crns.views.grid_display import *
-from surface_crns.simulators.queue_simulator import *
+from surface_crns.models.grids import HexGrid
+from surface_crns.base.node import Node
+from surface_crns.views.grid_display import HexGridDisplay
+from surface_crns.simulators.queue_simulator import QueueSimulator
 import pygame, math, random, sys
 import matplotlib.pyplot as plt
+import numpy as np
 
 def main():
     manifest_file = "water_adsorption.txt"
@@ -49,7 +50,6 @@ def simulate_without_display(manifest_file, lattice):
                                transition_rules = opts.transition_rules,
                                seed = opts.rng_seed,
                                simulation_duration = opts.max_duration)
-    time = 0
     times = [0]
     concs = dict()
     for species in species_tracked:
@@ -59,7 +59,7 @@ def simulate_without_display(manifest_file, lattice):
             concs[node.state][0] += 1
     while not simulator.done():
         next_rxn = simulator.process_next_reaction()
-        if next_rxn == None:
+        if next_rxn is None:
             break
         times.append(next_rxn.time)
         for species in species_tracked:
@@ -293,7 +293,7 @@ class HexGridPlusIntersectionDisplay(HexGridDisplay):
             for n, weight in node.neighbors:
                 if n.is_intersection:
                     self.update_node(n)
-            center = self.get_center(node)
+            # center = self.get_center(node)
 
     def get_center(self, node):
         '''

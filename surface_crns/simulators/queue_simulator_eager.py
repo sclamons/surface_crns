@@ -1,7 +1,6 @@
 import numpy as np
 import random
 import math
-import os
 import heapq
 from surface_crns.simulators.event import Event
 
@@ -26,7 +25,7 @@ class EagerQueueSimulator:
     def __init__(self, surface = None, transition_rules = None, seed = None,
                  simulation_duration = 100, debug = False):
         self.debug = debug
-        if transition_rules == None:
+        if transition_rules is None:
             self.rule_set = []
         else:
             self.rule_set = transition_rules
@@ -168,7 +167,7 @@ class EagerQueueSimulator:
         Nodes in exclusion_list are not considered eligible for reaction.
         '''
         local_debugging = False
-        if exclusion_list == None:
+        if exclusion_list is None:
             exclusion_list = []
         if node.state not in self.rules_by_state:
             if local_debugging:

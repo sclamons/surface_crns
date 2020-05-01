@@ -4,7 +4,6 @@ from surface_crns.readers.colormap_readers import read_colormap
 from surface_crns.models.grids import SquareGrid
 from surface_crns.views.grid_display import SquareGridDisplay
 import pygame
-from pygame.locals import *
 
 pygame.display.init()
 pygame.font.init()

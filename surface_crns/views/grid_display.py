@@ -81,7 +81,6 @@ class SurfaceDisplay(object):
 
 
 class SquareGridDisplay(object):
-    debug = False
     '''
     Displays a SquareGrid object as a colored grid.
     '''
@@ -103,6 +102,8 @@ class SquareGridDisplay(object):
                             that node's state. Otherwise, will only display the
                             color of the node.
         '''
+        self.debug = False
+
 
         # Constants
         self.grid_buffer = 5
@@ -149,7 +150,6 @@ class SquareGridDisplay(object):
     pixels_per_node = property(**pixels_per_node())
 
     def render(self, parent_surface, x_pos = 0, y_pos = 0):
-        debug = False
         '''
         Set up the display and make the first render. This must be called before
         any other updates.
@@ -160,7 +160,7 @@ class SquareGridDisplay(object):
         self.x_pos = x_pos
         self.y_pos = y_pos
         # Create display surface
-        if debug:
+        if self.debug:
             print("Displaying grid display at position (" + str(x_pos) + "," +
                   str(y_pos) + ") with width " + str(self.display_width) +
                   " and height " + str(self.display_height) + ".")
@@ -186,8 +186,6 @@ class SquareGridDisplay(object):
                                       text_rect)
 
     def make_node_rectangle(self, node):
-        debug = False
-
         x = node.position[0]
         y = node.position[1]
         if self.grid.x_size * self.node_width < self.min_x:
@@ -200,7 +198,7 @@ class SquareGridDisplay(object):
             y_pos    = y_buffer + y * self.node_height
         else:
             y_pos    = self.grid_buffer + y * self.node_height
-        if debug:
+        if self.debug:
             print("Creating new rectangle with position (" + str(x_pos) + "," +
                   str(y_pos) + "), height " + str(self.node_height) +
                   ", and width " + str(self.node_width) + ".")
@@ -221,7 +219,6 @@ class SquareGridDisplay(object):
 
 
 class HexGridDisplay(object):
-    debug = False
     '''
     Displays a HexGrid object as a colored honeycomb.
     '''
@@ -243,6 +240,7 @@ class HexGridDisplay(object):
                             that node's state. Otherwise, will only display the
                             color of the node.
         '''
+        self.debug = False
 
         # Constants
         self.grid_buffer = 5
@@ -297,7 +295,6 @@ class HexGridDisplay(object):
     pixels_per_node = property(**pixels_per_node())
 
     def render(self, parent_surface, x_pos = 0, y_pos = 0):
-        debug = False
         '''
         Set up the display and make the first render. This must be called before
         any other updates.
@@ -308,7 +305,7 @@ class HexGridDisplay(object):
         self.x_pos = x_pos
         self.y_pos = y_pos
         # Create display surface
-        if debug:
+        if self.debug:
             print("Displaying grid display at position (" + str(x_pos) + "," +
                   str(y_pos) + ") with width " + str(self.display_width) +
                   " and height " + str(self.display_height) + ".")
@@ -338,8 +335,6 @@ class HexGridDisplay(object):
         '''
         Returns the list of vertices of the hex at the node's position.
         '''
-        debug = False
-
         x_pos, y_pos = self.get_center(node)
         a = self.node_width * 0.5 / math.cos(math.pi/6.0)
         b = self.node_width * 0.5 * math.tan(math.pi/6.0)
@@ -365,14 +360,14 @@ class HexGridDisplay(object):
         y = node.position[1]
         # Grid might be floating in a space required by other UI elements.
         # If so, add a buffer to each side.
-        if self.total_grid_width < self.min_x:
-            x_buffer = (self.min_x - self.total_grid_width)/2
-        else:
-            x_buffer = 0
-        if self.total_grid_height < self.min_y:
-            y_buffer = (self.min_y - self.total_grid_height)/2
-        else:
-            y_buffer = 0
+        # if self.total_grid_width < self.min_x:
+        #     x_buffer = (self.min_x - self.total_grid_width)/2
+        # else:
+        #     x_buffer = 0
+        # if self.total_grid_height < self.min_y:
+        #     y_buffer = (self.min_y - self.total_grid_height)/2
+        # else:
+        #     y_buffer = 0
 
         x_pos = (x + 0.5*(y%2) + 0.5) * self.node_width
         y_pos = self.node_width * math.tan(math.pi/6.0) + \
@@ -397,7 +392,6 @@ class HexGridDisplay(object):
 
 
 class ParallelEmulatedSquareGridDisplay(object):
-    debug = False
     '''
     Displays an underlying grid and the grid it emulates (i.e., the underlying
     process of a game of life automaton and the automoton it emulates)
@@ -444,7 +438,7 @@ class ParallelEmulatedSquareGridDisplay(object):
 
         # Constants
         self.grid_buffer = 5
-
+        self.debug = False
 
         # Argument inits
         self.grid = grid
@@ -496,7 +490,6 @@ class ParallelEmulatedSquareGridDisplay(object):
     pixels_per_node = property(**pixels_per_node())
 
     def render(self, parent_surface, x_pos = 0, y_pos = 0):
-        debug = False
         '''
         Set up the display and make the first render. This must be called before
         any other updates.
@@ -507,7 +500,7 @@ class ParallelEmulatedSquareGridDisplay(object):
         self.x_pos = x_pos
         self.y_pos = y_pos
         # Create display surface
-        if debug:
+        if self.debug:
             print("Displaying grid display at position (" + str(x_pos) + "," +
                   str(y_pos) + ") with width " + str(self.display_width) +
                   " and height " + str(self.display_height) + ".")
@@ -555,8 +548,6 @@ class ParallelEmulatedSquareGridDisplay(object):
             pygame.draw.rect(self.display_surface, node_color, new_rect)
 
     def make_node_rectangle(self, node):
-        debug = False
-
         x = node.position[0]
         y = node.position[1]
         if self.display_width < self.min_x:
@@ -570,7 +561,7 @@ class ParallelEmulatedSquareGridDisplay(object):
             y_pos    = y_buffer + y * self.node_height
         else:
             y_pos    = self.grid_buffer + y * self.node_height
-        if debug:
+        if self.debug:
             print("Creating new rectangle with position (" + str(x_pos) + "," +
                   str(y_pos) + "), height " + str(self.node_height) +
                   ", and width " + str(self.node_width) + ".")

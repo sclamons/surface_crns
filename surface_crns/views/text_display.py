@@ -1,4 +1,3 @@
-from surface_crns.base import *
 import pygame
 
 class TextDisplay(object):
@@ -17,7 +16,7 @@ class TextDisplay(object):
 
 
     def __init__(self, width):
-        debug = False
+        self.debug = False
 
         self.display_width = width
 
@@ -44,7 +43,6 @@ class TextDisplay(object):
         self.text_box.centery = int(self.display_height / 2)
 
     def render(self, parent_surface, x_pos = 0, y_pos = 0):
-        debug = False
         '''
         Set up the display and make the first render. This must be called before
         any other updates.
@@ -55,7 +53,7 @@ class TextDisplay(object):
         self.x_pos = x_pos
         self.y_pos = y_pos
 
-        if debug:
+        if self.debug:
             print("Displaying text at position (" + str(self.x_pos) +
                   ", " + str(self.y_pos) + "), width = " +
                   str(self.display_width) + ", height " +
@@ -71,8 +69,7 @@ class TextDisplay(object):
         return self._text
 
     def set_text(self, value):
-        debug = False
-        if debug:
+        if self.debug:
             print("Updating display text to " + str(value))
         self._text = value
         self.update_text()

@@ -1,5 +1,3 @@
-import numpy as np
-
 class EventHistory(object):
     '''
     Holds a time-course of surface CRN reaction events. Iterating through an
