@@ -290,6 +290,8 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     pygame.display.flip()
     update_display(opts, simulation, FRAME_DIRECTORY)
 
+    real_time = os.environ["SDL_VIDEODRIVER"] != "dummy"
+
     # State variables for simulation
     next_reaction_time = 0
     prev_reaction_time = 0
@@ -466,7 +468,8 @@ def simulate_surface_crn(manifest_filename, display_class = None,
         if opts.debug:
             print("Updating display.")
         update_display(opts, simulation, FRAME_DIRECTORY)
-        fpsClock.tick(opts.fps)
+        if real_time:
+            fpsClock.tick(opts.fps)
 
         # Check for simulation completion...
         if opts.debug:

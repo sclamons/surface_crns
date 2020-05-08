@@ -27,7 +27,7 @@ setup(
 
     description='Simulation of chemical reaction networks (CRNs) on a surface',
     long_description=long_description,
-    long_description_type="text/markdown",
+    long_description_content_type="text/markdown",
 
     # The project's main homepage.
     url='https://github.com/sclamons/surface_crns',

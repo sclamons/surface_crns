@@ -160,7 +160,7 @@ with the obvious meanings. Useful settings to know are:
 
 * **speedup_factor** *(default `1`)*: A nonnegative real number dictating the speed of simulation playback. Larger numbers mean faster playback, up to the processing limits of pygame and of the simulator.
 * **debug** *(default `False`)*: If `True`, the simulator will spew out debugging info when run. You probably want this set to `False`.
-* **rng_seed** *(default `None`): Integer specifying the random number seed used by the simulation. Set this value to a positive integer to make simulations reproducible.
+* **rng_seed** *(default `None`)*: Integer specifying the random number seed used by the simulation. Set this value to a positive integer to make simulations reproducible.
 * **max_duration** *(default `1000000`)*: A nonnegative number specifying the maximum length of simulation in arbitrary time units (the same arbitrary time units specified by transition rule reaction rates).
 * **node_display** *(default `color`)*: Determines whether the state of each position on the grid (node) is overlaid, in text, on that node. Set to "text" to overlay text, or "color" to only show node color.
 * **pixels_per_node** *(default `5`)*: Determines the size of a node, in pixels.
