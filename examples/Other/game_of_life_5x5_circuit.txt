@@ -16,7 +16,7 @@
 # In this example, we watch a "toad" (2-period oscillating pattern) flip back and forth approximately 5 times, for a total of ~10 generations.
 
 
-pixels_per_node    = 10
+pixels_per_node    = 2
 speedup_factor     = 10
 debug              = False
 rng_seed           = 123123123

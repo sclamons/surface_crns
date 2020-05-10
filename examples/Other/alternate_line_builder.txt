@@ -1,3 +1,6 @@
+# Alternate line-builder
+# Designed by Philip Peterson
+
 pixels_per_node    = 25
 node_display       = Text
 speedup_factor     = 10

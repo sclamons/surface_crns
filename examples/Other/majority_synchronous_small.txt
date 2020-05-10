@@ -1,7 +1,7 @@
 # 2D synchronous totalistic cellular automata 
 # with von Neumann neighborhood and 0-value edges.
 
-pixels_per_node    = 70
+pixels_per_node    = 100
 speedup_factor     = 1
 rng_seed           = 10
 max_duration       = 20
