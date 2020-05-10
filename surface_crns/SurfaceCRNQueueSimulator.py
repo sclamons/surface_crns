@@ -525,11 +525,11 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                            '-start_number', '1', # EW: might it default to
                                                  # starting with 0?
                            '-i', os.path.join(FRAME_DIRECTORY,
-                                              opts.movie_title + "_%d.jpeg"),
+                                              opts.movie_title + "_%d.png"),
                            # Try to use better-than-default decoder
                            '-vcodec', 'hevc',
                            # Set a higher-than-default bitrate
-                           '-crf', '1'
+                           '-crf', '18',
                            '-an', #no audio
                            # Width and height need to be divisible by 2.
                            # Round up if necessary.
@@ -632,7 +632,7 @@ def update_display(opts, simulation, FRAME_DIRECTORY = None):
                 print("movie title is: " + str(opts.movie_title))
             frame_filename = os.path.join(FRAME_DIRECTORY, opts.movie_title
                                           + "_" + str(frame_number) +
-                                          ".jpeg")
+                                          ".png")
             if opts.debug:
                 print("Saving frame at: " + frame_filename)
             pygame.image.save(simulation.display_surface, frame_filename)
@@ -668,7 +668,7 @@ def update_display(opts, simulation, FRAME_DIRECTORY = None):
                 text_display.render(display_surface, x_pos = 0, y_pos = 0)
                 frame_filename = os.path.join(FRAME_DIRECTORY,
                                               opts.movie_title + "_" +
-                                              str(frame_number) + ".jpeg")
+                                              str(frame_number) + ".png")
                 if opts.debug:
                     print("Saving final frame at: " + frame_filename)
                 pygame.image.save(display_surface, frame_filename)
