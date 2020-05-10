@@ -167,7 +167,7 @@ You can generate surface CRNs to make your own bitmap patterns by modifying and 
 #### Manifests
 
 * `Fig6a-anthill_manifest.txt`: Simulates a simple mound-building algorithm, as shown in Fig. 6a.
-* `Fig6b-scouting_ant_manifest.txt`: Simulates a simple food-finding ant with minimal trap-avoidance rules, as shown in Fig. 6b.
+* <a name="ants_ex"></a>`Fig6b-scouting_ant_manifest.txt`: Simulates a simple food-finding ant with minimal trap-avoidance rules, as shown in Fig. 6b.
 * `Fig6c-cargo_sorter_manifest.txt`: Simulates a spatial sorting algorithm that gathers two different materials into piles, as shown in Fig. 6c.
 
 ## Chapter 7: Rugby
@@ -180,10 +180,12 @@ You can generate surface CRNs to make your own bitmap patterns by modifying and 
 <a name="other_ex"></a>Other Examples
 ==============
 
-* `Brusselator.txt`: Surface CRN implementation of the autocatalytic Brusselator chemical oscillator. Classically, this oscillator is described as a CRN with the following rules:
+* `Brusselator.txt`: Surface CRN implementation of the autocatalytic Brusselator chemical oscillator. Classically, this oscillator is described as a CRN with the following rules (see the manifest file for implementation details):
     * A -> X
     * X + X + Y -> X + X + X
     * B + X -> Y + D
     * X -> E
+* `busy_beaver.txt`: 3-state, 2-symbol [Busy Beaver Turing machine](https://en.wikipedia.org/wiki/Busy_beaver). 
 * `ertl.txt`: Manifest file for an Ertl chemical oscillator (https://doi.org/10.1021/cr00035a012). Carbon monoxide and molecular oxygen adsorb to a crystal platinum catalyst, and can diffuse on it. Adjacent CO and O will convert to carbon dioxide and desorb. Together, these dynamics cause patterned oscillations.
+* `genius_scout_ant.txt`: A smarter version of the [food-finding scout ant](#ants_ex). 
 * `GH_big_spiral_manifest.txt`: A 750x750 Greenberg-Hastings oscillator surface CRN, as shown in the third column of Fig. 1d but on a much larger scale. At this size, spiral patterns are persistent for some time before devolving into chaotic patterns reminiscent of the Belousov-Zhabotinsky reaction. Be patient with this one -- it may take a couple of minutes to load.
