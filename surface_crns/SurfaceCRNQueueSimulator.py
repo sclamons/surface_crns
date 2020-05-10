@@ -529,6 +529,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                            # Try to use better-than-default decoder
                            '-vcodec', 'hevc',
                            # Set a higher-than-default bitrate
+                           '-crf', '10',
                            '-an', #no audio
                            # Width and height need to be divisible by 2.
                            # Round up if necessary.
