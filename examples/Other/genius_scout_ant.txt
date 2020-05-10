@@ -1,0 +1,54 @@
+# sCRN implementation of a scout ant finding food and returning home
+#
+# Erik's (genius) scount ant
+#
+# H = home base
+# SA = scount ant
+# FA = ant with food
+# BA = bored ant returning home
+# HA = ant hiding at home
+# F = food
+# O = empty
+# P = path
+# E = edge of path
+# R = residual path to be removed
+# D = path destructor
+
+# Run settings
+pixels_per_node    = 10
+speedup_factor     = 5
+#rng_seed           = 123123123
+max_duration       = 500
+node_display       = Color
+
+# Transition rules
+!START_TRANSITION_RULES
+SA + O -> P + SA (1)
+SA + F -> P + FA (1)
+FA + P -> O + FA (1)
+O + P -> E + P (10)
+SA + P -> R + BA (0.01)
+BA + P -> R + BA (1)
+BA + H -> D + HA (1)
+D + R -> D + D (10)
+D + E -> D + D (10)
+D -> O (1)
+HA + O -> H + SA (0.1)
+!END_TRANSITION_RULES
+
+!START_INIT_STATE
+O O O O O O F O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O O O
+O O O O O O O O O O O SA H
+!END_INIT_STATE
+

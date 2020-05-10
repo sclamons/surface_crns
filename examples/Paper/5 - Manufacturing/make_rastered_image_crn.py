@@ -3,7 +3,7 @@
 # python make_image_crn.py
 #
 # which will create
-# image_crn.txt
+# bitmap_image_manifest.txt
 
 # debugging test image
 # image=[[0,0,0,0,0,1,1,0,0,0],

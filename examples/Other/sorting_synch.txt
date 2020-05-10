@@ -1,0 +1,76 @@
+# sCRN implementation of a synchronized bubble sort for lists of digits 0...3
+
+# Run settings
+pixels_per_node    = 30
+speedup_factor     = 5
+max_duration       = 100
+node_display       = Text
+
+!START_COLORMAP
+{boundary} EL, ER: (0,255,0)
+{0} 0AR, 0AL, 0BR, 0BL: (255,255,255)
+{1} 1AR, 1AL, 1BR, 1BL: (191,191,191)
+{2} 2AR, 2AL, 2BR, 2BL: (127,127,127)
+{3} 3AR, 3AL, 3BR, 3BL: (63,63,63)
+!END_COLORMAP
+
+!START_TRANSITION_RULES
+# edge conditions
+(1) EL + 0AR -> EL + 0AL
+(1) EL + 0BR -> EL + 0BL
+(1) 0AL + ER -> 0BR + ER
+(1) 0BL + ER -> 0AR + ER
+(1) EL + 1AR -> EL + 1AL
+(1) EL + 1BR -> EL + 1BL
+(1) 1AL + ER -> 1BR + ER
+(1) 1BL + ER -> 1AR + ER
+(1) EL + 2AR -> EL + 2AL
+(1) EL + 2BR -> EL + 2BL
+(1) 2AL + ER -> 2BR + ER
+(1) 2BL + ER -> 2AR + ER
+(1) EL + 3AR -> EL + 3AL
+(1) EL + 3BR -> EL + 3BL
+(1) 3AL + ER -> 3BR + ER
+(1) 3BL + ER -> 3AR + ER
+
+# swapping rules
+(1) 0AL + 0AR -> 0BR + 0AL
+(1) 0BL + 0BR -> 0AR + 0BL
+(1) 0AL + 1AR -> 0BR + 1AL
+(1) 0BL + 1BR -> 0AR + 1BL
+(1) 0AL + 2AR -> 0BR + 2AL
+(1) 0BL + 2BR -> 0AR + 2BL
+(1) 0AL + 3AR -> 0BR + 3AL
+(1) 0BL + 3BR -> 0AR + 3BL
+
+(1) 1AL + 0AR -> 0BR + 1AL
+(1) 1BL + 0BR -> 0AR + 1BL
+(1) 1AL + 1AR -> 1BR + 1AL
+(1) 1BL + 1BR -> 1AR + 1BL
+(1) 1AL + 2AR -> 1BR + 2AL
+(1) 1BL + 2BR -> 1AR + 2BL
+(1) 1AL + 3AR -> 1BR + 3AL
+(1) 1BL + 3BR -> 1AR + 3BL
+
+(1) 2AL + 0AR -> 0BR + 2AL
+(1) 2BL + 0BR -> 0AR + 2BL
+(1) 2AL + 1AR -> 1BR + 2AL
+(1) 2BL + 1BR -> 1AR + 2BL
+(1) 2AL + 2AR -> 2BR + 2AL
+(1) 2BL + 2BR -> 2AR + 2BL
+(1) 2AL + 3AR -> 2BR + 3AL
+(1) 2BL + 3BR -> 2AR + 3BL
+
+(1) 3AL + 0AR -> 0BR + 3AL
+(1) 3BL + 0BR -> 0AR + 3BL
+(1) 3AL + 1AR -> 1BR + 3AL
+(1) 3BL + 1BR -> 1AR + 3BL
+(1) 3AL + 2AR -> 2BR + 3AL
+(1) 3BL + 2BR -> 2AR + 3BL
+(1) 3AL + 3AR -> 3BR + 3AL
+(1) 3BL + 3BR -> 3AR + 3BL
+!END_TRANSITION_RULES
+
+!START_INIT_STATE
+EL 1AL 0AR 3BL 2BR 0AL 2AR 2BL 1BR 3AL 2AR 1BL 0BR 1AL 1AR 0BL 1BR 0AL 3AR 2BL 3BR ER
+!END_INIT_STATE

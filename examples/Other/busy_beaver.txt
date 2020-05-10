@@ -1,0 +1,33 @@
+# sCRN implementation of 
+# 3-state 2-symbol Busy Beaver TM that prints 6 1's after 14 steps
+# as per Wikipedia:
+#
+# 3-state, 2-symbol busy beaver
+#	   A	    B	 C
+# 0	   1RB	    0RC	 1LC
+# 1	   1RH	    1RB	 1LA
+
+
+# Run settings
+pixels_per_node    = 25
+speedup_factor     = 1
+max_duration       = 100
+node_display       = Text
+
+# Transition rules
+!START_TRANSITION_RULES
+A0+0R->1L+B0 (1)
+A0+1R->1L+B1 (1)
+B0+0R->0L+C0 (1)
+B0+1R->0L+C1 (1)
+B1+0R->1L+B0 (1)
+B1+1R->1L+B1 (1)
+0L+C0->C0+1R (1)
+1L+C0->C1+1R (1)
+0L+C1->A0+1R (1)
+1L+C1->A1+1R (1)
+!END_TRANSITION_RULES
+
+!START_INIT_STATE
+0L 0L 0L 0L 0L 0L A0 0R 0R 0R 0R 0R 0R
+!END_INIT_STATE

@@ -1,0 +1,33 @@
+# sCRN implementation of a burnt-bridge walker
+
+# Run settings
+pixels_per_node    = 5
+speedup_factor     = 5
+rng_seed           = 123123123
+max_duration       = 100
+node_display       = Color
+
+# Transition rules
+!START_TRANSITION_RULES
+(1) W -> Wn
+(1) Wn + T -> Tb + W
+!END_TRANSITION_RULES
+
+!START_INIT_STATE
+B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B
+B B B B B B B W B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B T B B B B B B B B
+B B B B B B B B B B B B B B B B
+B B B B B B B B B B B B B B B B
+!END_INIT_STATE

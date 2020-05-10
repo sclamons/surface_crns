@@ -1,0 +1,65 @@
+# sCRN implementation of a (asynchronous, probabilistic) local majority vote
+#
+# Each site tries to make its neighbors more like itself.
+# If a site is surrounded by different neighbors, it is likely to be converted.
+# This is accomplished by disagreeing sites both becoming "unknown",
+# and then an unknown site copies a randomly-chosen "known" neighbor.
+#
+# This is essentially the same as the "approximate majority CRN" studied for well-mixed solutions by
+#    Angluin, Dana, James Aspnes, and David Eisenstat
+#    "A simple population protocol for fast robust approximate majority" 
+#    Distributed Computing 21.2 (2008): 87-102
+# and implemented with DNA strand displacement cascades by
+#    Chen, Yuan-Jyue, Neil Dalchau, Niranjan Srinivas, Andrew Phillips, Luca Cardelli, David Soloveichik, and Georg Seelig
+#    "Programmable chemical controllers made from DNA" 
+#    Nature nanotechnology 8.10 (2013): 755-762
+
+
+# Run settings
+pixels_per_node    = 10
+speedup_factor     = 5
+#rng_seed           = 123123123
+max_duration       = 100
+node_display       = Color
+
+# Transition rules
+!START_TRANSITION_RULES
+0 + 1 -> U + U (1)
+U + 0 -> 0 + 0 (1)
+U + 1 -> 1 + 1 (1)
+!END_TRANSITION_RULES
+
+!START_INIT_STATE
+1 1 0 0 1 0 1 0 1 1 1 1 0 1 0 1 0 0 0 0 0 1 0 0 0 0 1 1 1 1 0 1 1 1 1 1 1
+1 1 0 1 0 1 0 1 0 1 0 0 0 0 0 0 1 0 0 1 1 0 1 1 0 0 1 1 1 0 1 0 1 1 1 1 1
+0 1 1 0 1 1 0 1 0 1 1 0 1 1 1 0 0 1 1 0 1 1 0 1 0 0 0 0 0 0 0 0 1 1 1 1 1
+1 1 0 1 0 0 0 0 1 0 0 1 0 0 1 1 1 0 0 1 0 1 0 1 1 1 0 0 0 1 0 1 1 1 1 1 1
+0 0 1 0 1 0 0 0 0 0 0 1 1 1 1 1 0 0 1 1 0 1 1 1 0 0 0 1 0 0 1 0 1 1 1 1 1
+0 0 1 0 0 0 0 1 1 0 0 0 1 1 1 0 0 0 0 0 0 0 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1
+1 0 0 0 1 0 0 1 1 1 1 1 0 1 1 0 0 1 1 0 0 1 0 1 0 0 1 0 1 0 1 1 1 1 1 1 1
+0 1 0 0 0 1 1 0 1 1 0 0 0 1 1 1 1 0 1 1 0 0 1 0 0 1 0 0 0 1 0 1 1 1 1 1 1
+1 1 1 1 1 0 0 0 0 0 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 0 1 1 1 1 1 1 1 1
+0 0 0 0 1 0 1 1 1 0 1 1 0 0 0 0 0 0 1 1 1 1 0 0 1 1 0 0 0 0 0 1 1 1 1 1 1
+0 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 0 1 1 0 1 0 0 0 1 1 1 1 1
+1 1 1 1 0 0 0 1 0 0 0 1 0 0 1 0 1 0 0 0 0 0 1 0 1 0 1 0 1 1 0 1 1 1 1 1 1
+1 0 1 0 1 1 0 1 0 0 1 1 0 1 0 0 1 0 0 1 0 0 1 1 0 1 1 0 1 1 0 0 1 1 1 1 1
+0 1 1 1 0 0 1 0 1 1 0 1 1 0 0 1 1 1 0 0 1 1 1 0 0 1 1 1 1 1 0 1 1 1 1 1 1
+1 1 1 1 1 0 0 1 0 0 0 1 1 1 0 0 1 0 0 1 0 1 1 0 0 1 1 0 1 0 1 0 1 1 1 1 1
+1 1 1 1 1 0 0 1 1 0 0 0 0 0 1 0 1 1 0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 1 1 1 1
+1 1 1 1 1 0 1 1 1 0 0 1 0 0 1 0 1 1 0 1 0 0 0 0 0 0 1 1 1 0 1 1 1 1 1 1 1
+0 0 1 0 1 1 1 0 0 1 0 0 0 0 1 0 0 1 0 0 0 1 0 0 1 0 1 0 1 1 1 0 1 1 1 1 1
+1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 1 1 0 0 1 1 0 0 0 1 1 1 1 1 1
+0 0 0 1 0 0 0 0 1 1 0 0 1 1 1 1 0 0 0 0 1 0 1 0 1 1 1 0 1 1 0 1 1 1 1 1 1
+1 1 1 1 0 1 0 1 0 0 1 0 1 1 0 0 0 1 1 1 1 0 0 1 1 0 1 0 0 0 0 1 1 1 1 1 1
+1 1 1 0 1 0 1 1 1 0 0 1 0 0 1 0 1 1 1 1 1 0 0 1 1 0 1 1 0 1 0 1 1 1 1 1 1
+0 0 0 0 0 1 1 0 1 1 0 1 1 1 0 1 0 1 0 1 0 0 0 1 0 1 1 1 0 0 1 1 1 1 1 1 1
+1 1 0 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 0 1 1 1 0 0 1 1 1 1 0 0 0 0 1 1 1 1 1
+1 1 0 1 0 1 0 1 0 0 0 0 1 0 1 1 1 1 1 0 0 0 0 0 1 1 1 1 0 1 0 1 1 1 1 1 1
+0 0 1 1 1 0 1 1 0 1 0 0 1 0 0 0 1 0 1 0 1 0 0 0 1 0 1 1 1 0 0 1 1 1 1 1 1
+1 1 1 0 1 1 1 0 1 0 1 1 0 1 1 1 0 1 0 1 1 0 0 0 1 1 0 1 0 1 0 0 1 1 1 1 1
+0 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 0 1 0 1 0 0 1 0 0 0 1 0 1 1 0 1 1 1 1 1
+1 0 1 1 0 1 1 0 0 1 1 1 1 0 0 0 0 1 0 0 1 0 1 0 1 0 1 1 0 0 1 1 1 1 1 1 1
+1 1 0 0 1 1 1 1 1 0 0 0 0 1 1 1 0 0 1 1 0 0 1 1 1 1 0 0 0 1 0 0 1 1 1 1 1
+1 1 0 1 0 0 0 1 0 1 0 0 0 0 0 1 1 1 0 1 1 1 0 0 0 0 0 1 1 1 0 0 1 1 1 1 1
+0 1 0 0 1 0 0 1 0 0 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 0 1 0 1 1 0 0 1 1 1 1 1
+!END_INIT_STATE

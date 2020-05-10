@@ -1,0 +1,44 @@
+# sCRN implementation of an asynchronous bubble sort for lists of digits 0...3
+#
+# Although a little simpler than the synchronized version,
+# we still need extra information to know which direction is which.
+
+# Run settings
+pixels_per_node    = 30
+speedup_factor     = 5
+max_duration       = 200
+node_display       = Text
+
+!START_COLORMAP
+{boundary} E: (0,255,0)
+{0} 0A, 0B, 0C: (255,255,255)
+{1} 1A, 1B, 1C: (191,191,191)
+{2} 2A, 2B, 2C: (127,127,127)
+{3} 3A, 3B, 3C: (63,63,63)
+!END_COLORMAP
+
+!START_TRANSITION_RULES
+# swapping rules
+(1) 1A + 0B -> 0A + 1B
+(1) 1B + 0C -> 0B + 1C
+(1) 1C + 0A -> 0C + 1A
+(1) 2A + 0B -> 0A + 2B
+(1) 2B + 0C -> 0B + 2C
+(1) 2C + 0A -> 0C + 2A
+(1) 2A + 1B -> 1A + 2B
+(1) 2B + 1C -> 1B + 2C
+(1) 2C + 1A -> 1C + 2A
+(1) 3A + 0B -> 0A + 3B
+(1) 3B + 0C -> 0B + 3C
+(1) 3C + 0A -> 0C + 3A
+(1) 3A + 1B -> 1A + 3B
+(1) 3B + 1C -> 1B + 3C
+(1) 3C + 1A -> 1C + 3A
+(1) 3A + 2B -> 2A + 3B
+(1) 3B + 2C -> 2B + 3C
+(1) 3C + 2A -> 2C + 3A
+!END_TRANSITION_RULES
+
+!START_INIT_STATE
+E 1A 0B 3C 2A 0B 2C 2A 1B 3C 2A 1B 0C 1A 1B 0C 1A 0B 3C 2A 3B E
+!END_INIT_STATE

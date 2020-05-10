@@ -1,0 +1,126 @@
+# 1D parentheses-matching Turing Machine, 
+# using the scheme described in "Parallel and 
+# Scalable Computation..." by Qian and Winfree, 2014.
+#
+# Assumes a linear tape with the head at the first parenthesis. Halts with a 
+# "YES" node if accepted, or a "NO" node if rejected. Works by stripping the 
+# outer-most parentheses. 
+#
+# OP = open parens
+# CP = close parens
+# <A/B/C/D/E>L = head in state <A/B/C/D/E>, pointing left
+# <A/B/C/D/E>R = head in state <A/B/C/D/E>, pointing right
+#
+# Sites to the left of the head (black) are marked 
+# with an "L" suffix; sites to the right of the head
+# are marked with an "R" suffix. 
+#
+# To play with the initial state, just change the "OPR"s 
+# (open parentheses) and "CPR"s (closing parentheses) in
+# the initial state. The "eL" and "eR"s are empty cells 
+# marking the end of the tape.
+
+pixels_per_node    = 40
+speedup_factor     = 5
+max_duration       = 60
+fps                = 20
+node_display       = Text
+
+
+!START_TRANSITION_RULES
+## State A
+# e: accept
+(1) AR + eR -> YES + eR
+(1) AL + eL -> YES + eL
+
+# X: ->
+(1) AR + XR -> XL + AR
+(1) AL + XL -> AR + XL
+
+# ): reject
+(1) AR + CPR -> NO + CPR
+(1) AL + CPL -> NO + CPR
+
+# (: ->, goto B
+(1) AR + OPR -> BR + OPR
+(1) AL + OPL -> BL + OPL
+
+
+
+## State B
+# X, (: ->
+(1) BR + XR -> XL + BR
+(1) BL + XL -> BR + XL
+(1) BR + OPR -> OPL + BR
+(1) BL + OPL -> BR + OPL
+
+# e: reject
+(1) BR + eR -> NO + eR
+(1) BL + eL -> NO + eL
+
+# ): <-, write X, goto C
+(1) BR + CPR -> CL + XR
+(1) BL + CPL -> XR + CL
+
+
+
+## State C
+# ),e: reject
+(1) CR + CPR -> NO + CPR
+(1) CL + CPL -> NO + CPL
+(1) CR + eR -> NO + eR
+(1) CL + eL -> NO + eL
+
+# X: <-
+(1) CR + XR -> CL + XR
+(1) CL + XL -> XR + CL
+
+# (: write X, goto D
+(1) CR + OPR -> DR + XR
+(1) CL + OPL -> DL + XL
+
+
+
+## State D
+# ): reject
+(1) DR + CPR -> NO + CPR
+(1) DL + CPL -> NO + CPL
+
+# X: <-
+(1) DR + XR -> DL + XR
+(1) DL + XL -> XR + DL
+
+# e: ->, goto A
+(1) DR + eR -> eL + AR
+(1) DL + eL -> AR + eL
+
+# (: goto B
+(1) DR + OPR -> BR + OPR
+(1) DL + OPL -> BL + OPL
+!END_TRANSITION_RULES
+
+!START_COLORMAP
+### Empty locations:
+{Empty} eL, eR: (160, 160, 160)
+#{Background} I: (0, 0, 0)
+
+### Parentheses
+{)} CPR, CPL: (255, 251, 5)
+{(} OPR, OPL: (205, 5, 255)
+
+### Head/States
+{Head} AR, AL, BR, BL, CR, CL, DR, DL: (0,0,0)
+
+
+### Marked Sites
+{X} XR, XL: (138, 74, 78)
+
+
+### Accept/Reject
+{Accept} YES: (0, 255, 0)
+{Reject}  NO: (255, 0, 0)
+!END_COLORMAP
+
+!START_INIT_STATE
+eL eL AR OPR OPR OPR CPR OPR CPR CPR OPR eR eR
+!END_INIT_STATE

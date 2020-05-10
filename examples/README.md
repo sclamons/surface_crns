@@ -180,5 +180,10 @@ You can generate surface CRNs to make your own bitmap patterns by modifying and 
 <a name="other_ex"></a>Other Examples
 ==============
 
+* `Brusselator.txt`: Surface CRN implementation of the autocatalytic Brusselator chemical oscillator. Classically, this oscillator is described as a CRN with the following rules:
+* * A -> X
+* * X + X + Y -> X + X + X
+* * B + X -> Y + D
+* * X -> E
 * `ertl.txt`: Manifest file for an Ertl chemical oscillator (https://doi.org/10.1021/cr00035a012). Carbon monoxide and molecular oxygen adsorb to a crystal platinum catalyst, and can diffuse on it. Adjacent CO and O will convert to carbon dioxide and desorb. Together, these dynamics cause patterned oscillations.
 * `GH_big_spiral_manifest.txt`: A 750x750 Greenberg-Hastings oscillator surface CRN, as shown in the third column of Fig. 1d but on a much larger scale. At this size, spiral patterns are persistent for some time before devolving into chaotic patterns reminiscent of the Belousov-Zhabotinsky reaction. Be patient with this one -- it may take a couple of minutes to load.
