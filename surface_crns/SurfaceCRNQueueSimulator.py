@@ -527,7 +527,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                            '-i', os.path.join(FRAME_DIRECTORY,
                                               opts.movie_title + "_%d.jpeg"),
                            # Make sure to use mpeg4, not mpeg1
-                           '-vcodec', 'mpeg4',
+                           '-vcodec', 'h264',
                            # Set a higher-than-default bitrate
                            '-an', #no audio
                            # Width and height need to be divisible by 2.
