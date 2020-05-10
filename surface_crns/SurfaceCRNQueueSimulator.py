@@ -526,10 +526,14 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                                                  # starting with 0?
                            '-i', os.path.join(FRAME_DIRECTORY,
                                               opts.movie_title + "_%d.jpeg"),
+                           # Make sure to use mpeg4, not mpeg1
+                           '-vcodec', 'mpeg4',
+                           # Set a higher-than-default bitrate
                            '-an', #no audio
                            # Width and height need to be divisible by 2.
                            # Round up if necessary.
                            '-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2',
+
                            movie_filename
                            ]
                 print("Calling ffmpeg with: " + str(command))
