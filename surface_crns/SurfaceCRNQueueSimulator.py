@@ -20,6 +20,7 @@ import os
 
 from surface_crns.options.option_processor import SurfaceCRNOptionParser
 from surface_crns.views.time_display import TimeDisplay
+from surface_crns.views.text_display import TextDisplay
 from surface_crns.views.grid_display import SquareGridDisplay, HexGridDisplay
 from surface_crns.views.legend_display import LegendDisplay
 from surface_crns.simulators.queue_simulator import QueueSimulator
@@ -527,7 +528,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                            '-i', os.path.join(FRAME_DIRECTORY,
                                               opts.movie_title + "_%d.png"),
                            # Try to use better-than-default decoder
-                           '-vcodec', 'hevc',
+                           '-vcodec', 'h264',
                            # Set a higher-than-default bitrate
                            '-crf', '18',
                            '-an', #no audio
