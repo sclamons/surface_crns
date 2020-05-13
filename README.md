@@ -87,7 +87,7 @@ A surface chemical reaction network (sCRN) on a square grid can be specified by 
 * Colormap
 * General Settings
 
-Any line in a manifest beginning with a '#' (or anything after a '#'# in the middle of a line) will be treated as a comment and ignored.
+Any text on a line after a '#' will be treated as a comment and ignored.
 
 ## Transition Rules
 
