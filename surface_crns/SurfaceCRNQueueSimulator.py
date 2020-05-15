@@ -665,7 +665,8 @@ def update_display(opts, simulation, FRAME_DIRECTORY = None):
 
             if terminate:
                 display_surface = simulation.display_surface
-                text_display = TextDisplay(display_surface.width)
+                width = display_surface.get_size()[0]
+                text_display = TextDisplay(width)
                 text_display.text = termination_string
                 text_display.render(display_surface, x_pos = 0, y_pos = 0)
                 frame_filename = os.path.join(FRAME_DIRECTORY,
