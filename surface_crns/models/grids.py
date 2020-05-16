@@ -71,7 +71,7 @@ class SquareGrid(object):
         if isinstance(state_grid, list):
             state_grid = np.array(state_grid)
         if state_grid.shape != self.grid.shape:
-            warnings.warn(Warning("State grid set to state with different " + 
+            warnings.warn(Warning("State grid set to state with different " +
                          "size than previously set. Changing size."))
             self.grid = np.empty(state_grid.shape, np.dtype(object))
             self.x_size = state_grid.shape[0]
@@ -211,7 +211,7 @@ class HexGrid(SquareGrid):
         for x in range(self.x_size):
             for y in range(self.y_size):
                 self.grid[x,y] = (Node(), 1)
-                self.grid[x,y].position = (x,y)
+                self.grid[x,y][0].position = (x,y)
         # Populate node neighbor lists
         for x in range(self.x_size):
             for y in range(self.y_size):

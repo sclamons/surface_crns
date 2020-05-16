@@ -34,8 +34,9 @@ class TextDisplay(object):
 
         font_size = 24
         temp_font = pygame.font.SysFont('monospace', font_size)
-        while temp_font.size(self.text)[0] > self.display_width:
-            font_size *= 0.75
+        while temp_font.size(self.text)[0] > self.display_width \
+              and font_size >= 4:
+            font_size = int(font_size * 0.75)
             temp_font = pygame.font.SysFont('monospace', font_size)
         self.text_surface = temp_font.render(self.text, True, TextDisplay.BLACK)
         self.text_box = self.text_surface.get_rect()

@@ -612,7 +612,6 @@ def update_display(opts, simulation, FRAME_DIRECTORY = None):
         pygame.display.update()
         pygame.display.flip()
     else:
-        print("capture directory is: " + str(opts.capture_directory))
         if FRAME_DIRECTORY is None:
             raise Exception("FRAME_DIRECTORY should be set if a capture" +
                             " directory is set.")
