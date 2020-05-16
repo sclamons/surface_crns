@@ -227,7 +227,7 @@ class HexGrid(SquareGrid):
                     ny = y + dy
                     if nx >= 0 and nx < self.x_size and \
                         ny >= 0 and ny < self.y_size:
-                        self.grid[x,y][0].neighbors.append(
+                        self.grid[x,y].neighbors.append(
                                                     (self.grid[nx, ny], 1))
                     elif self.wrap:
                         if nx < 0:
@@ -238,7 +238,7 @@ class HexGrid(SquareGrid):
                             ny = self.y_size-1
                         if ny >= self.y_size:
                             ny = 0
-                        self.grid[x,y][0].neighbors.append(
+                        self.grid[x,y].neighbors.append(
                                                     (self.grid[nx, ny], 1))
 
 
