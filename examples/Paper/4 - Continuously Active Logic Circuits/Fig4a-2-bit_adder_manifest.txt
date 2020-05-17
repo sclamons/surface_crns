@@ -1,4 +1,4 @@
-# No-synch counter circuit test with 6 bits.
+# No-sync counter circuit test with 6 bits.
 
 pixels_per_node    = 20
 speedup_factor     = 100

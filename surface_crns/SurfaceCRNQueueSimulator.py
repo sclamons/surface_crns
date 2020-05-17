@@ -529,13 +529,14 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                                               opts.movie_title + "_%d.png"),
                            # Try to use better-than-default decoder
                            '-vcodec', 'h264',
+                           # Need this for Quicktime to be able to read it
+                           '-pix_fmt", "yuv420p',
                            # Set a higher-than-default bitrate
                            '-crf', '18',
                            '-an', #no audio
                            # Width and height need to be divisible by 2.
                            # Round up if necessary.
                            '-vf', 'pad=ceil(iw/2)*2:ceil(ih/2)*2',
-
                            movie_filename
                            ]
                 print("Calling ffmpeg with: " + str(command))

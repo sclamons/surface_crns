@@ -54,7 +54,7 @@ How do I use the simulator?
 
 The fastest way to start using the simulator is to use our hosted version of the simulator at http://centrosome.caltech.edu/Surface_CRN_Simulator/srv/.
 
-This package lets you run simulations locally, with more control and a less cumbersome interface. First, install this package as described under "Installation". This will install an executable script `SurfaceCRNQueueSimulator`, which you can run directly from the command line with 
+This package lets you run simulations locally, with more control and a less cumbersome interface. First, install this package as described under "Installation". This will install an executable script `SurfaceCRNQueueSimulator`, which you can run directly from the command line with
 
 ```
 SurfaceCRNQueueSimulator -m <manifest_file>
@@ -164,14 +164,14 @@ with the obvious meanings. Useful settings to know are:
 * **max_duration** *(default `1000000`)*: A nonnegative number specifying the maximum length of simulation in arbitrary time units (the same arbitrary time units specified by transition rule reaction rates).
 * **node_display** *(default `color`)*: Determines whether the state of each position on the grid (node) is overlaid, in text, on that node. Set to "text" to overlay text, or "color" to only show node color.
 * **pixels_per_node** *(default `5`)*: Determines the size of a node, in pixels.
-* **wrap_grid** *(default `False`)*: Iff True, grid connections wrap top-to-bottom and left-to-right (and vice versa). 
-* **geometry** *(default `square`)*: Toggles surface geometry to either a square grid (default, `square`) or a hex grid (`hex`).
+* **wrap_grid** *(default `False`)*: Iff True, grid connections wrap top-to-bottom and left-to-right (and vice versa).
+* **geometry** *(default `square`)*: Toggles surface geometry to either a square grid (default, `square`) or a hex grid (`hex`). If `hex`, the initial condition will still be given as a rectangular grid, with every other line shifted by a half-hex.
 
 ## Including Files
 
-It's often helpful to store parts of a manifest file separately. For example, you may wish to share the same transition rules and/or colormap settings across a number of simulations with separate manifests. 
+It's often helpful to store parts of a manifest file separately. For example, you may wish to share the same transition rules and/or colormap settings across a number of simulations with separate manifests.
 
-To do this, put whatever you want to store separately in its own document (here, `some_other_file.txt`), and include it in the manifest with 
+To do this, put whatever you want to store separately in its own document (here, `some_other_file.txt`), and include it in the manifest with
 
 ```
 !INCLUDE some_other_file.txt

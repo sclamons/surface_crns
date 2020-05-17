@@ -7,11 +7,11 @@
 #
 # This is essentially the same as the "approximate majority CRN" studied for well-mixed solutions by
 #    Angluin, Dana, James Aspnes, and David Eisenstat
-#    "A simple population protocol for fast robust approximate majority" 
+#    "A simple population protocol for fast robust approximate majority"
 #    Distributed Computing 21.2 (2008): 87-102
 # and implemented with DNA strand displacement cascades by
 #    Chen, Yuan-Jyue, Neil Dalchau, Niranjan Srinivas, Andrew Phillips, Luca Cardelli, David Soloveichik, and Georg Seelig
-#    "Programmable chemical controllers made from DNA" 
+#    "Programmable chemical controllers made from DNA"
 #    Nature nanotechnology 8.10 (2013): 755-762
 
 
@@ -21,6 +21,9 @@ speedup_factor     = 5
 #rng_seed           = 123123123
 max_duration       = 100
 node_display       = Color
+
+# Comment this line back in to see the same thing on a hex grid
+# geometry = hex
 
 # Transition rules
 !START_TRANSITION_RULES

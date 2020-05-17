@@ -7,7 +7,7 @@
 {1 signal} 1, 1Xx, 1Xy, 1Xk, 1Xz, 1Rx, 1Ry, 1Rk, 1Rz, 1Ay, 1Ax, 1Ak, 1Az, 1Nx, 1Ny, 1Nk, 1f, 1F, 1Fx, 1Fy, 1FF, 1Ff, 1ff, 1Fx3, 1Fy3, 1Fz3, 1Cx, 1Cy, 1Cw, 1Cz, 1Py, 1Sx, 1Sy, 1Sz, 1Cyx, 1Cxw, 1Czy, 1Cyx2, 1Pk, 1Px: (229,223,70)
 
 ### GATES
-{Synch Gate} BSx, BSy: (251, 174, 210)
+{Sync Gate} BSx, BSy: (251, 174, 210)
 {XOR Gate} BXx, BXy, BXz: (79, 29, 189)
 {OR Gate} BRx, BRy, BRz: (43,131,186)
 {AND Gate} BAx, BAy, BAz: (98,188,70)

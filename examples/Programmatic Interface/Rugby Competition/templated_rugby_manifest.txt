@@ -43,14 +43,14 @@ XB + Y -> X + YB (10)
 YB + X -> Y + XB (10)
 
 # Making a goal, declaring the winner [fixed rules]
-XB + GY -> 0 + WX (10)
+XB + GY -> WX + GY (10)
 GY + WX -> WX + WX (10)
-YB + GX -> 0 + WY (10)
+YB + GX -> WY + GX (10)
 GX + WY -> WY + WY (10)
-X + WX -> 0 + WX (10)
-Y + WX -> 0 + WX (10)
-X + WY -> 0 + WY (10)
-Y + WY -> 0 + WY (10)
+X + WX -> WX + WX (10)
+Y + WX -> LY + WX (10)
+X + WY -> LX + WY (10)
+Y + WY -> WY + WY (10)
 
 # Team strategies go here
 !INCLUDE temp/strategy_insert.txt
