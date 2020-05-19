@@ -533,7 +533,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                            # Try to use better-than-default decoder
                            '-vcodec', 'h264',
                            # Need this for Quicktime to be able to read it
-                           '-pix_fmt", "yuv420p',
+                           '-pix_fmt', 'yuv420p',
                            # Set a higher-than-default bitrate
                            '-crf', '18',
                            '-an', #no audio
