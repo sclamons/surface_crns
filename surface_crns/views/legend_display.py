@@ -107,7 +107,7 @@ class LegendDisplay:
         for color in self.text_surfaces.keys():
             # Render the color box for this color
             if debug:
-                print("Rendering color box with color " + color)
+                print("Rendering color box with color " + str(color))
             box_color = pygame.Color(color)
             box_x = LegendDisplay.HORIZONTAL_BUFFER
             box_y = n*LegendDisplay.LINE_HEIGHT + LegendDisplay.VERTICAL_BUFFER

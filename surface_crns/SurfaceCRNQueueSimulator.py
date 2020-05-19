@@ -291,7 +291,10 @@ def simulate_surface_crn(manifest_filename, display_class = None,
     pygame.display.flip()
     update_display(opts, simulation, FRAME_DIRECTORY)
 
-    real_time = os.environ["SDL_VIDEODRIVER"] != "dummy"
+    if "SDL_VIDEODRIVER" in os.environ:
+        real_time = os.environ["SDL_VIDEODRIVER"] != "dummy"
+    else:
+        real_time = True
 
     # State variables for simulation
     next_reaction_time = 0
