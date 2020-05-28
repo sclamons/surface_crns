@@ -1,12 +1,16 @@
 # sCRN implementation of a scout ant finding food and returning home
 #
-# Erik's (very dumb) scount ant
+# A simple but not very smart scout ant.
 #
 # A = scount ant
 # O = empty
-# P = path
+# P = pheromone path
 # F = food
-# H = food-carrying and going home
+# H = food-carrying ant going home
+#
+# Mostly it fails.  The rng seed is for one of the few where it succeeds.
+#
+# Can you devise a more effective ant?
 
 # Run settings
 pixels_per_node    = 20

@@ -7,7 +7,6 @@ speedup_factor     = 0.5
 debug              = True
 rng_seed           = 123123122
 max_duration       = 50
-fps                = 60
 node_display       = color
 wrap               = false
 geometry           = square

@@ -1,5 +1,18 @@
 # 2D synchronous totalistic cellular automata
 # with von Neumann neighborhood and 0-value edges.
+#
+# This sCRN uses the spinning arrow construction to
+# emulate a deterministic von Neumann neighborhood
+# cellular automaton with the local update rule
+#
+#   f(self,N,E,W,S) = { 0    if self+N+E+W+S < 3
+#                     { 1    if self+N+E+W+S > 2
+#
+# Note that the deterministic CA forms stable
+# patches (sometimes with a short periodic
+# jiggling).  That is, relative to the asynchronous
+# rules, it "gets stuck".  This is "correct" behavior
+# for the deterministic cellular automaton.
 
 pixels_per_node    = 10
 speedup_factor     = 1

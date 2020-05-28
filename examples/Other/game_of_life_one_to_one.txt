@@ -1,13 +1,47 @@
 # Game of Life
-# Designed by Philip Peterson
+# Designed by Philip Petersen.  In his own words:
 
-# Each location reacts top->down, then left->right. Hence, they only need the info: their own 0/1 identity, the number of dead cells neighboring vertically, and the number of dead cells in the 3 left locations. All other information could be grabbed during a reaction. Still, even with these minimizing constraints, quite a few rxns/variables were needed.
+# Each location reacts top->down, then left->right.
+# Hence, they only need the info: their own 0/1 identity,
+# the number of dead cells neighboring vertically, and
+# the number of dead cells in the 3 left locations.
+# All other information could be grabbed during a reaction.
+# Still, even with these minimizing constraints,
+# quite a few rxns/variables were needed.
 
-# I also wanted a global clock. I decided to do it with a robot. Since there needed to be a boundary on the exterior, it doubled as a robot track. The four sides of the track are different. On the top, the robot pushes a zero bit down as it goes (top->down). This signal propagates straight down causing each location to count the number of zeros above and below it in that order. When it reaches the bottom track, the signal "opens" the track for the robot to pass (meaning the robot cannot continue to the next step until all vertical reactions finish).
+# I also wanted a global clock. I decided to do it with a robot.
+# Since there needed to be a boundary on the exterior,
+# it doubled as a robot track. The four sides of the track are different.
+# On the top, the robot pushes a zero bit down as it goes (top->down).
+# This signal propagates straight down causing each location
+# to count the number of zeros above and below it in that order.
+# When it reaches the bottom track, the signal "opens" the track
+# for the robot to pass (meaning the robot cannot continue to the next step
+# until all vertical reactions finish).
 
-# Next the robot creates left to right reactions pushing 3 0's into the left-most locations while walking by (left->right). Each location pushes it's three vertical bits into its right neighbor and converts itself to either alive or dead via the Rules. I simply used Excel to make the equations via Conway's Rules. Again, the robot cannot proceed until all reactions finish. Then repeat the top->down step etc.
+# Next the robot creates left to right reactions pushing 3 0's
+# into the left-most locations while walking by (left->right).
+# Each location pushes it's three vertical bits into its right neighbor
+# and converts itself to either alive or dead via the Rules.
+# I simply used Excel to make the equations via Conway's Rules.
+# Again, the robot cannot proceed until all reactions finish.
+# Then repeat the top->down step etc.
 
-# As each location retains its alive/dead identity throughout, I lumped everything together for easy view-ability.
+# As each location retains its alive/dead identity throughout,
+# I lumped everything together for easy view-ability.
+
+# Analysis by Erik Winfree: Unlike the other Game of Life implementations,
+# this construction is not parallel: a single robot must pass through
+# all the cells, for each time step -- for to update an NxM grid of sites,
+# the simulated time will need to advance by O(NxM).  This is unlike
+# the spinning-arrow and broadcast-swap-sum constructions, which are
+# fully parallel and reaquite O(1) time per effective update of the
+# synchronous cellular automata rules.
+
+# Also note that the speedup_factor is nicely chosen to match the time
+# it takes for the robot to scan the whole field, so intermediate steps
+# are seldom or never seen.  Change speedup_factor to 1 to look under
+# the hood.
 
 pixels_per_node    = 25
 speedup_factor     = 10000

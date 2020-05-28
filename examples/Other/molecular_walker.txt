@@ -1,33 +1,99 @@
 # sCRN implementation of a burnt-bridge walker
+#
+# This model is based on the "molecular spider" demonstrated in
+# "Molecular robots guided by prescriptive landscapes" by
+# Kyle Lund et al (Nature, 2010).  The SI for that work describes
+# a stochastic model that treats movements of each of the spider's
+# three legs individually; here we use a simpler coarse-grained
+# model that just tracks the effective movement of the spider
+# on both uncleaved substrate track and cleaved product track.
+# Our model would be more appropriate for the "catepillar" walker of
+# "A DNAzyme That Walks Processively andAutonomously along a One-Dimensional Track"
+# by Ye Tian et al (Angewandte Chemie, 2005), or
+# "A DNA-based molecular motor that can navigate a network of tracks"
+# by Wickham et al (Nature Nanotechnology, 2012), but for the
+# track configuration of Lund et al, and with a rate for movement
+# onto and within cleave product track that is more similar to Lund et al.
+#
+# The model uses surface species:
+#
+# _  : origami substrate without track
+# M  : inert marker on origami, just to match figure 1 of Lund et al.
+# S  : uncleaved substrate track
+# P  : cleaved product track
+# D  : uncleavable destination track
+# WS : walker on uncleaved substrate
+# WP : walker on cleaved product
+# WD : walker on uncleavable destination
 
 # Run settings
-pixels_per_node    = 5
-speedup_factor     = 5
-rng_seed           = 123123123
-max_duration       = 100
+pixels_per_node    = 15
+speedup_factor     = 50
+max_duration       = 1000
 node_display       = Color
+geometry           = hex
+# rng_seed           = 123123123
 
-# Transition rules
+!START_COLORMAP
+_: (230,230,230)
+M: (0, 100, 255)
+S: (100, 30, 30)
+P: (200, 50, 50)
+D: (255, 0, 0)
+WS: (0, 150, 0)
+WP: (50, 220, 50)
+WD: (0, 150, 0)
+!END_COLORMAP
+
 !START_TRANSITION_RULES
-(1) W -> Wn
-(1) Wn + T -> Tb + W
+WS -> WP (0.1)
+WP + S -> P + WS (1)
+WP + D -> P + WD (1)
+WP + P -> P + WP (0.1)
 !END_TRANSITION_RULES
 
+
+#!START_INIT_STATE
+#_ D D _ _ _ _ _ _ _
+#_ D _ _ _ _ M _ _ _
+#_ D D _ _ _ M M _ _
+#_ D _ _ _ _ M _ _ _
+#_ _ _ _ _ _ M M _ _
+#_ _ _ _ _ _ _ _ _ _
+#_ _ _ S S _ _ _ _ _
+#_ _ S S S _ _ _ _ _
+#_ _ S S S S _ _ _ _
+#_ S S S S S _ _ _ _
+#_ S S S S S S _ _ _
+#_ S _ _ S S S _ _ _
+#_ S S _ _ S S S _ _
+#_ S _ _ _ S S S _ _
+#_ S S _ _ _ S S S _
+#_ D _ _ _ _ S S S _
+#_ D D _ _ _ _ S S _
+#_ D _ _ _ _ _ S WS _
+#_ D D _ _ _ _ _ S _
+#_ _ _ _ _ _ _ _ _ _
+#!END_INIT_STATE
+
 !START_INIT_STATE
-B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B
-B B B B B B B W B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B T B B B B B B B B
-B B B B B B B B B B B B B B B B
-B B B B B B B B B B B B B B B B
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ D D S S S S _ _ _ _ _ _ D D _
+_ _ D D S S S S _ _ _ _ _ D D _ _
+_ _ D D S S S S S _ _ _ _ _ D D _
+_ _ _ _ _ _ S S S _ _ _ _ _ _ _ _
+_ _ _ _ _ _ S S S _ _ _ _ _ _ _ _
+_ _ _ _ _ _ S S S _ _ _ _ _ _ _ _
+_ _ _ _ _ _ S S S _ _ _ _ _ _ _ _
+_ _ _ _ _ S S S _ _ _ _ _ _ _ _ _
+_ _ _ _ _ S S S _ _ _ _ _ _ _ _ _
+_ _ _ _ S S S _ _ _ _ _ _ _ _ _ _
+_ _ _ _ S S S _ _ _ _ _ _ _ _ _ _
+_ _ _ S S S _ _ _ _ _ M M _ _ _ _
+_ _ _ S S S _ _ _ _ _ _ M M _ _ _
+_ _ S S S _ _ _ _ _ _ M M _ _ _ _
+_ _ _ WS _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 !END_INIT_STATE

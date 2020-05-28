@@ -1,11 +1,20 @@
-# sCRN implementation of 
+# sCRN implementation of
 # 3-state 2-symbol Busy Beaver TM that prints 6 1's after 14 steps
 # as per Wikipedia:
 #
-# 3-state, 2-symbol busy beaver
-#	   A	    B	 C
-# 0	   1RB	    0RC	 1LC
-# 1	   1RH	    1RB	 1LA
+# 3-state, 2-symbol Busy Beaver
+#      A        B    C
+# 0    1RB      0RC  1LC
+# 1    1RH      1RB  1LA
+#
+# This uses a general-purpose construction similar to the one
+# described in Qian & Winfree (2014), Figure 1. However, here the head
+# is "on" the tape, so that site carries both the tape data symbol
+# and the head state information.  There, the head moves "through"
+# the data, with data writing and motion steps separated as in
+# Bennett (1973).  Note that strictly speaking, a surface CRN
+# of bounded size can only implement Turing machines that use
+# bounded space.
 
 
 # Run settings

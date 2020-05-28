@@ -1,89 +1,147 @@
 # sCRN implementation of the Brusselator as a reaction-diffusion system
 #
-# The classical Brusselator is described as
-#    A -> X
-#    X + X + Y -> X + X + X
-#    B + X -> Y + D
-#    X -> E
+# The classical Brusselator (cf Wikipedia) is described as
+#    A ->{1} X
+#    X + X + Y ->{1} X + X + X
+#    B + X ->{1} Y + D
+#    X ->{1} E
 #
-# All rate constants 1, A held at concentration 1, B held at concentration 3
+# where all rate constants are 1 (with units relative to nM and s),
+# A is held at concentration 1 (nM), and B is held at concentration 3 (nM).
+# So the first reaction occurs at rate (1 nM)(1 /s), and the
+# second reaction occurs at rate [X]^2 [Y] (1 /nM/nM/s), etc.
+# In bulk mass-action ODE simulations, this oscillates with a period of
+# about 8 seconds, with concentrations of X between 0.5 and 3.5 nM, and
+# Y between 1 and 4.5 nM.  Henceforth, the reservoir species A, B, D, E
+# will be factored directly into rate constants and otherwise ignored.
 #
-# We must approximate the trimolecular reaction via
-#    X + X -> XX
-#    XX -> X + X
-# with rate constants 10 and 20, along with
-#    XX + Y -> XX + X
-# with rate constant 1.
+# To implement this as a surface CRN, there are three challenges: (1) to
+# accommodate the fact that surface CRNs use only unimolecular and
+# bimolecular reactions, (2) to translate from bulk ODE semantics to
+# stochastic semantics, and (3) to address differences between well-mixed
+# solutions and spatially-organized surfaces.  We won't be concerned about
+# achieving an exact quantitative match; we just want to ensure that we
+# stay within the qualitative oscillatory regime.
 #
-# In deterministic mass action, this oscillates with period roughly 18,
+# To address the first challenge, we will approximate the trimolecular reaction via
+#    X + X ->{10} XX
+#    XX ->{20} X + X
+# to establish a reasonably pseudoequilibrium where [XX] is proportional to [X]^2,
+# plus the actual catalytic reaction
+#    XX + Y ->{1} XX + X
+# whose effective rate will therefore scale as [X]^2 [Y] as desired (roughly).
+# In deterministic mass action, this oscillates with period roughly 18 seconds,
 # and max concentrations of roughly 2 for X and XX, and 10 for Y.
-# Note that if needed for stochastic mass-action simulations, 
-# we can scale the mass-action CRN to a V-fold larger volume, 
-# by dividing bimolecular rate constants by V and multiplying 
-# spontaneous rate constants by V.
-# Some kind of noisy oscillation is observable in stochastic mass-action
-# even with V=1, and it becomes recognizably similar by V=10, and reasonably
-# robust by V=100.
 #
-# How do we translate mass-action rate constants into sCRN rate constants?
-# For starters, let's assume that diffusion is fast, 
-# so that the whole NxN field is effectively well mixed,
-# and that the X, Y, XX concentrations remain dilute.
-# Then the spontaneous reaction 0 ->{1} X makes 1 X per second; thus it is matched
-# by an sCRN reaction _ ->(r) X that makes approximately r*N^2 new X's throughout
-# the whole field.  So r should be 1/N^2.
-# Further, the unimolecular reaction X ->{3} Y will make a total number of new Y's
+# To address the second challenge, we must first acknowledge that
+# for Gillespie simulations of well-mixed finite volumes, the rate constants
+# are by convention given in units relative to counts and seconds (rather than
+# e.g. nM and seconds).  This way, the propensity rho for a reaction (that is,
+# how many reaction events per second occur in the entire volume) can be
+# computed directly from the counts of the reactions, e.g. rho = k (#XX) (#Y)
+# for the reaction XX + Y ->{k} XX + X.  Thus, stochastic rate constants
+# numerically depend on the volume of the system being simulated.  It so
+# happens that for a unit volume of 1.66 fL, the numerical values of rate
+# constants relative to nM are identical to those relative to counts.
+# To scale the mass-action stochastic CRN to a V-fold larger volume,
+# we must divide bimolecular rate constants by V and multiply spontaneous
+# rate constants by V.  (We call a reaction like 0 -> X "spontaneous".)
+#
+# Stochastic mass-action simulations of the bimolecular Brusselator in the
+# standard unit volume (1.66 fL, e.g. V=1) yield noisy irregular oscillations
+# with counts of X and XX usually 0 or 1 and occasionally hitting 10, while
+# Y ranges up to 20 or so.  The oscillations become more regular for V=10,
+# with counts about 10 times higher, and by V=100 and another 10-fold more
+# molecules on average, the oscillation becomes reasonably robust and has
+# a period of about 18 seconds, similar to the deterministic ODE simulations.
+#
+# How do we address the third challenge, and translate the stochastic mass-action
+# rate constants into sCRN rate constants for localized events? For starters, let's
+# assume that diffusion is fast, so that the whole NxN field is effectively well mixed,
+# and that the X, Y, XX concentrations remain dilute so we don't worry about crowding.
+# Our goal will be to match the total number of reaction events per second, for each
+# reaction type -- they should be close to the same in the entire volume simulated by
+# the Gillespie algorithm, and accross the entire NxN field of the surface CRN.
+#
+# We will do the calculation for each reaction type: spontaneous, unimolecular, and
+# bimolecular.  We'll give the rate constant k in units relative to nM and seconds,
+# as for the deterministic bulk reactions, consider the well-mixed stochastic
+# mass-action reactions in volume of V standard units, and determine corresponding
+# sCRN rate constants for an NxN field where species "_" is the background.
+#
+# The spontaneous reaction 0 ->{k} X will, in volume V, fire (k*V) times per second.
+# Thus it is matched by an sCRN reaction _ ->(r) X that makes approximately
+# r*N^2 new X's throughout the whole field (which we assume is mostly background).
+# So r should be k*V/N^2.
+#
+# The unimolecular reaction X ->{k} Y will make a total number of new Y's
 # that is proportional to how many X's there are; this can therefore be implemented
-# by the sCRN reaction X ->{3} Y with no alteration of the rate constant.
-# Finally, the bimolecular reaction X + X ->{10} XX will fire 10*X*(X-1) times per 
-# second in stochastic mass-action.  In the sCRN field, the probability that a given
-# X has a neighboring X in a particular neighboring site is X/N^2.  
-# So the total rate of making XX via X + X ->(r) XX + _ will be approximately 4*r*X*X/N^2,
-# and we'd like to set r = 10*N^2/4.
+# by the sCRN reaction X ->{k} Y with no alteration of the rate constant.
 #
-# Altogether, then, if the mass-action CRN uses V=100, the surface CRN will use:
+# Finally, the bimolecular reaction X + Y ->{k} Z will fire (k/V)*X*Y times per
+# second in the stochastic mass-action volume.  In the sCRN field, the probability
+# that a given X has a neighboring Y in a particular neighboring site is approximately
+# Y/N^2. So the total rate of making Z via X + Y ->(r) Z + _ will be approximately
+# 4*r*X*Y/N^2, since Y could be in any of four neighboring sites if we have a square grid.
+# So we'd like to set r = (k/V)*N^2/4.
+#
+# Altogether, then, the surface CRN will use:
 # spontaneous  k for CRN  ==>  r = k*V/N^2     for surface CRN
 # unimolecular k for CRN  ==>  r = k           for surface CRN
 # bimolecular  k for CRN  ==>  r = k*N^2/(4*V) for surface CRN
-# 
+#
+# There is a special case for bimolecular reactions with two identical reactants, such
+# as the reaction X + X ->{k} XX.  In Gillespie for volume V, this will fire k/V*X*(X-1)
+# times per second.  However, the total rate of X + X ->(r) XX + _ in the NxN field
+# of the surface CRN is approximately 2*r*X*(X-1)/N^2 because the argument above ("choose
+# an X, is there an X in its four neighboring sites?") will count each possible reaction
+# twice.  That gives us:
+#
+# bimolecular  k for CRN  ==>  r = k*N^2/(2*V) for surface CRN, for symmetric reactions
+#
 # That's if the diffusion is fast enough to be well-mixed on the time scale of the reactions.
 # A diffusion step rate of N^2 would be enough for a single molecule to be nearly anywhere
-# after 1 second.  Thus, if the fastest propensity expected is p, then a diffusion step rate
-# of p*N^2 suffices... but is probably overkill.  For example, with V=100 and N=100, we aim
-# for matching the stochastic mass action counts of Y < 1000 and X < 200 and XX < 200, 
-# which would indeed still be dilute.  Now, the fastest propensity would be for XX + Y, at
-# about p = 3*1000*200 = 600,000 per second.  Yikes.  Less should do, because we don't need to 
-# guarantee that an arbitrary spatial distribution becomes well-mixed between each reaction,
-# we just need to guarantee that a single reaction's worth of perturbation from well-mixed
-# will dissolve back into equilibrium on the time scale of the fastest reaction.  This is 
-# more subtle to estimate, and I don't know the best way.  A possible approximation would be
-# to require that each molecule diffuses enough to cover its proportional share of volume,
-# i.e. a molecule with count X must have time to diffuse into volume N^2/X, and we can
-# compare it to the propensity for a localize sCRN reaction, rather than the propensity for
-# a CRN reaction anywhere in the volume (as was done above).  This is far from rigorous, 
-# but might be a good place to start for estimates to run simulations.  In the example, 
-# we need each diffusion step to be N^2/200 times faster than r = 3*N^2/(4*V), i.e.
-# diffusion at 50*75 = 3750 per second.  I sure hope that's still overkill.
+# after 1 second.  Thus, if the fastest propensity expected is rho, then a diffusion step rate
+# of rho*N^2 suffices... but is probably overkill.  For example, with V=100 and N=100, we aim
+# for matching the stochastic mass action counts of Y < 1000 and X < 200 and XX < 200,
+# which would indeed still be dilute. (Only 10% of the field is occupied.)  Now, consider
+# the reaction XX + Y ->(r) XX + X, with r = 1*(100^2)/(4*100) = 25 /s.  We'd like to assure
+# that before this reaction fires at a particular site, the reactants will be chosen as
+# a random sample from the (hopefully) well-mixed field.  Thus a diffusion step rate of
+# 25*N^2 should do the job.  But yikes, that's 250000 per second!  Hopefully that's overkill,
+# and we can get away with less...
 #
-# A nice example would be V=100, N=100, and diffusion at 500 /second.  This might be close
-# enough to being well-mixed, but you won't be able to see it using the online simulator
-# because the 10-minute compute time is insufficient.
+# As an alternative to guaranteeing that an arbitrary spatial distribution becomes well-mixed
+# between each reaction, we could aim to guarantee that from a nearly-uniform distribution
+# (i.e. if the field is already well-mixed), a single reaction's worth of perturbation from
+# well-mixed will dissolve back into equilibrium on the time scale of the fastest reaction.
+# This might amount to the requirement that each molecule diffuses enough to cover its
+# proportional share of the volume, i.e. a molecule with count X must have time to diffuse
+# into volume N^2/X.  By this estimate, the needed diffusion rate is set by the lowest
+# molecular count, which in the Brusselator for V=100 is the XX species, which occasionally
+# hits zero.  Hmmm.
 #
-# Instead, we will here demonstrate V=4, N=20, and diffusion at 50 /second, which should
+# The above discussion of diffusion requirements is neither rigorous nor convincing.  So
+# let's choose a slower diffusion rate that is computationally feasible, and see what
+# happens.  Do we get oscillations still?  If diffusion is too slow, then the system
+# will develop spatial inhomogeneity, i.e. the system will be more like a
+# reaction-diffusion system.  That's OK, and maybe that's what we are more interested in anyway.
+#
+# Here, we will here demonstrate V=4, N=20, and diffusion at 50 /second, which should
 # result in a few periods of oscillation that noticably arise as waves -- indicating that
 # we are indeed still within the realm of reaction-diffusion patterning.
 # Note that for this volume V, the stochastic CRN has peak counts approximately 40 for Y
 # and 10 each for X and XX.   Thus, the active species are usually less than 15% of sites,
 # but occasionally higher densities of Y will occur, and when they do, the spontaneous rate
-# for producing new X's will decrease -- a positive feedback that will accentuate the 
+# for producing new X's will decrease -- a positive feedback that will accentuate the
 # divergence of the surface CRN behavior from the stochastic well-mixed CRN behavior.
 
 # Run settings
 pixels_per_node    = 5
 speedup_factor     = 0.1
-#rng_seed           = 123123123
 max_duration       = 150
 node_display       = Color
+# rng_seed           = 123123123
 
 !START_TRANSITION_RULES
 # diffusion reactions
@@ -92,34 +150,42 @@ _ + Y -> Y + _ (50.0)
 _ + XX -> XX + _ (50.0)
 
 # Brusselator reactions
-_ -> X  (0.01) 
-X + X -> _ + XX (250.0)
+_ -> X  (0.01)
+X + X -> _ + XX (500.0)
 _ + XX -> X + X (20.0)
 XX + Y -> XX + X (25.0)
 X -> Y (3.0)
 X -> _ (1.0)
 !END_TRANSITION_RULES
 
+!START_COLORMAP
+_: (230,230,230)
+X: (10, 10, 10)
+XX: (50, 50, 50)
+Y: (220, 10, 10)
+!END_COLORMAP
+
 # We start with an empty 20x20 field.
 !START_INIT_STATE
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
-_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 !END_INIT_STATE
+

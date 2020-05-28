@@ -1,6 +1,10 @@
 # sCRN implementation of cargo sorting
 #
-# Lulu's cargo-sorting robot
+# Inspired by Thubagere et al, "A cargo sorting DNA robot", Science 2017.
+# Whereas in that work, each cargo is deposited at a matching target site,
+# and thus the number of target sites must match or exceed the number of cargos,
+# here the cargo may be dropped adjacent to any previously dropped cargo,
+# and thus the pile may increase in size arbitrarily.
 #
 # O   = track site
 # C1  = cargo 1

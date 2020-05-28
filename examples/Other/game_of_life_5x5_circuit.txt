@@ -1,19 +1,39 @@
 # 5 node x 5 node example of a locally-synchronous Game of Life using a logic circuit implementation.
 #
-# Each repeating block represents a single Game of Life cell. The cell consists of:
-#   1) A core loop in the center of the block that holds the state of the cell (0 for dead; 1 for alive),
-#   2) An outer loop that transmits a copy of the cell's current state to each of its neighbors, and
-#   3) A ring-shaped block of logic that decides what the core loop's next state should be based on the values of the cell's neighbors.
+# Each repeating block represents a single Game of Life cell.
+# The cell consists of:
+#   1) A core loop in the center of the block that holds
+#      the state of the cell (0 for dead; 1 for alive),
+#   2) An outer loop that transmits a copy of the cell's
+#      current state to each of its neighbors, and
+#   3) A ring-shaped block of logic that decides what
+#      the core loop's next state should be based on
+#      the values of the cell's neighbors.
 #
-# At the beginning of each generation update cycle, the core loop signal is duplicated and sent to a) the outer loop for transmission, and b) back to the core loop for storage and computation of the next cycle state. The split signal runs clockwise around the outer ring starting from the top. At each border with another cell, a copy of the state signal is created and waits until a matching signal is received from the neighbor (this is done with synch gates). This synchronization ensures that no cell can update more than one step ahead of its neighbors.
+# At the beginning of each generation update cycle, the core
+# loop signal is duplicated and sent to a) the outer loop for
+# transmission, and b) back to the core loop for storage and
+# computation of the next cycle state. The split signal runs
+# clockwise around the outer ring starting from the top. At
+# each border with another cell, a copy of the state signal
+# is created and waits until a matching signal is received
+# from the neighbor (this is done with synch gates). This
+# synchronization ensures that no cell can update more than
+# one step ahead of its neighbors.
 #
-# Once the neighbor's signal is received, it is fed into the logic ring. A series of logic gates in the logic ring determines what the cell's next state should be. The final computation is fed into the core loop, replacing the previous value, and the cycle begins again.
+# Once the neighbor's signal is received, it is fed into the
+# logic ring. A series of logic gates in the logic ring
+# determines what the cell's next state should be. The final
+# computation is fed into the core loop, replacing the
+# previous value, and the cycle begins again.
 #
-# The outermost layer of green cells are a border condition that continuously produces a 0 state.
+# The outermost layer of green cells are a border condition
+# that continuously produces a 0 state.
 #
 # Each game of life generation takes roughly 800-1600 seconds (in-simulation) to compute.
 #
-# In this example, we watch a "toad" (2-period oscillating pattern) flip back and forth approximately 5 times, for a total of ~10 generations.
+# In this example, we watch a "toad" (2-period oscillating pattern)
+# flip back and forth approximately 5 times, for a total of ~10 generations.
 
 
 pixels_per_node    = 2
@@ -130,11 +150,11 @@ max_duration       = 1000
 (1) 0 + BNx -> B + 0Nx
 (1) 1 + BNx -> B + 1Nx
 # Logic
-(1) 0Nx + BNy -> BNx + 1Nk
-(1) 1Nx + BNy -> BNx + 0Nk
+(1) 0Nx + BNy -> BNx + 1Ny
+(1) 1Nx + BNy -> BNx + 0Ny
 # Unload
-(1) 0Nk + B -> BNy + 0
-(1) 1Nk + B -> BNy + 1
+(1) 0Ny + B -> BNy + 0
+(1) 1Ny + B -> BNy + 1
 
 
 ### 2-FAN-OUT
@@ -206,8 +226,8 @@ max_duration       = 1000
 # Color definitions for logic gates
 
 ### SIGNALS
-{0 signal} 0, 0x, 0y, 0Xx, 0Xy, 0Xk, 0Xz, 0Rx, 0Ry, 0Rk, 0Rz, 0Ax 0Ay, 0Ax, 0Ay, 0Ak, 0Az, 0Nx, 0Ny, 0Nk, 0f, 0F, 0Fx, 0Fy, 0FF, 0Ff, 0ff, 0Fx3, 0Fy3,0Fz3, 0Cx, 0Cy, 0Cw, 0Cz, 0Py, 0Sx, 0Sy, 0Sz, 0Cyx2, 0Cxw, 0Cyx, 0Czy, 0Pk, 0Px: (192, 80, 77)
-{1 signal} 1, 1Xx, 1Xy, 1Xk, 1Xz, 1Rx, 1Ry, 1Rk, 1Rz, 1Ay, 1Ax, 1Ak, 1Az, 1Nx, 1Ny, 1Nk, 1f, 1F, 1Fx, 1Fy, 1FF, 1Ff, 1ff, 1Fx3, 1Fy3, 1Fz3, 1Cx, 1Cy, 1Cw, 1Cz, 1Py, 1Sx, 1Sy, 1Sz, 1Cyx, 1Cxw, 1Czy, 1Cyx2, 1Pk, 1Px: (255, 255, 0)
+{0 signal} 0, 0x, 0y, 0Xx, 0Xy, 0Xk, 0Xz, 0Rx, 0Ry, 0Rk, 0Rz, 0Ax 0Ay, 0Ax, 0Ay, 0Ak, 0Az, 0Nx, 0Ny, 0f, 0F, 0Fx, 0Fy, 0FF, 0Ff, 0ff, 0Fx3, 0Fy3,0Fz3, 0Cx, 0Cy, 0Cw, 0Cz, 0Py, 0Sx, 0Sy, 0Sz, 0Cyx2, 0Cxw, 0Cyx, 0Czy, 0Pk, 0Px: (192, 80, 77)
+{1 signal} 1, 1Xx, 1Xy, 1Xk, 1Xz, 1Rx, 1Ry, 1Rk, 1Rz, 1Ay, 1Ax, 1Ak, 1Az, 1Nx, 1Ny, 1f, 1F, 1Fx, 1Fy, 1FF, 1Ff, 1ff, 1Fx3, 1Fy3, 1Fz3, 1Cx, 1Cy, 1Cw, 1Cz, 1Py, 1Sx, 1Sy, 1Sz, 1Cyx, 1Cxw, 1Czy, 1Cyx2, 1Pk, 1Px: (255, 255, 0)
 {Reset Signal} RRXz, RXz, RRRz, RRz, RRAz, RAz, RCw, RCz, RCcw, RCcz: (255, 102, 0)
 {Holding Input} HXx, HXy, HRx, HRy, HAx, HAy, HCx, HCy: (200, 200, 100)
 {Blank Wire} B: (191, 191, 191)

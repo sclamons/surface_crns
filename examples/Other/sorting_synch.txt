@@ -1,5 +1,16 @@
 # sCRN implementation of a synchronized bubble sort for lists of digits 0...3
-
+#
+# This is the construction shown in Figure 7 of Qian & Winfree (2014)
+# as an example of a general construction for arbitrary (finite size)
+# one-dimensional block cellular automata.  The construction can be
+# thought of as a one-dimensional analog of the spinning-arrow construction.
+# States are marked by their data (0,1,2,3), which alternating block
+# they are a part of (A,B), and which role they play in the block (L,R).
+#
+# Here the block cellular automata rules for synchrnous application,
+# from which the sCRN is derived, are for sorting, so:
+#   {x, y} --> {min(x,y), max(x,y)}
+# applied within alternating blocks (pairs of site) on alternate time steps.
 # Run settings
 pixels_per_node    = 30
 speedup_factor     = 5

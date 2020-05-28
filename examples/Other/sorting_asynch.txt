@@ -2,6 +2,10 @@
 #
 # Although a little simpler than the synchronized version,
 # we still need extra information to know which direction is which.
+#
+# Furthermore, this construction doesn't immediately generalize to arbitrary
+# synchronous block cellular automata -- though it does generalize to
+# arbitrary asynchronous (one-dimentional) block cellular automata.
 
 # Run settings
 pixels_per_node    = 30

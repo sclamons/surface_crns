@@ -1,5 +1,8 @@
-# 2D synchronous totalistic cellular automata 
+# 2D synchronous totalistic cellular automata
 # with von Neumann neighborhood and 0-value edges.
+#
+# This isn't the best illustration of the "text" node display,
+# because the state names are too long.  Sorry.
 
 pixels_per_node    = 100
 speedup_factor     = 1

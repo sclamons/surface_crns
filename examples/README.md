@@ -103,9 +103,9 @@ This script is a useful example of how to directly use the simulator objects und
 
 ## <a name="rugby_ex"></a>Rugby Competition
 
-This folder is for running molecular rugby competitions. The basic molecular rugby rules (and simulation specs) are given in `templated_rugby_manifest.txt`. Team strategies should be stored in individual text files in the "Teams" subfolder, and should always be defined for team X. 
+This folder is for running molecular rugby competitions. The basic molecular rugby rules (and simulation specs) are given in `templated_rugby_manifest.txt`. Team strategies should be stored in individual text files in the "Teams" subfolder, and should always be defined for team X.
 
-You can watch a game between two strategies using the `examples/Programmatic Interface/Rugby Competition/rugby_game.py` script. The script takes two text files specifying strategies (for example, the ones in the "Teams" folder) as inputs. It will create a manifest file for the matchup in the "temp" folder, which it will then use to run and display the game. 
+You can watch a game between two strategies using the `examples/Programmatic Interface/Rugby Competition/rugby_game.py` script. The script takes two text files specifying strategies (for example, the ones in the "Teams" folder) as inputs. It will create a manifest file for the matchup in the "temp" folder, which it will then use to run and display the game.
 
 The script `examples/Programmatic Interface/Rugby Competition/rugby_tournament.py` runs a round-robin tournament between any molecular rugby strategies defined in files inside a "Teams" subfolder, printing the results to a uniquely-indexed text file in a "results" subfolder. For each pair of strategies, `rugbycompete.py` will flip one team to be team Y, play some number of games N (which can be specified in a command line argument or left to a default 100), and determines a winner. A team wins if it beats the other team by at least sqrt(N). If no team beats the other by at least this margin, the game is considered a tie.
 
@@ -180,25 +180,25 @@ You can generate surface CRNs to make your own bitmap patterns by modifying and 
 <a name="other_ex"></a>Other Examples
 ==============
 
-* `alternate_line_builder.txt`: A different [straight line builder](#line_ex) example designed by Philip Peterson. This version requires more rules and states than the one in the paper, and uses a much larger head, but builds a line of width 1 (instead of width 2). 
+* `alternate_line_builder.txt`: A different [straight line builder](#line_ex) example designed by Philip Peterson. This version requires more rules and states than the one in the paper, and uses a much larger head, but builds a line of width 1 (instead of width 2).
 * `Brusselator.txt`: Surface CRN implementation of the autocatalytic Brusselator chemical oscillator. Classically, this oscillator is described as a CRN with the following rules (see the manifest file for implementation details):
     * A -> X
     * X + X + Y -> X + X + X
     * B + X -> Y + D
     * X -> E
-* `busy_beaver.txt`: 3-state, 2-symbol [Busy Beaver Turing machine](https://en.wikipedia.org/wiki/Busy_beaver). 
+* `busy_beaver.txt`: 3-state, 2-symbol [Busy Beaver Turing machine](https://en.wikipedia.org/wiki/Busy_beaver).
 * `ertl.txt`: Manifest file for an Ertl chemical oscillator (https://doi.org/10.1021/cr00035a012). Carbon monoxide and molecular oxygen adsorb to a crystal platinum catalyst, and can diffuse on it. Adjacent CO and O will convert to carbon dioxide and desorb. Together, these dynamics cause patterned oscillations.
 * `game_of_life_5x5_circuit.txt`: A larger version of the [circuit-based Game of Life implementation](#gol_ex) from Chapter 4. This shows a 5x5 grid of synchronized Game of Life cells. The small circuits on the fringes of the grid are mock cells that eat any outgoing signals and provide a dummy "0" signal.
-* `game_of_life_one_to_one.txt`: A custom one-to-one implementation of the Game of Life not shown in Chapter 4. This implementation uses a rastering strategy, in which a robot walking along the outside of the game board sends signals top-to-bottom, left-to-right, to count vertical and horizontal neighbors, respectively. See the manifest for details. This strategy is as spatially compact as the spinning-arrow strategy with far fewer transition rules, but has an update speed that scales with the total size of the game board. 
-* `genius_scout_ant.txt`: A smarter version of the [food-finding scout ant](#ants_ex) from Chapter 6.. This ant puts down "guard rails" to avoid crossing over its own path, and can give up, undo its trail, and start again if it gets stuck.
+* `game_of_life_one_to_one.txt`: A custom one-to-one implementation of the Game of Life not shown in Chapter 4. This implementation uses a rastering strategy, in which a robot walking along the outside of the game board sends signals top-to-bottom, left-to-right, to count vertical and horizontal neighbors, respectively. See the manifest for details. This strategy is as spatially compact as the spinning-arrow strategy with far fewer transition rules, but has an update speed that scales with the total size of the game board.
+* `smarter_scout_ant.txt`: A smarter version of the [food-finding scout ant](#ants_ex) from Chapter 6.. This ant puts down "guard rails" to avoid crossing over its own path, and can give up, undo its trail, and start again if it gets stuck.
 * `GH_big_spiral.txt`: A 750x750 Greenberg-Hastings oscillator surface CRN, as shown in the third column of Fig. 1d but on a much larger scale. At this size, spiral patterns are persistent for some time before devolving into chaotic patterns reminiscent of the Belousov-Zhabotinsky reaction. Be patient with this one -- it may take a couple of minutes to load.
 * `Majority Vote`: Spatial majority vote, in which self-catalyzing "0"s and "1"s compete to cover a surface. In the limit of infinite time with an infinite surface, the entire surface will become covered with whichever state ("0" or "1") has the most representatives at the beginning of the simulation. In practice, convergence can take quite a while, and the surface CRN produces striking patterns in the meantime. We include three different majority vote examples:
 * * `majority_asynchronous.txt`: A simple implementation with no synchronicity.
 * * `majority_synchronous_large.txt`: A synchronous version of the majority-vote automaton, implemented with the spinning arrow strategy from Chapter 3. This is a large field, zoomed out so you can see its patterns better.
 * * `majority_synchronous_small.txt`: The same system as in `majority_synchronous_large.txt`, but zoomed in with state labels, so you can better see the operation of the spinning arrow mechanism.
-* * `molecular_walker.txt`: Simple emulation of a burnt-bridge, one-way DNA robot (or other molecular walker). The walker moves along a track, converting track to spent waste as it goes. 
-* * `parens_matcher.txt`: A Turing machine that checks whether a string contains matched open and closed parentheses ("OP" and "CL", respectively). 
-* * `sierpinski_1D_synch.txt`: Surface CRN implementation of a 1-dimensional XOR blocked cellular automaton. After each step, a cell in the automaton is 1 if and only if exactly one of its neighbors was 1 in the last step. 
-* * `sorting_asynch.txt`: An asynchronous bubble sort on a 1D tape. Each position is labeled with the a marker "A", "B", or "C" in order to distinguish between left and right. 
-* * `sorting_synch.txt`: A synchronous bubble sort on a 1D tape. 
-* * `sqrt_circuit.txt`: A 4-bit square-root circuit, implemented with the logic rules from [Chapter 4](#logic_ex). Input starts at the left edge (read bottom-to-top, most- to least-significant). Output bits go to the bottom (most significant digit) and left (least-significant digit). 
+* * `molecular_walker.txt`: Simple emulation of a burnt-bridge, one-way DNA robot (or other molecular walker). The walker moves along a track, converting track to spent waste as it goes.
+* * `parens_matcher.txt`: A Turing machine that checks whether a string contains matched open and closed parentheses ("OP" and "CL", respectively).
+* * `sierpinski_1D_synch.txt`: Surface CRN implementation of a 1-dimensional XOR blocked cellular automaton. After each step, a cell in the automaton is 1 if and only if exactly one of its neighbors was 1 in the last step.
+* * `sorting_asynch.txt`: An asynchronous bubble sort on a 1D tape. Each position is labeled with the a marker "A", "B", or "C" in order to distinguish between left and right.
+* * `sorting_synch.txt`: A synchronous bubble sort on a 1D tape.
+* * `sqrt_circuit.txt`: A 4-bit square-root circuit, implemented with the logic rules from [Chapter 4](#logic_ex). Input starts at the left edge (read bottom-to-top, most- to least-significant). Output bits go to the bottom (most significant digit) and left (least-significant digit).

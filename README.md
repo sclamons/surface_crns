@@ -1,7 +1,7 @@
 Simulation of Chemical Reaction Networks (CRNs) on a surface
 ============================================================
 
-This package is a companion to Clamons, Qian, & Winfree 2020 ("Programming and Simulating Chemical Reaction Networks on a Surface"). It simulates surface Chemical Reaction Networks (surface CRNs), as defined in Qian & Winfree 2014 (["Parallel and Scalable Computation and Spatial Dynamics with DNA-Based Chemical Reaction Networks on a Surface"](http://www.dna.caltech.edu/Papers/surface_CRNs_DNA20.pdf)). A version frozen at the release of the paper will be made available on a `paper-release` branch, while the `master` branch will be kept up-to-date with any subsequent bug fixes or improvements.
+This package is a companion to Clamons, Qian, & Winfree 2020 (["Programming and Simulating Chemical Reaction Networks on a Surface"](https://doi.org/10.1098/rsif.2019.0790)). It simulates surface Chemical Reaction Networks (surface CRNs), as defined in Qian & Winfree 2014 (["Parallel and Scalable Computation and Spatial Dynamics with DNA-Based Chemical Reaction Networks on a Surface"](https://doi.org/10.1007/978-3-319-11295-4_8)). A version frozen at the release of the paper will be made available on a `paper-release` branch, while the `master` branch will be kept up-to-date with any subsequent bug fixes or improvements.
 
 This package provides:
 
@@ -164,7 +164,7 @@ with the obvious meanings. Useful settings to know are:
 * **max_duration** *(default `1000000`)*: A nonnegative number specifying the maximum length of simulation in arbitrary time units (the same arbitrary time units specified by transition rule reaction rates).
 * **node_display** *(default `color`)*: Determines whether the state of each position on the grid (node) is overlaid, in text, on that node. Set to "text" to overlay text, or "color" to only show node color.
 * **pixels_per_node** *(default `5`)*: Determines the size of a node, in pixels.
-* **wrap_grid** *(default `False`)*: Iff True, grid connections wrap top-to-bottom and left-to-right (and vice versa).
+* **wrap** *(default `False`)*: Iff True, grid connections wrap top-to-bottom and left-to-right (and vice versa).
 * **geometry** *(default `square`)*: Toggles surface geometry to either a square grid (default, `square`) or a hex grid (`hex`). If `hex`, the initial condition will still be given as a rectangular grid, with every other line shifted by a half-hex.
 
 ## Including Files
@@ -183,3 +183,11 @@ Acknowledgements
 ================
 
 This package uses the pygbutton package by Al Sweigart (https://github.com/asweigart/pygbutton), as well as the random_color function made by adews (https://gist.github.com/adewes/5884820.). Thanks to both authors!
+
+References
+==========
+This packages is a companion to this paper:
+Clamons S., Qian L., Winfree E. (2020) Programming and Simulating Chemical Reaction Networks on a Surface. In: Journal of the Royal Society Interface, vol 17, issue 166. Royal Society. https://doi.org/10.1098/rsif.2019.0790
+
+The original formulation of surface CRNs:
+Qian L., Winfree E. (2014) Parallel and Scalable Computation and Spatial Dynamics with DNA-Based Chemical Reaction Networks on a Surface. In: Murata S., Kobayashi S. (eds) DNA Computing and Molecular Programming. DNA 2014. Lecture Notes in Computer Science, vol 8727. Springer, Cham. https://doi.org/10.1007/978-3-319-11295-4_8

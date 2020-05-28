@@ -5,9 +5,10 @@
 # Reaction rates must be tuned carefully to prolong
 # the time before chaotic activity sets in.
 #
-# Three initial conditions are given. Uncomment the one you
-# want to use (including the !START_INIT_STATE and !END_INIT_STATE
-# lines) and leave the others commented.
+# Two alternate initial conditions are also provided.
+# Uncomment the one you want to use (including
+# the !START_INIT_STATE and !END_INIT_STATE lines)
+# and leave the others commented.
 #
 # Q = quiescent, quiet, inactive
 # A = active, alive, infectious
@@ -35,12 +36,12 @@ R: (0, 100, 255)
 
 # Small spiral
 #!START_INIT_STATE
-#Q Q Q Q Q Q 
-#Q Q Q Q Q Q 
-#Q Q Q A A A 
-#Q Q Q R R R 
-#Q Q Q Q Q Q 
-#Q Q Q Q Q Q 
+#Q Q Q Q Q Q
+#Q Q Q Q Q Q
+#Q Q Q A A A
+#Q Q Q R R R
+#Q Q Q Q Q Q
+#Q Q Q Q Q Q
 #!END_INIT_STATE
 
 # Random start

@@ -1,29 +1,28 @@
-# 1D parentheses-matching Turing Machine, 
-# using the scheme described in "Parallel and 
+# 1D parentheses-matching Turing Machine,
+# using a scheme similar to the one described in "Parallel and
 # Scalable Computation..." by Qian and Winfree, 2014.
 #
-# Assumes a linear tape with the head at the first parenthesis. Halts with a 
-# "YES" node if accepted, or a "NO" node if rejected. Works by stripping the 
-# outer-most parentheses. 
+# Assumes a linear tape with the head at the first parenthesis. Halts with a
+# "YES" node if accepted, or a "NO" node if rejected. Works by stripping the
+# outer-most parentheses.
 #
 # OP = open parens
 # CP = close parens
 # <A/B/C/D/E>L = head in state <A/B/C/D/E>, pointing left
 # <A/B/C/D/E>R = head in state <A/B/C/D/E>, pointing right
 #
-# Sites to the left of the head (black) are marked 
+# Sites to the left of the head (black) are marked
 # with an "L" suffix; sites to the right of the head
-# are marked with an "R" suffix. 
+# are marked with an "R" suffix.
 #
-# To play with the initial state, just change the "OPR"s 
+# To play with the initial state, just change the "OPR"s
 # (open parentheses) and "CPR"s (closing parentheses) in
-# the initial state. The "eL" and "eR"s are empty cells 
+# the initial state. The "eL" and "eR"s are empty cells
 # marking the end of the tape.
 
 pixels_per_node    = 40
 speedup_factor     = 5
 max_duration       = 60
-fps                = 20
 node_display       = Text
 
 

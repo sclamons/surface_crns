@@ -112,11 +112,11 @@
 (1) 0 + BNx -> B + 0Nx
 (1) 1 + BNx -> B + 1Nx
 # Logic
-(1) 0Nx + BNy -> BNx + 1Nk
-(1) 1Nx + BNy -> BNx + 0Nk
+(1) 0Nx + BNy -> BNx + 1Ny
+(1) 1Nx + BNy -> BNx + 0Ny
 # Unload
-(1) 0Nk + B -> BNy + 0
-(1) 1Nk + B -> BNy + 1
+(1) 0Ny + B -> BNy + 0
+(1) 1Ny + B -> BNy + 1
 
 
 ### 2-FAN-OUT

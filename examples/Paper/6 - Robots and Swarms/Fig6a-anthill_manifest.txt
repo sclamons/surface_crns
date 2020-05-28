@@ -4,7 +4,6 @@ speedup_factor     = 500
 debug              = False
 rng_seed           = 123123123
 max_duration       = 50000
-fps                = 60
 node_display       = color
 geometry           = square
 wrap               = true
@@ -100,10 +99,10 @@ O O O O O O O D O D D O O O O O O D O D O O O O D O O O O O O O O O O O O O O O 
 
 # Colormap
 !START_COLORMAP
-{Background} O: (240, 240, 240)
-{Dirt} D: (140,81, 10)
-{Dirt Pile} DD: (70, 40, 5)
-{Searching ant} As: (175, 175, 255)
-{Ant carrying dirt} Ad: (1, 100, 255)
-{Ant Running Away} Al: (255, 0, 0)
+{Background (O)} O: (240, 240, 240)
+{Dirt (D)} D: (140,81, 10)
+{Dirt Pile (DD)} DD: (70, 40, 5)
+{Ant, Searching (As)} As: (175, 175, 255)
+{Ant with dirt (Ad)} Ad: (1, 100, 255)
+{Ant, Leaving (Al)} Al: (255, 0, 0)
 !END_COLORMAP

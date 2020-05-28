@@ -13,6 +13,8 @@
 #    Chen, Yuan-Jyue, Neil Dalchau, Niranjan Srinivas, Andrew Phillips, Luca Cardelli, David Soloveichik, and Georg Seelig
 #    "Programmable chemical controllers made from DNA"
 #    Nature nanotechnology 8.10 (2013): 755-762
+#
+# For fun, try it with additional diffusion rules and explain the difference!
 
 
 # Run settings

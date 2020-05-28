@@ -1,4 +1,15 @@
-# sCRN implementation of a synchronized XOR blocked cellular automaton
+# sCRN implementation of a synchronized XOR block cellular automaton
+#
+# This uses the general construction shown in Figure 7 of Qian & Winfree (2014)
+# but for a synchronous block cellular automata with rules
+#   {x, y} --> {x+y mod 2, x+y mod 2}
+# applied within alternating blocks (pairs of site) on alternate time steps.
+#
+# While here just the one-dimensional block cellular automaton is emulated,
+# and it's hard to see any interesting pattern emerging,
+# the space-time history of this cellular automaton generates the
+# Sierpinksi triangle.  (E.g. that's what you would see in a two-dimensional
+# implementation like the Rule 110 example, or in a tile self-assembly model.)
 #
 # The initial condition is chosen such that the cellular automaton
 # will become all-zero after about 15 steps of synchronized updates.
