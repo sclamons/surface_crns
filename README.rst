@@ -237,6 +237,11 @@ with the obvious meanings. Useful settings to know are:
 
 -  speedup\_factor: A nonnegative real number dictating the speed of
    simulation playback. Larger numbers mean faster playback.
+-  fps: A nonnegative real integer that controls the frame rate of the
+   simulation playback. Higher fps will produce smoother output, but will
+   take more time, RAM, and disk space to run. Lower fps may be choppy, but
+   cuts down on the number of frames that need to be drawn (and, on the web
+   simulator, stored).
 -  rng\_seed: Integer specifying the random number seed used by the
    simulation. Set this value to make simulations reproducible.
 -  max\_duration: A nonnegative number specifying the maximum length of
