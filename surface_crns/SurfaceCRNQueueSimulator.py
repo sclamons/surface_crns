@@ -523,8 +523,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                 text_display.text = termination_string
                 text_display.render(display_surface, x_pos = 0, y_pos = 0)
                 frame_filename = os.path.join(FRAME_DIRECTORY,
-                                              opts.movie_title + "_" +
-                                              str(frame_number) + ".png")
+                            f"{opts.movie_title}_{simulation.frame_number}.png")
                 if opts.debug:
                     print("Saving final frame at: " + frame_filename)
                 pygame.image.save(display_surface, frame_filename)
