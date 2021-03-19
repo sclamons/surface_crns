@@ -8,4 +8,4 @@ from surface_crns.simulators import *
 from surface_crns.views import *
 __all__ = ['base', 'models', 'profiling', 'readers', 'simulators', 'views',
             'SurfaceCRNQueueSimulator']
-__version__ = "v1.1"
+__version__ = "v1.2"
