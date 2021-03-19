@@ -1,20 +1,20 @@
-# Logic circuit rule set optimized for minimal transition rules, at the 
-# cost of physical space and readability. AND, OR, XOR, and NOT gates have 
+# Logic circuit rule set optimized for minimal transition rules, at the
+# cost of physical space and readability. AND, OR, XOR, and NOT gates have
 # been replaced by the NOR gate, and sync  and 3-output fan gates have been
 # removed.
-# 
+#
 # Gates lock during computation, allowing sequential gate logic.
 
 
 ### WIRE RULES
-### 2 rules
+### 2 rules, 3 species
 # Move
 (1) 0 + B -> B + 0
 (1) 1 + B -> B + 1
 
 
 ### NOR GATE
-### 14 rules
+### 14 rules, 18 species
 # Load
 (1) 0 + BRx -> B + 0Rx
 (1) 1 + BRx -> B + 1Rx
@@ -36,7 +36,7 @@
 
 
 ### 2-FAN-OUT
-### 10 rules
+### 10 rules, 11 species
 # Load
 (1) 0 + BF -> B + 0F
 (1) 1 + BF -> B + 1F
@@ -52,7 +52,7 @@
 (1) 1Fy + B -> BFy + 1
 
 ### WIRE CROSS
-### 20 rules
+### 20 rules, 19 species
 # Load
 (1) 0 + BCx -> B + 0Cx
 (1) 1 + BCx -> B + 1Cx
@@ -79,4 +79,4 @@
 (1) RCz + BC -> BCz + RCcz
 (1) RCcz + HCy -> BC + BCy
 
-## ^ 110 rules ^ ##
+## ^ 46 rules, 51 species ^ ##

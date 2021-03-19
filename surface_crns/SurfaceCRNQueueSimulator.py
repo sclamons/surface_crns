@@ -252,6 +252,15 @@ def simulate_surface_crn(manifest_filename, display_class = None,
         (play_button.rect.right + 4*button_buffer, button_y,
          button_width * 1.1, button_height),
                             caption = 'Uncache')
+    save_image_button = PygButton(rect =
+        (button_buffer, button_y, 30, button_height))
+    assets_folder = os.path.join(surface_crns.__path__[0], "assets")
+    camera_file = os.path.join(assets_folder, "camera.png")
+    yellow_camera_file = os.path.join(assets_folder, "camera_yellow.png")
+    green_camera_file  = os.path.join(assets_folder, "camera_green.png")
+    save_image_button.setSurfaces(camera_file, green_camera_file,
+                                  yellow_camera_file)
+
 
     display_height = max(legend_display.display_height + \
                 2*legend_display.VERTICAL_BUFFER + time_display.display_height,
@@ -301,6 +310,7 @@ def simulate_surface_crn(manifest_filename, display_class = None,
         step_button.draw(display_surface)
         play_button.draw(display_surface)
         clip_button.draw(display_surface)
+        save_image_button.draw(display_surface)
 
     pygame.display.flip()
     update_display(opts, simulation, FRAME_DIRECTORY)
@@ -402,8 +412,25 @@ def simulate_surface_crn(manifest_filename, display_class = None,
                 event_history.clip()
                 simulation.time = time
                 simulation.reset()
-                for rxn in list(simulation.event_queue.queue):
+                for rxn in list(simulation.event_queue):
                     print(rxn)
+            if 'click' in save_image_button.handleEvent(event):
+                base_name = \
+                    manifest_filename.split(os.path.sep)[-1].split(".")[0]
+                save_name = base_name + "_snapshot.png"
+                legend_name = base_name + "_legend.png"
+                grid_image = display_surface.subsurface(
+                                (grid_display.x_pos,
+                                 grid_display.y_pos,
+                                 grid_display.display_width,
+                                 grid_display.display_height))
+                pygame.image.save(grid_image, save_name)
+                legend_image = display_surface.subsurface(
+                                (legend_display.x_pos,
+                                 legend_display.y_pos,
+                                 legend_display.display_width,
+                                 legend_display.display_height))
+                pygame.image.save(legend_image, legend_name)
             if event.type == pygl.QUIT:
                 if opts.saving_movie:
                     movie_file.close()

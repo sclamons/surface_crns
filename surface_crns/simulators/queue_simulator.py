@@ -1,7 +1,17 @@
 import numpy as np
 import random
 import math
-from queue import *
+
+# Different queue timings:
+# To simulate & display 10 seconds with examples/Programmatic Interface/GH_big_spiral.py:
+#   PriorityQueue: ~11 seconds
+#   heapq: ~9 seconds
+# 
+# Note that heapq is NOT thread-safe. If we ever parallelize this code, 
+# we may need to revert to queue's PriorityQueue. 
+#
+# from queue import *
+import _heapq as heapq
 from surface_crns.simulators.event import Event
 
 class QueueSimulator:
@@ -56,7 +66,7 @@ class QueueSimulator:
         '''
         Clear any reactions in the queue and populate with available reactions.
         '''
-        self.event_queue = PriorityQueue()
+        self.event_queue = []
         self.initialize_reactions()
 
     def initialize_reactions(self):
@@ -73,7 +83,7 @@ class QueueSimulator:
         True iff there are no more reactions or the simulation has reached
         final time.
         '''
-        return self.event_queue.empty() or self.time >= self.simulation_duration
+        return len(self.event_queue) == 0 or self.time >= self.simulation_duration
 
     def process_next_reaction(self):
         local_debugging = False
@@ -87,11 +97,11 @@ class QueueSimulator:
         '''
         next_reaction = None
         while next_reaction is None:
-            if self.event_queue.empty():
+            if len(self.event_queue) == 0:
                 self.time = self.simulation_duration
                 return None
 
-            next_reaction = self.event_queue.get()
+            next_reaction = heapq.heappop(self.event_queue)
             if next_reaction.time > self.simulation_duration:
                 self.time = self.simulation_duration
                 return None
@@ -199,7 +209,7 @@ class QueueSimulator:
                                   rule = rule,
                                   participants = [node],
                                   time_issued = self.time)
-                self.event_queue.put(new_event)
+                heapq.heappush(self.event_queue, new_event)
                 if local_debugging:
                     print("Event added: " + str(new_event))
                     print(str(new_event))
@@ -254,7 +264,7 @@ class QueueSimulator:
                                           rule = rule,
                                           participants = new_participants,
                                           time_issued = self.time)
-                        self.event_queue.put(new_event)
+                        heapq.heappush(self.event_queue, new_event)
                         if local_debugging:
                             print("Event added: " + str(new_event))
             else:
